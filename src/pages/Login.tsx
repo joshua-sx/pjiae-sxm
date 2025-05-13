@@ -6,26 +6,32 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAuth, UserRole } from "@/contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedRole, setSelectedRole] = useState<UserRole>("Employee");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { setRole } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
     try {
-      // This would be an actual auth call in a real app
+      // Set the selected role in our context
+      setRole(selectedRole);
+      
+      // For demo purposes, simulate a delay
       await new Promise((resolve) => setTimeout(resolve, 1000));
       
-      // For demo purposes, accepting any credentials
       toast({
         title: "Login successful",
-        description: "Welcome to the PJIAE Digital Appraisal System",
+        description: `Welcome to the PJIAE Digital Appraisal System as ${selectedRole}`,
       });
       navigate("/");
     } catch (error) {
@@ -51,7 +57,7 @@ const Login = () => {
           <CardHeader>
             <CardTitle>Sign In</CardTitle>
             <CardDescription>
-              Enter your credentials to access your account
+              Select your role for this demo
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -95,6 +101,33 @@ const Login = () => {
                   autoComplete="current-password"
                 />
               </div>
+              
+              <div className="space-y-3">
+                <Label>Select Role for Demo</Label>
+                <RadioGroup 
+                  value={selectedRole} 
+                  onValueChange={(value) => setSelectedRole(value as UserRole)} 
+                  className="grid grid-cols-2 gap-2"
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="HR Officer" id="hr" />
+                    <Label htmlFor="hr" className="cursor-pointer">HR Officer</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Director" id="director" />
+                    <Label htmlFor="director" className="cursor-pointer">Director</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Supervisor" id="supervisor" />
+                    <Label htmlFor="supervisor" className="cursor-pointer">Supervisor</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="Employee" id="employee" />
+                    <Label htmlFor="employee" className="cursor-pointer">Employee</Label>
+                  </div>
+                </RadioGroup>
+              </div>
+              
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign in"}
               </Button>

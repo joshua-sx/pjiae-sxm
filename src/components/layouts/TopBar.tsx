@@ -1,5 +1,5 @@
 
-import { Bell, User, LogOut } from 'lucide-react';
+import { Bell, User, LogOut, Users } from 'lucide-react';
 import { useState } from 'react';
 import {
   DropdownMenu,
@@ -9,21 +9,50 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from 'react-router-dom';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
 
 const TopBar = () => {
   const [notificationCount] = useState(3);
   const navigate = useNavigate();
+  const { role, setRole } = useAuth();
 
   // Mock user state - would come from auth context in real app
   const user = {
     name: "John Doe",
-    role: "HR Officer",
+    role: role,
     avatar: "/placeholder.svg"
   };
 
   const handleLogout = () => {
     // Add logout logic here
     navigate('/login');
+  };
+
+  const handleRoleChange = (newRole: UserRole) => {
+    setRole(newRole);
+  };
+
+  const getRoleBadgeColor = () => {
+    switch (role) {
+      case 'HR Officer':
+        return 'bg-purple-500 hover:bg-purple-600';
+      case 'Director':
+        return 'bg-red-500 hover:bg-red-600';
+      case 'Supervisor':
+        return 'bg-amber-500 hover:bg-amber-600';
+      case 'Employee':
+        return 'bg-green-500 hover:bg-green-600';
+      default:
+        return 'bg-blue-500 hover:bg-blue-600';
+    }
   };
 
   return (
@@ -33,6 +62,22 @@ const TopBar = () => {
       </div>
       
       <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-2">
+          <Users size={18} className="text-gray-500" />
+          <Select value={role} onValueChange={(value) => handleRoleChange(value as UserRole)}>
+            <SelectTrigger className="w-[180px] h-8 text-sm">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="HR Officer">HR Officer</SelectItem>
+              <SelectItem value="Director">Director</SelectItem>
+              <SelectItem value="Supervisor">Supervisor</SelectItem>
+              <SelectItem value="Employee">Employee</SelectItem>
+            </SelectContent>
+          </Select>
+          <Badge className={`${getRoleBadgeColor()} text-xs`}>{role}</Badge>
+        </div>
+        
         <div className="relative">
           <button className="p-2 rounded-full hover:bg-gray-100">
             <Bell size={20} />
@@ -60,14 +105,14 @@ const TopBar = () => {
               </div>
               <div className="text-left hidden md:block">
                 <div className="font-medium text-sm">{user.name}</div>
-                <div className="text-xs text-gray-500">{user.role}</div>
+                <div className="text-xs text-gray-500">{role}</div>
               </div>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
             <div className="px-2 py-1.5">
               <div className="font-medium">{user.name}</div>
-              <div className="text-xs text-muted-foreground">{user.role}</div>
+              <div className="text-xs text-muted-foreground">{role}</div>
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => navigate('/profile')}>
