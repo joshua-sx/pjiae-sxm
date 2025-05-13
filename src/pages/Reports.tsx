@@ -83,13 +83,13 @@ const Reports = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1>Performance Analytics & Reporting</h1>
+      <div className="container mx-auto max-w-6xl px-4 py-6 space-y-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <h1 className="text-3xl font-bold text-pjiae-blue m-0">Performance Analytics & Reporting</h1>
           
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full sm:w-auto">
             <Select value={timeframe} onValueChange={setTimeframe}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Select timeframe" />
               </SelectTrigger>
               <SelectContent>
@@ -100,7 +100,7 @@ const Reports = () => {
             </Select>
             
             <Select value={department} onValueChange={setDepartment}>
-              <SelectTrigger className="w-[180px]">
+              <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Select department" />
               </SelectTrigger>
               <SelectContent>
@@ -114,7 +114,7 @@ const Reports = () => {
               </SelectContent>
             </Select>
             
-            <Button variant="outline" className="gap-2">
+            <Button variant="outline" className="gap-2 w-full sm:w-auto">
               <FileSpreadsheetIcon size={18} />
               Export to Excel
             </Button>
@@ -122,7 +122,7 @@ const Reports = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="w-full">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center justify-between">
                 <span>Performance Score</span>
@@ -136,7 +136,7 @@ const Reports = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[100px]">
+              <div className="h-[100px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <AreaChart data={performanceData.slice(-6)} margin={{ top: 5, right: 0, bottom: 0, left: 0 }}>
                     <defs>
@@ -154,7 +154,7 @@ const Reports = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="w-full">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center justify-between">
                 <span>Completed Appraisals</span>
@@ -168,7 +168,7 @@ const Reports = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[100px]">
+              <div className="h-[100px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -191,7 +191,7 @@ const Reports = () => {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="w-full">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center justify-between">
                 <span>Projected Bonus Budget</span>
@@ -205,7 +205,7 @@ const Reports = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-[100px]">
+              <div className="h-[100px] w-full">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={bonusPrediction} margin={{ top: 5, right: 0, bottom: 0, left: 0 }}>
                     <Bar dataKey="predicted" fill="#8B5CF6" />
@@ -218,7 +218,7 @@ const Reports = () => {
           </Card>
         </div>
 
-        <Tabs defaultValue="performance">
+        <Tabs defaultValue="performance" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="performance">Performance Trends</TabsTrigger>
             <TabsTrigger value="department">Department Analysis</TabsTrigger>
@@ -226,13 +226,13 @@ const Reports = () => {
           </TabsList>
           
           <TabsContent value="performance" className="space-y-6 pt-6">
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle>Performance Trends Over Time</CardTitle>
                 <CardDescription>Comparison of actual performance against targets and previous year</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
+              <CardContent className="p-4 lg:p-6 pt-0">
+                <div className="h-[400px] w-full">
                   <ChartContainer config={chartConfig}>
                     <LineChart data={performanceData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -258,13 +258,13 @@ const Reports = () => {
           </TabsContent>
 
           <TabsContent value="department" className="space-y-6 pt-6">
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle>Department Performance Comparison</CardTitle>
                 <CardDescription>Current performance scores by department relative to targets</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
+              <CardContent className="p-4 lg:p-6 pt-0">
+                <div className="h-[400px] w-full">
                   <ChartContainer config={chartConfig}>
                     <BarChart data={departmentPerformance} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -285,56 +285,58 @@ const Reports = () => {
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle>Bonus Allocation by Department</CardTitle>
                 <CardDescription>Percentage of total bonus budget allocated to each department</CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-col md:flex-row items-center justify-center gap-8">
-                <div className="w-[300px] h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={bonusAllocation}
-                        cx="50%"
-                        cy="50%"
-                        labelLine={false}
-                        outerRadius={100}
-                        fill="#8884d8"
-                        dataKey="value"
-                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                      >
-                        {bonusAllocation.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                        ))}
-                      </Pie>
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {bonusAllocation.map((dept, index) => (
-                    <div key={dept.name} className="flex items-center gap-2">
-                      <span 
-                        className="block w-4 h-4 rounded-full" 
-                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                      ></span>
-                      <span>{dept.name}: ${(dept.value * 10500).toLocaleString()}</span>
-                    </div>
-                  ))}
+              <CardContent className="p-4 lg:p-6 pt-0">
+                <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
+                  <div className="w-full lg:w-[300px] h-[300px]">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={bonusAllocation}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                          label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        >
+                          {bonusAllocation.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                          ))}
+                        </Pie>
+                        <Tooltip />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    {bonusAllocation.map((dept, index) => (
+                      <div key={dept.name} className="flex items-center gap-2">
+                        <span 
+                          className="block w-4 h-4 rounded-full" 
+                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                        ></span>
+                        <span>{dept.name}: ${(dept.value * 10500).toLocaleString()}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="bonus" className="space-y-6 pt-6">
-            <Card>
+            <Card className="w-full">
               <CardHeader>
                 <CardTitle>Bonus Budget Projections</CardTitle>
                 <CardDescription>Historical and projected bonus allocations for upcoming years</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="h-[400px]">
+              <CardContent className="p-4 lg:p-6 pt-0">
+                <div className="h-[400px] w-full">
                   <ChartContainer config={chartConfig}>
                     <BarChart data={bonusPrediction} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
@@ -355,29 +357,29 @@ const Reports = () => {
               </CardContent>
             </Card>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="w-full h-full">
                 <CardHeader>
                   <CardTitle>Factors Affecting Bonus Projections</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 lg:p-6 pt-0">
                   <ul className="space-y-4">
                     <li className="flex items-start gap-3">
-                      <TrendingUpIcon className="mt-0.5 text-green-600" />
+                      <TrendingUpIcon className="mt-0.5 text-green-600 shrink-0" />
                       <div>
                         <p className="font-medium">Performance Improvements</p>
                         <p className="text-muted-foreground text-sm">Overall company performance is projected to increase by 7.5%, contributing to higher bonus allocations</p>
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <ChartBarIcon className="mt-0.5 text-blue-600" />
+                      <ChartBarIcon className="mt-0.5 text-blue-600 shrink-0" />
                       <div>
                         <p className="font-medium">Company Growth</p>
                         <p className="text-muted-foreground text-sm">Expected revenue growth of 12% will increase the available budget for employee bonuses</p>
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <ChartBarIcon className="mt-0.5 text-amber-600" />
+                      <ChartBarIcon className="mt-0.5 text-amber-600 shrink-0" />
                       <div>
                         <p className="font-medium">New Incentive Structure</p>
                         <p className="text-muted-foreground text-sm">Improved performance-based incentive structure will target high-performing employees</p>
@@ -387,28 +389,28 @@ const Reports = () => {
                 </CardContent>
               </Card>
 
-              <Card>
+              <Card className="w-full h-full">
                 <CardHeader>
                   <CardTitle>Bonus Distribution Recommendations</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-4 lg:p-6 pt-0">
                   <ul className="space-y-4">
                     <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-medium">1</div>
+                      <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-medium shrink-0">1</div>
                       <div>
                         <p className="font-medium">Increase allocation for top performers</p>
                         <p className="text-muted-foreground text-sm">Focus 50% of bonus allocation on employees with performance scores above 85%</p>
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-medium">2</div>
+                      <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-medium shrink-0">2</div>
                       <div>
                         <p className="font-medium">Balance departmental allocations</p>
                         <p className="text-muted-foreground text-sm">Adjust IT and Operations allocations based on improved performance metrics</p>
                       </div>
                     </li>
                     <li className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-medium">3</div>
+                      <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-medium shrink-0">3</div>
                       <div>
                         <p className="font-medium">Consider non-monetary incentives</p>
                         <p className="text-muted-foreground text-sm">Supplement financial bonuses with opportunities for growth and recognition</p>
