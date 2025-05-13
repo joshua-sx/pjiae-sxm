@@ -1,0 +1,89 @@
+
+import { Bell, User, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { useNavigate } from 'react-router-dom';
+
+const TopBar = () => {
+  const [notificationCount] = useState(3);
+  const navigate = useNavigate();
+
+  // Mock user state - would come from auth context in real app
+  const user = {
+    name: "John Doe",
+    role: "HR Officer",
+    avatar: "/placeholder.svg"
+  };
+
+  const handleLogout = () => {
+    // Add logout logic here
+    navigate('/login');
+  };
+
+  return (
+    <div className="h-16 border-b bg-white flex items-center justify-between px-6">
+      <div>
+        <h1 className="text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
+      </div>
+      
+      <div className="flex items-center space-x-4">
+        <div className="relative">
+          <button className="p-2 rounded-full hover:bg-gray-100">
+            <Bell size={20} />
+            {notificationCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                {notificationCount}
+              </span>
+            )}
+          </button>
+        </div>
+        
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="flex items-center space-x-3 px-2 py-1 rounded-full hover:bg-gray-100">
+              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
+                <img 
+                  src={user.avatar} 
+                  alt="User avatar" 
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = '/placeholder.svg';
+                  }}
+                />
+              </div>
+              <div className="text-left hidden md:block">
+                <div className="font-medium text-sm">{user.name}</div>
+                <div className="text-xs text-gray-500">{user.role}</div>
+              </div>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <div className="px-2 py-1.5">
+              <div className="font-medium">{user.name}</div>
+              <div className="text-xs text-muted-foreground">{user.role}</div>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => navigate('/profile')}>
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Log out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </div>
+  );
+};
+
+export default TopBar;
