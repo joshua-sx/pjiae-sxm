@@ -6,6 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AppraisalCard from "@/components/appraisal/AppraisalCard";
+import StatusBadge from "@/components/appraisal/StatusBadge";
 import { Bell, ChevronRight } from "lucide-react";
 
 // Mock data - would come from API in real app
@@ -139,7 +140,7 @@ const Index = () => {
                       </div>
                       <div className="flex items-center">
                         <div className="mr-3">
-                          <AppraisalCard.StatusBadge status={appraisal.status} />
+                          <StatusBadge status={appraisal.status} />
                         </div>
                         <Button variant="ghost" size="icon" onClick={() => navigate(`/appraisal/${appraisal.id}`)}>
                           <ChevronRight size={18} />

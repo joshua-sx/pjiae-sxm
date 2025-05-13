@@ -1,4 +1,3 @@
-
 import { useParams } from "react-router-dom";
 import MainLayout from "@/components/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -12,7 +11,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { useState } from "react";
-import { Appeal } from "lucide-react";
+import { Flag } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -146,7 +145,7 @@ const AppraisalDetail = () => {
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline" className="bg-pjiae-lightgray/50">
-                  <Appeal className="mr-2 h-4 w-4" />
+                  <Flag className="mr-2 h-4 w-4" />
                   Appeal
                 </Button>
               </AlertDialogTrigger>
