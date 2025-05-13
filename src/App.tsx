@@ -10,6 +10,8 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import MyAppraisals from "./pages/MyAppraisals";
 import AppraisalDetail from "./pages/AppraisalDetail";
+import Organization from "./pages/Organization";
+import EmployeeDetail from "./pages/EmployeeDetail";
 import NotFound from "./pages/NotFound";
 
 // Initialize the query client
@@ -29,6 +31,8 @@ const App = () => (
               <Route path="/my-appraisals" element={<MyAppraisals />} />
               <Route path="/team-appraisals" element={<MyAppraisals />} />
               <Route path="/appraisal/:id" element={<AppraisalDetail />} />
+              <Route path="/organization" element={<Organization />} />
+              <Route path="/employee/:id" element={<EmployeeDetail />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

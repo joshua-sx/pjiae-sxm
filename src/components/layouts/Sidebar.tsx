@@ -6,20 +6,46 @@ import {
   ClipboardCheck, Settings, Users, Bell
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const location = useLocation();
+  const { role } = useAuth();
   
-  const menuItems = [
-    { name: 'Dashboard', path: '/', icon: Home },
-    { name: 'My Appraisals', path: '/my-appraisals', icon: ClipboardCheck },
-    { name: 'Team Appraisals', path: '/team-appraisals', icon: Users },
-    { name: 'Reporting', path: '/reports', icon: BarChart },
-    { name: 'Notifications', path: '/notifications', icon: Bell },
-    { name: 'Profile', path: '/profile', icon: UserCircle },
-    { name: 'Settings', path: '/settings', icon: Settings, admin: true },
-  ];
+  // Define menu items, some are role-specific
+  const getMenuItems = () => {
+    const items = [
+      { name: 'Dashboard', path: '/', icon: Home },
+      { name: 'My Appraisals', path: '/my-appraisals', icon: ClipboardCheck },
+    ];
+    
+    // Add Team Appraisals for Supervisors and up
+    if (role === 'Supervisor' || role === 'Director' || role === 'HR Officer') {
+      items.push({ name: 'Team Appraisals', path: '/team-appraisals', icon: Users });
+    }
+    
+    // Add Organization only for HR Officers
+    if (role === 'HR Officer') {
+      items.push({ name: 'Organization', path: '/organization', icon: Users });
+    }
+    
+    // Add common menu items
+    items.push(
+      { name: 'Reporting', path: '/reports', icon: BarChart },
+      { name: 'Notifications', path: '/notifications', icon: Bell },
+      { name: 'Profile', path: '/profile', icon: UserCircle },
+    );
+    
+    // Add Settings for admins (HR Officers and Directors)
+    if (role === 'HR Officer' || role === 'Director') {
+      items.push({ name: 'Settings', path: '/settings', icon: Settings });
+    }
+    
+    return items;
+  };
+  
+  const menuItems = getMenuItems();
 
   return (
     <aside className={cn(
