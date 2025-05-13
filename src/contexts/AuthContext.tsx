@@ -16,7 +16,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [role, setRole] = useState<UserRole>('Employee');
+  // Change default role to HR Officer temporarily to see the Organization menu
+  const [role, setRole] = useState<UserRole>('HR Officer');
 
   return (
     <AuthContext.Provider value={{ role, setRole }}>
