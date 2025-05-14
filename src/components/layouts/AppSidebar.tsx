@@ -13,20 +13,6 @@ import {
   UserCircle,
   Settings,
   ChevronDown,
-  Flag,
-  FileEdit,
-  Calendar,
-  LineChart,
-  PieChart,
-  BarChartHorizontal,
-  Bell as BellIcon,
-  AlarmClock,
-  MessageSquare,
-  User,
-  Cog,
-  LayoutGrid,
-  Upload,
-  FileCheck
 } from 'lucide-react';
 
 import {
@@ -139,10 +125,7 @@ export function AppSidebar() {
                     {showHRMenu && (
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton asChild>
-                          <Link to="/flagged-forms">
-                            <Flag className="mr-2 h-4 w-4" />
-                            <span>Flagged Forms</span>
-                          </Link>
+                          <Link to="/flagged-forms">Flagged Forms</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     )}
@@ -197,10 +180,7 @@ export function AppSidebar() {
                     {showHRMenu && (
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton asChild>
-                          <Link to="/flagged-goals">
-                            <Flag className="mr-2 h-4 w-4" />
-                            <span>Flagged Goals</span>
-                          </Link>
+                          <Link to="/flagged-goals">Flagged Goals</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     )}
@@ -265,28 +245,19 @@ export function AppSidebar() {
                         asChild 
                         isActive={isActive('/reports')}
                       >
-                        <Link to="/reports">
-                          <LineChart className="mr-2 h-4 w-4" />
-                          <span>Performance Analytics</span>
-                        </Link>
+                        <Link to="/reports">Performance Analytics</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <Link to="/score-distribution">
-                          <PieChart className="mr-2 h-4 w-4" />
-                          <span>Score Distribution</span>
-                        </Link>
+                        <Link to="/score-distribution">Score Distribution</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <Link to="/submission-progress">
-                          <BarChartHorizontal className="mr-2 h-4 w-4" />
-                          <span>Submission Progress</span>
-                        </Link>
+                        <Link to="/submission-progress">Submission Progress</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   </SidebarMenuSub>
@@ -308,28 +279,19 @@ export function AppSidebar() {
                   <SidebarMenuSub>
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <Link to="/alerts">
-                          <BellIcon className="mr-2 h-4 w-4" />
-                          <span>Alerts</span>
-                        </Link>
+                        <Link to="/alerts">Alerts</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <Link to="/reminders">
-                          <AlarmClock className="mr-2 h-4 w-4" />
-                          <span>Reminders</span>
-                        </Link>
+                        <Link to="/reminders">Reminders</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                     
                     <SidebarMenuSubItem>
                       <SidebarMenuSubButton asChild>
-                        <Link to="/communication-history">
-                          <MessageSquare className="mr-2 h-4 w-4" />
-                          <span>Communication History</span>
-                        </Link>
+                        <Link to="/communication-history">Communication History</Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   </SidebarMenuSub>
@@ -362,37 +324,25 @@ export function AppSidebar() {
                     <SidebarMenuSub>
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton asChild>
-                          <Link to="/cycle-configuration">
-                            <Calendar className="mr-2 h-4 w-4" />
-                            <span>Cycle Configuration</span>
-                          </Link>
+                          <Link to="/cycle-configuration">Cycle Configuration</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton asChild>
-                          <Link to="/permissions">
-                            <LayoutGrid className="mr-2 h-4 w-4" />
-                            <span>Permissions</span>
-                          </Link>
+                          <Link to="/permissions">Permissions</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton asChild>
-                          <Link to="/document-uploads">
-                            <Upload className="mr-2 h-4 w-4" />
-                            <span>Document Uploads</span>
-                          </Link>
+                          <Link to="/document-uploads">Document Uploads</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                       
                       <SidebarMenuSubItem>
                         <SidebarMenuSubButton asChild>
-                          <Link to="/system-preferences">
-                            <Cog className="mr-2 h-4 w-4" />
-                            <span>System Preferences</span>
-                          </Link>
+                          <Link to="/system-preferences">System Preferences</Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     </SidebarMenuSub>
