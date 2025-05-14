@@ -1,178 +1,167 @@
 
-import { useState } from "react";
-import MainLayout from "@/components/layouts/MainLayout";
+import React, { useState } from 'react';
+import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
 } from "@/components/ui/select";
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
+import { 
   Dialog,
   DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import StatusBadge from "@/components/appraisal/StatusBadge";
-import ReviewPanel from "@/components/appraisal/ReviewPanel";
-import { Search } from "lucide-react";
-import { AppraisalForm } from "@/types/appraisal";
-import { pendingAppraisals } from "@/data/mockAppraisals";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
+import { Search, Filter, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import StatusBadge from '@/components/appraisal/StatusBadge';
+import { AppraisalStatus } from '@/types/appraisal';
+import { mockAppraisals } from '@/data/mockAppraisals';
+
+// A subset of the full appraisal type focused on what's needed for this page
+type PendingAppraisal = {
+  id: string;
+  employeeName: string;
+  departmentName: string;
+  phase: string;
+  status: AppraisalStatus;
+  submittedDate: Date;
+};
+
+// Shape the mock data into what we need for this view
+const pendingAppraisals: PendingAppraisal[] = mockAppraisals
+  .filter(appraisal => appraisal.status === 'submitted' || appraisal.status === 'flagged')
+  .map(appraisal => ({
+    id: appraisal.id,
+    employeeName: appraisal.employeeName,
+    departmentName: appraisal.departmentName,
+    phase: appraisal.phase,
+    status: appraisal.status,
+    submittedDate: new Date(appraisal.lastUpdated),
+  }));
 
 const PendingForms = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [departmentFilter, setDepartmentFilter] = useState("all");
-  const [phaseFilter, setPhaseFilter] = useState("all");
-  const [selectedAppraisal, setSelectedAppraisal] = useState<AppraisalForm | null>(null);
-  const [isReviewOpen, setIsReviewOpen] = useState(false);
-  const [appraisals, setAppraisals] = useState<AppraisalForm[]>(pendingAppraisals);
+  const { toast } = useToast();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [departmentFilter, setDepartmentFilter] = useState('all');
+  const [phaseFilter, setPhaseFilter] = useState('all');
+  const [commentText, setCommentText] = useState('');
+  const [selectedAppraisal, setSelectedAppraisal] = useState<PendingAppraisal | null>(null);
+  const [reviewAction, setReviewAction] = useState<'approve' | 'flag' | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   
-  // Extract unique departments for filtering
-  const departments = ["all", ...Array.from(new Set(appraisals.map(a => a.department)))];
-  
-  // Phases for filtering
-  const phases = [
-    { value: "all", label: "All Phases" },
-    { value: "goal-setting", label: "Goal Setting" },
-    { value: "mid-year-review", label: "Mid-Year Review" },
-    { value: "year-end-evaluation", label: "Year-End Evaluation" }
-  ];
-  
-  // Filter appraisals based on search term and filters
-  const filteredAppraisals = appraisals.filter(appraisal => {
-    const matchesSearch = searchTerm === "" || 
-      appraisal.employeeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      appraisal.department.toLowerCase().includes(searchTerm.toLowerCase());
+  // Extract unique departments and phases for filters
+  const departments = ['all', ...new Set(pendingAppraisals.map(a => a.departmentName))];
+  const phases = ['all', ...new Set(pendingAppraisals.map(a => a.phase))];
+
+  // Apply filters
+  const filteredAppraisals = pendingAppraisals.filter(appraisal => {
+    const matchesSearch = 
+      appraisal.employeeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      appraisal.departmentName.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesDepartment = departmentFilter === "all" || appraisal.department === departmentFilter;
-    
-    const matchesPhase = phaseFilter === "all" || appraisal.phase === phaseFilter;
+    const matchesDepartment = departmentFilter === 'all' || appraisal.departmentName === departmentFilter;
+    const matchesPhase = phaseFilter === 'all' || appraisal.phase === phaseFilter;
     
     return matchesSearch && matchesDepartment && matchesPhase;
   });
-  
-  // Handle opening the review panel
-  const handleReviewClick = (appraisal: AppraisalForm) => {
+
+  const handleReviewClick = (appraisal: PendingAppraisal, action: 'approve' | 'flag') => {
     setSelectedAppraisal(appraisal);
-    setIsReviewOpen(true);
+    setReviewAction(action);
+    setCommentText('');
+    setIsDialogOpen(true);
   };
-  
-  // Handle approving an appraisal
-  const handleApprove = (id: string) => {
-    setAppraisals(appraisals.map(a => 
-      a.id === id ? { ...a, status: "approved" as const } : a
-    ));
-    setIsReviewOpen(false);
+
+  const handleSubmitReview = () => {
+    if (!selectedAppraisal || !reviewAction) return;
+    
+    let title = '';
+    let description = '';
+    
+    if (reviewAction === 'approve') {
+      title = 'Appraisal Approved';
+      description = `The appraisal for ${selectedAppraisal.employeeName} has been approved.`;
+    } else {
+      title = 'Appraisal Flagged';
+      description = `The appraisal for ${selectedAppraisal.employeeName} has been flagged for revision.`;
+    }
+    
+    toast({
+      title,
+      description,
+    });
+    
+    setIsDialogOpen(false);
   };
-  
-  // Handle rejecting an appraisal
-  const handleReject = (id: string, comment: string) => {
-    setAppraisals(appraisals.map(a => {
-      if (a.id === id) {
-        return { 
-          ...a, 
-          status: "rejected" as const,
-          comments: [...a.comments, {
-            id: `c${Date.now()}`,
-            author: "HR Manager",
-            role: "HR",
-            text: comment,
-            date: new Date().toISOString().split('T')[0]
-          }]
-        };
-      }
-      return a;
-    }));
-    setIsReviewOpen(false);
-  };
-  
-  // Handle flagging an appraisal or goal
-  const handleFlag = (id: string, goalId: string | null, reason: string) => {
-    setAppraisals(appraisals.map(a => {
-      if (a.id === id) {
-        let updatedAppraisal = { 
-          ...a,
-          status: "flagged" as const,
-          comments: [...a.comments, {
-            id: `c${Date.now()}`,
-            author: "HR Manager",
-            role: "HR",
-            text: `Flagged: ${reason}`,
-            date: new Date().toISOString().split('T')[0]
-          }]
-        };
-        
-        // If a specific goal was flagged
-        if (goalId && updatedAppraisal.goals) {
-          updatedAppraisal.goals = updatedAppraisal.goals.map(g => 
-            g.id === goalId ? { ...g, flagged: true } : g
-          );
-        }
-        
-        return updatedAppraisal;
-      }
-      return a;
-    }));
-    setIsReviewOpen(false);
-  };
-  
+
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1>Pending Appraisals</h1>
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-            <Input
-              placeholder="Search employees or departments..."
-              className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
+      <div className="container mx-auto py-6">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Pending Appraisals</h1>
         </div>
         
-        <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4 pb-4">
-          <div className="w-full md:w-1/3">
-            <Select
-              value={departmentFilter}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search by employee or department..."
+              className="pl-8"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Select 
+              value={departmentFilter} 
               onValueChange={setDepartmentFilter}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by department" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Departments</SelectItem>
-                {departments.filter(d => d !== "all").map((dept) => (
+                {departments.map((dept) => (
                   <SelectItem key={dept} value={dept}>
-                    {dept}
+                    {dept === 'all' ? 'All Departments' : dept}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           
-          <div className="w-full md:w-1/3">
-            <Select
-              value={phaseFilter}
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <Filter className="h-4 w-4 text-muted-foreground" />
+            <Select 
+              value={phaseFilter} 
               onValueChange={setPhaseFilter}
             >
-              <SelectTrigger>
+              <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by phase" />
               </SelectTrigger>
               <SelectContent>
                 {phases.map((phase) => (
-                  <SelectItem key={phase.value} value={phase.value}>
-                    {phase.label}
+                  <SelectItem key={phase} value={phase}>
+                    {phase === 'all' ? 'All Phases' : phase}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -180,68 +169,136 @@ const PendingForms = () => {
           </div>
         </div>
         
-        <div className="rounded-md border shadow overflow-hidden">
+        {filteredAppraisals.length > 0 ? (
           <Table>
+            <TableCaption>A list of pending appraisals requiring action.</TableCaption>
             <TableHeader>
               <TableRow>
                 <TableHead>Employee</TableHead>
                 <TableHead>Department</TableHead>
-                <TableHead>Position</TableHead>
                 <TableHead>Phase</TableHead>
                 <TableHead>Status</TableHead>
-                <TableHead>Submitted</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead>Submitted Date</TableHead>
+                <TableHead>Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredAppraisals.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={7} className="text-center py-10 text-gray-500">
-                    No pending appraisals found.
+              {filteredAppraisals.map((appraisal) => (
+                <TableRow key={appraisal.id}>
+                  <TableCell className="font-medium">
+                    {appraisal.employeeName}
+                  </TableCell>
+                  <TableCell>{appraisal.departmentName}</TableCell>
+                  <TableCell>{appraisal.phase}</TableCell>
+                  <TableCell>
+                    <StatusBadge status={appraisal.status} />
+                  </TableCell>
+                  <TableCell>
+                    {appraisal.submittedDate.toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleReviewClick(appraisal, 'approve')}
+                      >
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        Approve
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleReviewClick(appraisal, 'flag')}
+                      >
+                        <AlertTriangle className="h-4 w-4 mr-1" />
+                        Flag
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
-              ) : (
-                filteredAppraisals.map((appraisal) => (
-                  <TableRow key={appraisal.id}>
-                    <TableCell className="font-medium">{appraisal.employeeName}</TableCell>
-                    <TableCell>{appraisal.department}</TableCell>
-                    <TableCell>{appraisal.position}</TableCell>
-                    <TableCell>
-                      {appraisal.phase === "goal-setting" && "Goal Setting"}
-                      {appraisal.phase === "mid-year-review" && "Mid-Year Review"}
-                      {appraisal.phase === "year-end-evaluation" && "Year-End Evaluation"}
-                    </TableCell>
-                    <TableCell>
-                      <StatusBadge status={appraisal.status} />
-                    </TableCell>
-                    <TableCell>{appraisal.submittedDate}</TableCell>
-                    <TableCell className="text-right">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleReviewClick(appraisal)}
-                      >
-                        Review
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
+              ))}
             </TableBody>
           </Table>
-        </div>
+        ) : (
+          <div className="text-center py-10 border rounded-lg">
+            <p className="text-muted-foreground">
+              No pending appraisals found matching your filters.
+            </p>
+          </div>
+        )}
       </div>
       
-      <Dialog open={isReviewOpen} onOpenChange={setIsReviewOpen}>
-        <DialogContent className="max-w-4xl p-0 overflow-auto max-h-[90vh]">
-          <ReviewPanel 
-            appraisal={selectedAppraisal} 
-            onClose={() => setIsReviewOpen(false)}
-            onApprove={handleApprove}
-            onReject={handleReject}
-            onFlag={handleFlag}
-            open={isReviewOpen}
-          />
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {reviewAction === 'approve' ? 'Approve Appraisal' : 'Flag Appraisal'}
+            </DialogTitle>
+            <DialogDescription>
+              {reviewAction === 'approve' 
+                ? 'Confirm approval of this appraisal submission.' 
+                : 'Provide feedback on why this appraisal needs revision.'}
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedAppraisal && (
+            <div className="space-y-4 py-4">
+              <div>
+                <p className="text-sm font-medium mb-1">Employee</p>
+                <p className="text-sm">{selectedAppraisal.employeeName}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm font-medium mb-1">Department</p>
+                <p className="text-sm">{selectedAppraisal.departmentName}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm font-medium mb-1">Phase</p>
+                <p className="text-sm">{selectedAppraisal.phase}</p>
+              </div>
+              
+              <div>
+                <p className="text-sm font-medium mb-1">
+                  {reviewAction === 'approve' ? 'Comment (Optional)' : 'Feedback for Revision (Required)'}
+                </p>
+                <Textarea
+                  placeholder={reviewAction === 'approve' 
+                    ? "Add any comments about this approval..." 
+                    : "Explain what needs to be revised..."}
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  className="min-h-[120px]"
+                  required={reviewAction === 'flag'}
+                />
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+              <XCircle className="h-4 w-4 mr-1" />
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleSubmitReview}
+              disabled={reviewAction === 'flag' && !commentText.trim()}
+              className={reviewAction === 'approve' ? "bg-green-600 hover:bg-green-700" : "bg-amber-600 hover:bg-amber-700"}
+            >
+              {reviewAction === 'approve' ? (
+                <>
+                  <CheckCircle className="h-4 w-4 mr-1" />
+                  Confirm Approval
+                </>
+              ) : (
+                <>
+                  <AlertTriangle className="h-4 w-4 mr-1" />
+                  Flag for Revision
+                </>
+              )}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </MainLayout>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -16,10 +15,9 @@ import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
 
 // Goal management pages
-import DepartmentGoals from "./pages/DepartmentGoals";
+import Goals from "./pages/Goals"; // New unified Goals page
 import DepartmentGoalDetail from "./pages/DepartmentGoalDetail";
 import DepartmentGoalForm from "./pages/DepartmentGoalForm";
-import EmployeeGoals from "./pages/EmployeeGoals";
 import EmployeeGoalDetail from "./pages/EmployeeGoalDetail";
 import HRGoalsDashboard from "./pages/HRGoalsDashboard";
 import CycleSettings from "./pages/CycleSettings";
@@ -61,14 +59,13 @@ const App = () => (
               <Route path="/appraiser-assignments" element={<AppraiserAssignment />} />
               <Route path="/role-management" element={<NotFound />} />
               
-              {/* Department Goal Routes */}
-              <Route path="/department-goals" element={<DepartmentGoals />} />
+              {/* Goals - Unified View */}
+              <Route path="/goals" element={<Goals />} />
+              
+              {/* Keeping detailed goal pages */}
               <Route path="/department-goals/:id" element={<DepartmentGoalDetail />} />
               <Route path="/department-goals/create" element={<DepartmentGoalForm />} />
               <Route path="/department-goals/edit/:id" element={<DepartmentGoalForm />} />
-              
-              {/* Employee Goal Routes */}
-              <Route path="/employee-goals" element={<EmployeeGoals />} />
               <Route path="/employee-goals/:id" element={<EmployeeGoalDetail />} />
               
               {/* HR Dashboard */}

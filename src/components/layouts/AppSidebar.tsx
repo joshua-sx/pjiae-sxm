@@ -134,60 +134,19 @@ export function AppSidebar() {
               </SidebarMenuItem>
             </Collapsible>
             
-            {/* Goals Section */}
-            <Collapsible defaultOpen className="group/collapsible w-full">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip="Goals">
-                    <Target />
-                    <span>Goals</span>
-                    <ChevronDown className="ml-auto h-4 w-4 shrink-0 group-hover/collapsible:text-foreground/80 transition-transform group-[&[data-state=open]/collapsible]:rotate-180" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    {(showDirectorMenu) && (
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton 
-                          asChild 
-                          isActive={isActive('/department-goals')}
-                        >
-                          <Link to="/department-goals">Department Goals</Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    )}
-                    
-                    <SidebarMenuSubItem>
-                      <SidebarMenuSubButton 
-                        asChild 
-                        isActive={isActive('/employee-goals')}
-                      >
-                        <Link to="/employee-goals">Employee Goals</Link>
-                      </SidebarMenuSubButton>
-                    </SidebarMenuSubItem>
-                    
-                    {showHRMenu && (
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton 
-                          asChild 
-                          isActive={isActive('/hr-goals-dashboard')}
-                        >
-                          <Link to="/hr-goals-dashboard">Goals Dashboard</Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    )}
-                    
-                    {showHRMenu && (
-                      <SidebarMenuSubItem>
-                        <SidebarMenuSubButton asChild>
-                          <Link to="/flagged-goals">Flagged Goals</Link>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    )}
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
+            {/* Goals Section - Updated to use unified Goals page */}
+            <SidebarMenuItem>
+              <SidebarMenuButton 
+                asChild 
+                isActive={isActive('/goals')}
+                tooltip="Goals"
+              >
+                <Link to="/goals">
+                  <Target />
+                  <span>Goals</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             
             {/* Team & Organization Section - Visible to HR */}
             {showHRMenu && (
