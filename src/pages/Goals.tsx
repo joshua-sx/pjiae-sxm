@@ -11,21 +11,12 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useAuth } from '@/contexts/AuthContext';
-import { Search, Filter, PlusCircle, Eye } from "lucide-react";
+import { Search, Filter, PlusCircle } from "lucide-react";
 import { mockDepartmentGoals } from '@/data/mockGoals';
 import { mockEmployeeGoals } from '@/data/mockGoals';
-import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import { GoalStatus } from '@/types/goals';
+import GoalsTable from '@/components/goals/GoalsTable';
 
 // Combine employee and department goals into a unified data structure
 type UnifiedGoal = {
@@ -94,14 +85,6 @@ const Goals = () => {
     return matchesSearch && matchesStatus && matchesDepartment;
   });
 
-  const handleGoalClick = (goalId: string, type: 'employee' | 'department') => {
-    if (type === 'department') {
-      navigate(`/department-goals/${goalId}`);
-    } else {
-      navigate(`/employee-goals/${goalId}`);
-    }
-  };
-
   const handleCreateGoal = () => {
     if (role === 'Director') {
       navigate('/department-goals/create');
@@ -111,6 +94,8 @@ const Goals = () => {
   };
 
   const canCreateGoals = role === 'Supervisor' || role === 'Director';
+  const canFlagGoals = role === 'HR Officer';
+  const canApproveGoals = role === 'Director' || role === 'HR Officer';
 
   return (
     <MainLayout>
@@ -178,46 +163,11 @@ const Goals = () => {
         </div>
         
         {filteredGoals.length > 0 ? (
-          <Table>
-            <TableCaption>A list of all goals in the organization.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Employee Name</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>Goal</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Created By</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredGoals.map((goal) => (
-                <TableRow key={goal.id}>
-                  <TableCell className="font-medium">
-                    {goal.employeeName}
-                  </TableCell>
-                  <TableCell>{goal.departmentName}</TableCell>
-                  <TableCell>{goal.title}</TableCell>
-                  <TableCell>
-                    <GoalStatusBadge status={goal.status} />
-                  </TableCell>
-                  <TableCell>
-                    {goal.createdBy} ({goal.creatorRole})
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleGoalClick(goal.id, goal.type)}
-                    >
-                      <Eye className="h-4 w-4 mr-1" />
-                      View
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <GoalsTable 
+            goals={filteredGoals} 
+            canFlagGoals={canFlagGoals} 
+            canApproveGoals={canApproveGoals} 
+          />
         ) : (
           <div className="text-center py-10">
             <p className="text-muted-foreground">
