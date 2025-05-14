@@ -1,5 +1,7 @@
 
-export type AppraisalStatus = 'draft' | 'submitted' | 'approved' | 'rejected' | 'flagged';
+import { StatusType } from "@/components/appraisal/StatusBadge";
+
+export type AppraisalStatus = StatusType;
 
 export interface AppraisalForm {
   id: string;

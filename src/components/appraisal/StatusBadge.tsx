@@ -1,7 +1,7 @@
 
 import { cn } from "@/lib/utils";
 
-type StatusType = 'draft' | 'pending' | 'approved' | 'flagged' | 'completed' | 'appealed';
+export type StatusType = 'draft' | 'pending' | 'submitted' | 'approved' | 'flagged' | 'completed' | 'appealed' | 'rejected';
 
 interface StatusBadgeProps {
   status: StatusType;
@@ -11,19 +11,23 @@ interface StatusBadgeProps {
 const STATUS_CLASSES: Record<StatusType, string> = {
   draft: "bg-gray-100 text-gray-800",
   pending: "bg-yellow-100 text-yellow-800",
+  submitted: "bg-blue-100 text-blue-800",
   approved: "bg-green-100 text-green-800",
   flagged: "bg-red-100 text-red-800",
   completed: "bg-blue-100 text-blue-800",
   appealed: "bg-purple-100 text-purple-800",
+  rejected: "bg-red-100 text-red-800"
 };
 
 const STATUS_LABELS: Record<StatusType, string> = {
   draft: "Draft",
   pending: "Pending",
+  submitted: "Submitted",
   approved: "Approved",
   flagged: "Flagged",
   completed: "Completed",
   appealed: "Appealed",
+  rejected: "Rejected"
 };
 
 const StatusBadge = ({ status, className }: StatusBadgeProps) => {
