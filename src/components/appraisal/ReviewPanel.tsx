@@ -2,20 +2,15 @@
 import { useState } from "react";
 import { AppraisalForm } from "@/types/appraisal";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle 
-} from "@/components/ui/dialog";
-import { RatingDisplay } from "@/components/organization/RatingDisplay";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, Check, Flag, X } from "lucide-react";
+import { AlertCircle, Check, Flag } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Card, CardContent } from "../ui/card";
+
+import GoalReviewCard from "./GoalReviewCard";
+import CommentsList from "./CommentsList";
+import PerformanceRatings from "./PerformanceRatings";
+import FlagDialog from "./FlagDialog";
+import RejectDialog from "./RejectDialog";
 
 interface ReviewPanelProps {
   appraisal: AppraisalForm | null;
@@ -120,73 +115,21 @@ const ReviewPanel = ({
           <h3 className="text-lg font-semibold mb-3">Goals</h3>
           <div className="space-y-3">
             {appraisal.goals.map((goal) => (
-              <Card key={goal.id} className="relative">
-                <CardContent className="p-4">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h4 className="font-medium">{goal.title}</h4>
-                      <p className="text-sm text-gray-600 mt-1">{goal.description}</p>
-                      {goal.progress !== undefined && (
-                        <div className="mt-2 flex items-center">
-                          <span className="text-xs font-medium mr-2">Progress:</span>
-                          <span className="text-xs">{goal.progress}%</span>
-                        </div>
-                      )}
-                    </div>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-red-500"
-                      onClick={() => openFlagDialog(goal.id)}
-                    >
-                      <Flag size={16} className="mr-1" />
-                      Flag
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <GoalReviewCard 
+                key={goal.id} 
+                goal={goal} 
+                onFlagGoal={(goalId) => openFlagDialog(goalId)} 
+              />
             ))}
           </div>
         </div>
       )}
 
       {appraisal.ratings && (
-        <div>
-          <h3 className="text-lg font-semibold mb-3">Performance Ratings</h3>
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(appraisal.ratings)
-              .filter(([key]) => key !== 'overall')
-              .map(([category, rating]) => (
-                <div key={category} className="flex items-center justify-between border rounded p-3">
-                  <span className="font-medium capitalize">{category}</span>
-                  <RatingDisplay rating={rating} />
-                </div>
-              ))}
-            {appraisal.ratings.overall && (
-              <div className="col-span-2 flex items-center justify-between border rounded p-3 bg-gray-50">
-                <span className="font-medium">Overall Rating</span>
-                <RatingDisplay rating={appraisal.ratings.overall} />
-              </div>
-            )}
-          </div>
-        </div>
+        <PerformanceRatings ratings={appraisal.ratings} />
       )}
 
-      <div>
-        <h3 className="text-lg font-semibold mb-3">Comments</h3>
-        <div className="space-y-3">
-          {appraisal.comments.map((comment) => (
-            <div key={comment.id} className="bg-gray-50 rounded p-3">
-              <div className="flex justify-between">
-                <span className="font-medium">{comment.author}</span>
-                <span className="text-sm text-gray-500">{comment.role}</span>
-              </div>
-              <p className="mt-1 text-sm">{comment.text}</p>
-              <span className="text-xs text-gray-500 mt-2 block">{comment.date}</span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <CommentsList comments={appraisal.comments} />
 
       <div className="flex justify-end space-x-3 pt-4">
         <Button variant="outline" onClick={onClose}>
@@ -217,59 +160,22 @@ const ReviewPanel = ({
         </Button>
       </div>
 
-      <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Request Revision</DialogTitle>
-            <DialogDescription>
-              Please provide a reason for requesting revisions to this appraisal.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <Textarea
-              placeholder="Enter your comments here..."
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              className="min-h-[100px]"
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsRejectDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleRejectSubmit}>Submit</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <RejectDialog 
+        open={isRejectDialogOpen} 
+        onOpenChange={setIsRejectDialogOpen}
+        comment={comment}
+        setComment={setComment}
+        onSubmit={handleRejectSubmit}
+      />
 
-      <Dialog open={isFlagDialogOpen} onOpenChange={setIsFlagDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Flag for Review</DialogTitle>
-            <DialogDescription>
-              {selectedGoalId 
-                ? "Please provide a reason for flagging this goal."
-                : "Please provide a reason for flagging this appraisal."
-              }
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <Textarea
-              placeholder="Enter your reason here..."
-              value={flagReason}
-              onChange={(e) => setFlagReason(e.target.value)}
-              className="min-h-[100px]"
-            />
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setIsFlagDialogOpen(false)}>Cancel</Button>
-            <Button 
-              className="bg-red-600 hover:bg-red-700" 
-              onClick={handleFlagSubmit}
-            >
-              Flag
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <FlagDialog 
+        open={isFlagDialogOpen}
+        onOpenChange={setIsFlagDialogOpen}
+        selectedGoalId={selectedGoalId}
+        flagReason={flagReason}
+        setFlagReason={setFlagReason}
+        onSubmit={handleFlagSubmit}
+      />
     </div>
   );
 };

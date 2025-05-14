@@ -3,12 +3,15 @@ import { GoalStatus } from '@/types/goals';
 
 export type UnifiedGoal = {
   id: string;
-  employeeName: string;
-  departmentName: string;
   title: string;
+  description: string;
   status: GoalStatus;
   createdBy: string;
-  creatorRole: string;
-  type: 'employee' | 'department';
   createdAt: Date;
+  type: 'employee' | 'department';
+  creatorName: string;
+  creatorRole: string;
+  department: string;
+  departmentName: string;
+  employeeName: string;
 };
