@@ -22,6 +22,7 @@ import DepartmentGoalForm from "./pages/DepartmentGoalForm";
 import EmployeeGoals from "./pages/EmployeeGoals";
 import EmployeeGoalDetail from "./pages/EmployeeGoalDetail";
 import HRGoalsDashboard from "./pages/HRGoalsDashboard";
+import CycleSettings from "./pages/CycleSettings";
 
 // Initialize the query client
 const queryClient = new QueryClient();
@@ -72,6 +73,9 @@ const App = () => (
               <Route path="/reports" element={<Reports />} />
               <Route path="/score-distribution" element={<NotFound />} />
               <Route path="/submission-progress" element={<NotFound />} />
+              
+              {/* Settings */}
+              <Route path="/cycle-settings" element={<CycleSettings />} />
               
               {/* Notifications */}
               <Route path="/alerts" element={<NotFound />} />
