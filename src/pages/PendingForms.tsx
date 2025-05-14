@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -51,10 +49,10 @@ const pendingAppraisals: PendingAppraisal[] = mockAppraisals
   .map(appraisal => ({
     id: appraisal.id,
     employeeName: appraisal.employeeName,
-    departmentName: appraisal.departmentName,
+    departmentName: appraisal.department, // Changed from departmentName to department
     phase: appraisal.phase,
     status: appraisal.status,
-    submittedDate: new Date(appraisal.lastUpdated),
+    submittedDate: new Date(appraisal.submittedDate),
   }));
 
 const PendingForms = () => {

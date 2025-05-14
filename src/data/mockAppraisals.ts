@@ -2,7 +2,7 @@
 import { AppraisalForm } from "@/types/appraisal";
 
 // Mock data for appraisals
-export const pendingAppraisals: AppraisalForm[] = [
+export const mockAppraisals: AppraisalForm[] = [
   {
     id: "1",
     employeeId: "e001",
@@ -186,3 +186,6 @@ export const pendingAppraisals: AppraisalForm[] = [
     ]
   }
 ];
+
+// For backward compatibility
+export const pendingAppraisals = mockAppraisals;

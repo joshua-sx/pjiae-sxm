@@ -25,6 +25,7 @@ import { Search, Filter, PlusCircle, Eye } from "lucide-react";
 import { mockDepartmentGoals } from '@/data/mockGoals';
 import { mockEmployeeGoals } from '@/data/mockGoals';
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
+import { GoalStatus } from '@/types/goals';
 
 // Combine employee and department goals into a unified data structure
 type UnifiedGoal = {
@@ -32,7 +33,7 @@ type UnifiedGoal = {
   employeeName: string;
   departmentName: string;
   title: string;
-  status: string;
+  status: GoalStatus;
   createdBy: string;
   creatorRole: string;
   type: 'employee' | 'department';
@@ -43,7 +44,7 @@ const Goals = () => {
   const navigate = useNavigate();
   const { role } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | GoalStatus>('all');
   const [departmentFilter, setDepartmentFilter] = useState('all');
 
   // Function to create unified goal objects
@@ -139,7 +140,7 @@ const Goals = () => {
             <Filter className="h-4 w-4 text-muted-foreground" />
             <Select 
               value={statusFilter} 
-              onValueChange={setStatusFilter}
+              onValueChange={(value) => setStatusFilter(value as 'all' | GoalStatus)}
             >
               <SelectTrigger className="w-[160px]">
                 <SelectValue placeholder="Status" />
