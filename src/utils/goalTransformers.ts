@@ -19,20 +19,42 @@ export function createUnifiedGoals(): UnifiedGoal[] {
     employeeName: '', // Empty for department goals
   }));
 
-  const employeeGoals: UnifiedGoal[] = mockEmployeeGoals.map(goal => ({
-    id: goal.id,
-    title: goal.title,
-    description: goal.description,
-    status: goal.status, 
-    createdBy: goal.createdBy,
-    createdAt: goal.createdAt,
-    type: 'employee',
-    creatorName: goal.employeeName,
-    creatorRole: 'Employee',
-    department: goal.employeeName, // Using employeeName as department
-    departmentName: goal.employeeName, // Using employeeName as departmentName
-    employeeName: goal.employeeName,
-  }));
+  // Get a mapping of department IDs to department names
+  const departmentMap = mockDepartmentGoals.reduce((acc, dept) => {
+    acc[dept.departmentId] = dept.departmentName;
+    return acc;
+  }, {} as Record<string, string>);
+
+  const employeeGoals: UnifiedGoal[] = mockEmployeeGoals.map(goal => {
+    // Find the linked department goal to get the department name
+    // If no link exists or department not found, use "Individual" as default
+    let departmentName = "Individual";
+    
+    if (goal.linkedDepartmentGoalId) {
+      // Find the department goal this employee goal is linked to
+      const linkedDeptGoal = mockDepartmentGoals.find(
+        deptGoal => deptGoal.id === goal.linkedDepartmentGoalId
+      );
+      if (linkedDeptGoal) {
+        departmentName = linkedDeptGoal.departmentName;
+      }
+    }
+    
+    return {
+      id: goal.id,
+      title: goal.title,
+      description: goal.description,
+      status: goal.status,
+      createdBy: goal.createdBy,
+      createdAt: goal.createdAt,
+      type: 'employee',
+      creatorName: goal.employeeName,
+      creatorRole: 'Employee',
+      department: departmentName,
+      departmentName: departmentName, // Now using the proper department name
+      employeeName: goal.employeeName,
+    };
+  });
 
   return [...departmentGoals, ...employeeGoals];
 }
