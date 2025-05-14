@@ -15,20 +15,8 @@ import { Eye, Check, Flag } from "lucide-react";
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import FlagCommentDialog from '@/components/goals/FlagCommentDialog';
 import ApproveGoalDialog from '@/components/goals/ApproveGoalDialog';
-import { useToast } from "@/hooks/use-toast";
-import { GoalStatus } from '@/types/goals';
-
-type UnifiedGoal = {
-  id: string;
-  employeeName: string;
-  departmentName: string;
-  title: string;
-  status: GoalStatus;
-  createdBy: string;
-  creatorRole: string;
-  type: 'employee' | 'department';
-  createdAt: Date;
-};
+import { useToast } from "@/components/ui/use-toast";
+import { UnifiedGoal } from '@/types/unifiedGoals';
 
 interface GoalsTableProps {
   goals: UnifiedGoal[];
