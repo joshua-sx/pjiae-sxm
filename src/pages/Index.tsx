@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AppraisalCard from "@/components/appraisal/AppraisalCard";
 import StatusBadge from "@/components/appraisal/StatusBadge";
-import { Bell, ChevronRight } from "lucide-react";
+import { Bell, ChevronRight, Flag, AlertCircle } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 // Mock data - would come from API in real app
 const mockStats = {
@@ -50,6 +51,32 @@ const mockAppraisals = [
   }
 ];
 
+const mockTasks = [
+  { 
+    id: "1", 
+    title: "Planning Forms to Review", 
+    count: 3, 
+    type: "review",
+    link: "/pending-forms"
+  },
+  { 
+    id: "2", 
+    title: "Flagged Goals", 
+    count: 2, 
+    type: "flag",
+    link: "/flagged-items" 
+  },
+  { 
+    id: "3", 
+    title: "Missing Appraiser Assignments", 
+    count: 4, 
+    type: "assignment",
+    link: "/appraiser-assignments" 
+  },
+];
+
+const completionPercentage = 68; // Mock completion percentage
+
 const Index = () => {
   const navigate = useNavigate();
   
@@ -82,32 +109,31 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex justify-between items-center p-3 bg-amber-50 rounded-md border border-amber-100">
-                    <div>
-                      <p className="font-medium">Goal Setting Review</p>
-                      <p className="text-xs text-gray-500">3 pending approvals</p>
+                  {mockTasks.map((task) => (
+                    <div 
+                      key={task.id}
+                      className={`flex justify-between items-center p-3 rounded-md border ${
+                        task.type === 'flag' ? 'bg-red-50 border-red-100' :
+                        task.type === 'review' ? 'bg-amber-50 border-amber-100' :
+                        'bg-blue-50 border-blue-100'
+                      }`}
+                    >
+                      <div>
+                        <p className="font-medium">{task.title}</p>
+                        <p className="text-xs text-gray-500">{task.count} items require attention</p>
+                      </div>
+                      <Button variant="outline" size="sm" onClick={() => navigate(task.link)}>
+                        Review
+                      </Button>
                     </div>
-                    <Button variant="outline" size="sm" onClick={() => navigate("/team-appraisals")}>
-                      Review
-                    </Button>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-red-50 rounded-md border border-red-100">
-                    <div>
-                      <p className="font-medium">Flagged Goals</p>
-                      <p className="text-xs text-gray-500">2 goals require attention</p>
+                  ))}
+                  
+                  <div className="mt-6">
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm font-medium">Current Cycle Completion</span>
+                      <span className="text-sm font-medium">{completionPercentage}%</span>
                     </div>
-                    <Button variant="outline" size="sm" onClick={() => navigate("/my-appraisals")}>
-                      Resolve
-                    </Button>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-blue-50 rounded-md border border-blue-100">
-                    <div>
-                      <p className="font-medium">Team Score Summary</p>
-                      <p className="text-xs text-gray-500">Ready to review</p>
-                    </div>
-                    <Button variant="outline" size="sm" onClick={() => navigate("/reports")}>
-                      View
-                    </Button>
+                    <Progress value={completionPercentage} className="h-2" />
                   </div>
                 </div>
               </CardContent>

@@ -24,6 +24,11 @@ import EmployeeGoalDetail from "./pages/EmployeeGoalDetail";
 import HRGoalsDashboard from "./pages/HRGoalsDashboard";
 import CycleSettings from "./pages/CycleSettings";
 
+// New pages implemented for HR management
+import PendingForms from "./pages/PendingForms";
+import FlaggedItems from "./pages/FlaggedItems";
+import AppraiserAssignment from "./pages/AppraiserAssignment";
+
 // Initialize the query client
 const queryClient = new QueryClient();
 
@@ -43,17 +48,18 @@ const App = () => (
               <Route path="/my-appraisals" element={<MyAppraisals />} />
               <Route path="/team-appraisals" element={<MyAppraisals />} />
               <Route path="/appraisal/:id" element={<AppraisalDetail />} />
+              <Route path="/pending-forms" element={<PendingForms />} />
+              <Route path="/flagged-items" element={<FlaggedItems />} />
               <Route path="/goal-setting" element={<NotFound />} />
               <Route path="/mid-year-reviews" element={<NotFound />} />
               <Route path="/year-end-evaluations" element={<NotFound />} />
               <Route path="/improvement-plans" element={<NotFound />} />
-              <Route path="/flagged-forms" element={<NotFound />} />
               
               {/* Organization */}
               <Route path="/organization" element={<Organization />} />
               <Route path="/employee/:id" element={<EmployeeDetail />} />
+              <Route path="/appraiser-assignments" element={<AppraiserAssignment />} />
               <Route path="/role-management" element={<NotFound />} />
-              <Route path="/appraiser-assignments" element={<NotFound />} />
               
               {/* Department Goal Routes */}
               <Route path="/department-goals" element={<DepartmentGoals />} />
@@ -64,7 +70,6 @@ const App = () => (
               {/* Employee Goal Routes */}
               <Route path="/employee-goals" element={<EmployeeGoals />} />
               <Route path="/employee-goals/:id" element={<EmployeeGoalDetail />} />
-              <Route path="/flagged-goals" element={<NotFound />} />
               
               {/* HR Dashboard */}
               <Route path="/hr-goals-dashboard" element={<HRGoalsDashboard />} />
