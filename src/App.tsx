@@ -15,6 +15,14 @@ import EmployeeDetail from "./pages/EmployeeDetail";
 import Reports from "./pages/Reports";
 import NotFound from "./pages/NotFound";
 
+// Goal management pages
+import DepartmentGoals from "./pages/DepartmentGoals";
+import DepartmentGoalDetail from "./pages/DepartmentGoalDetail";
+import DepartmentGoalForm from "./pages/DepartmentGoalForm";
+import EmployeeGoals from "./pages/EmployeeGoals";
+import EmployeeGoalDetail from "./pages/EmployeeGoalDetail";
+import HRGoalsDashboard from "./pages/HRGoalsDashboard";
+
 // Initialize the query client
 const queryClient = new QueryClient();
 
@@ -35,6 +43,20 @@ const App = () => (
               <Route path="/organization" element={<Organization />} />
               <Route path="/employee/:id" element={<EmployeeDetail />} />
               <Route path="/reports" element={<Reports />} />
+              
+              {/* Department Goal Routes */}
+              <Route path="/department-goals" element={<DepartmentGoals />} />
+              <Route path="/department-goals/:id" element={<DepartmentGoalDetail />} />
+              <Route path="/department-goals/create" element={<DepartmentGoalForm />} />
+              <Route path="/department-goals/edit/:id" element={<DepartmentGoalForm />} />
+              
+              {/* Employee Goal Routes */}
+              <Route path="/employee-goals" element={<EmployeeGoals />} />
+              <Route path="/employee-goals/:id" element={<EmployeeGoalDetail />} />
+              
+              {/* HR Dashboard */}
+              <Route path="/hr-goals-dashboard" element={<HRGoalsDashboard />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
