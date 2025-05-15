@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { createUnifiedGoals } from '@/utils/goalTransformers';
@@ -14,9 +15,14 @@ const enhanceGoalsWithDirectors = (goals: UnifiedGoal[]): UnifiedGoal[] => {
   });
 };
 
+export type SortColumn = 'departmentName' | 'createdBy' | 'title' | 'status' | 'createdAt' | null;
+export type SortDirection = 'asc' | 'desc';
+
 export const useDivisionGoals = () => {
   const [divisionFilter, setDivisionFilter] = useState<string>('all');
   const [yearFilter, setYearFilter] = useState<string>('all');
+  const [sortColumn, setSortColumn] = useState<SortColumn>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   
   // Create enhanced mock goals with real director names
   const allGoals = useMemo(() => {
@@ -40,9 +46,65 @@ export const useDivisionGoals = () => {
     return [{ id: 'all', name: 'All Divisions', director: '' }, ...getParentDivisions()];
   }, []);
   
+  // Sort goals based on selected column and direction
+  const sortGoals = (goals: UnifiedGoal[], column: SortColumn, direction: SortDirection): UnifiedGoal[] => {
+    if (!column) return goals;
+    
+    return [...goals].sort((a, b) => {
+      let valueA: any;
+      let valueB: any;
+      
+      // Extract values based on column
+      switch (column) {
+        case 'departmentName':
+          valueA = a.departmentName.toLowerCase();
+          valueB = b.departmentName.toLowerCase();
+          break;
+        case 'createdBy':
+          valueA = a.createdBy.toLowerCase();
+          valueB = b.createdBy.toLowerCase();
+          break;
+        case 'title':
+          valueA = a.title.toLowerCase();
+          valueB = b.title.toLowerCase();
+          break;
+        case 'status':
+          valueA = a.status;
+          valueB = b.status;
+          break;
+        case 'createdAt':
+          valueA = new Date(a.createdAt).getTime();
+          valueB = new Date(b.createdAt).getTime();
+          break;
+        default:
+          return 0;
+      }
+      
+      // Apply sort direction
+      if (direction === 'asc') {
+        return valueA < valueB ? -1 : valueA > valueB ? 1 : 0;
+      } else {
+        return valueA > valueB ? -1 : valueA < valueB ? 1 : 0;
+      }
+    });
+  };
+  
+  // Handle sort toggle
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      // Toggle direction if same column
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // Set new column and default to ascending
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+  
   // Filter goals based on selected division and year
   const filteredGoals = useMemo(() => {
-    return allGoals.filter(goal => {
+    // First filter by division and year
+    const filtered = allGoals.filter(goal => {
       // Filter by division
       if (divisionFilter !== 'all') {
         const division = divisions.find(d => d.id === divisionFilter);
@@ -61,7 +123,10 @@ export const useDivisionGoals = () => {
       
       return true;
     });
-  }, [allGoals, divisionFilter, yearFilter]);
+    
+    // Then sort the filtered results
+    return sortGoals(filtered, sortColumn, sortDirection);
+  }, [allGoals, divisionFilter, yearFilter, sortColumn, sortDirection]);
   
   return {
     filteredGoals,
@@ -70,6 +135,9 @@ export const useDivisionGoals = () => {
     yearFilter,
     setYearFilter,
     parentDivisions,
-    availableYears
+    availableYears,
+    sortColumn,
+    sortDirection,
+    handleSort
   };
 };

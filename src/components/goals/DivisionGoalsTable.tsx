@@ -10,21 +10,28 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Eye, Flag, Check } from "lucide-react";
+import { Eye, Flag, Check, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useNavigate } from 'react-router-dom';
+import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
 
 interface DivisionGoalsTableProps {
   goals: UnifiedGoal[];
   onFlagGoal: (goal: UnifiedGoal) => void;
   onApproveGoal: (goal: UnifiedGoal) => void;
+  sortColumn: SortColumn;
+  sortDirection: SortDirection;
+  onSort: (column: SortColumn) => void;
 }
 
 const DivisionGoalsTable = ({ 
   goals, 
   onFlagGoal, 
-  onApproveGoal 
+  onApproveGoal,
+  sortColumn,
+  sortDirection,
+  onSort
 }: DivisionGoalsTableProps) => {
   const navigate = useNavigate();
   
@@ -32,16 +39,39 @@ const DivisionGoalsTable = ({
     navigate(`/department-goals/${goalId}`);
   };
 
+  const renderSortIcon = (column: SortColumn) => {
+    if (sortColumn !== column) return null;
+    
+    return sortDirection === 'asc' 
+      ? <ArrowUpAZ className="ml-1 h-4 w-4 inline" />
+      : <ArrowDownAZ className="ml-1 h-4 w-4 inline" />;
+  };
+  
+  const getSortableHeaderProps = (column: SortColumn) => ({
+    onClick: () => onSort(column),
+    className: "cursor-pointer hover:bg-muted/20 transition-colors"
+  });
+
   return (
     <Table>
       <TableCaption>Division Goals Overview</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Division</TableHead>
-          <TableHead>Director</TableHead>
-          <TableHead className="w-[300px]">Goal</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Year</TableHead>
+          <TableHead {...getSortableHeaderProps('departmentName')}>
+            Division {renderSortIcon('departmentName')}
+          </TableHead>
+          <TableHead {...getSortableHeaderProps('createdBy')}>
+            Director {renderSortIcon('createdBy')}
+          </TableHead>
+          <TableHead className="w-[300px]" {...getSortableHeaderProps('title')}>
+            Goal {renderSortIcon('title')}
+          </TableHead>
+          <TableHead {...getSortableHeaderProps('status')}>
+            Status {renderSortIcon('status')}
+          </TableHead>
+          <TableHead {...getSortableHeaderProps('createdAt')}>
+            Year {renderSortIcon('createdAt')}
+          </TableHead>
           <TableHead className="text-right">Actions</TableHead>
         </TableRow>
       </TableHeader>

@@ -30,7 +30,10 @@ const DivisionGoals = () => {
     yearFilter,
     setYearFilter,
     parentDivisions,
-    availableYears
+    availableYears,
+    sortColumn,
+    sortDirection,
+    handleSort
   } = useDivisionGoals();
 
   // State for dialogs
@@ -131,6 +134,9 @@ const DivisionGoals = () => {
                 goals={filteredGoals} 
                 onFlagGoal={handleFlagGoal}
                 onApproveGoal={handleApproveGoalClick}
+                sortColumn={sortColumn}
+                sortDirection={sortDirection}
+                onSort={handleSort}
               />
             ) : (
               <div className="text-center py-10">
