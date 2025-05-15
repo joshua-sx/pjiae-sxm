@@ -98,7 +98,7 @@ export const mockDepartmentGoals: DepartmentGoal[] = [
       relevant: "Critical for digital transformation and operational excellence",
       timeBound: "Complete by end of Q3 2024"
     },
-    status: "in-progress",
+    status: "submitted", // Changed from 'in-progress'
     createdBy: "dir-009",
     createdAt: new Date("2024-03-10"),
     updatedAt: new Date("2024-04-15"),
@@ -140,7 +140,7 @@ export const mockDepartmentGoals: DepartmentGoal[] = [
       relevant: "Critical for financial sustainability and growth",
       timeBound: "Implement key initiatives by Q4 2024"
     },
-    status: "draft",
+    status: "submitted", // Changed from 'draft'
     createdBy: "dir-010",
     createdAt: new Date("2024-01-20"),
     updatedAt: new Date("2024-01-20"),
@@ -206,7 +206,7 @@ export const mockEmployeeGoals: EmployeeGoal[] = [
       relevant: "Directly contributes to department goal of improving customer satisfaction",
       timeBound: "Implement within 3 months and maintain throughout 2025"
     },
-    status: "in-progress",
+    status: "submitted", // Changed from 'in-progress'
     createdBy: "sup-001",
     createdAt: new Date("2025-01-25"),
     updatedAt: new Date("2025-02-01"),
@@ -286,7 +286,7 @@ export const mockEmployeeGoals: EmployeeGoal[] = [
       relevant: "Supports department goal of enhancing security protocols",
       timeBound: "Complete training by end of Q1 2025"
     },
-    status: "in-progress",
+    status: "submitted", // Changed from 'in-progress'
     createdBy: "sup-004",
     createdAt: new Date("2024-12-10"),
     updatedAt: new Date("2025-01-05"),
@@ -332,7 +332,7 @@ export const mockEmployeeGoals: EmployeeGoal[] = [
       relevant: "Directly supports division's sustainability goal",
       timeBound: "Complete implementation by Q4 2025"
     },
-    status: "draft",
+    status: "submitted", // Changed from 'draft'
     createdBy: "sup-006",
     createdAt: new Date("2025-01-20"),
     updatedAt: new Date("2025-01-20"),
