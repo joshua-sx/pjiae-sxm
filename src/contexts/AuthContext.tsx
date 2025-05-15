@@ -2,7 +2,7 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 // Define available roles
-export type UserRole = 'HR Officer' | 'Director' | 'Supervisor' | 'Employee';
+export type UserRole = 'HR Officer' | 'Director' | 'Supervisor' | 'Employee' | 'IT Admin';
 
 // Context interface
 interface AuthContextType {

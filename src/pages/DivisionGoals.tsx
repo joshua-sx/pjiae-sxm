@@ -1,3 +1,4 @@
+
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -6,30 +7,27 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 
-const EmployeeGoals = () => {
+const DivisionGoals = () => {
   const { role } = useAuth();
-  const canCreate = role === 'Supervisor' || role === 'HR Officer';
-  const isEmployee = role === 'Employee';
-  const isReadOnly = role === 'IT Admin';
+  const canCreate = role === 'Director' || role === 'HR Officer';
+  const isReadOnly = role === 'Supervisor' || role === 'IT Admin';
   
   return (
     <MainLayout>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">
-              {isEmployee ? 'My Goals' : 'Employee Goals'}
-            </h1>
+            <h1 className="text-3xl font-bold">Division Goals</h1>
             <p className="text-muted-foreground mt-2">
-              {isEmployee 
-                ? 'Review and track your personal performance goals' 
-                : 'Manage and track employee-level performance goals'}
+              {isReadOnly 
+                ? 'View division-level goals and their progress' 
+                : 'Manage and track division-level strategic goals'}
             </p>
           </div>
           
           {canCreate && (
             <Button asChild>
-              <Link to="/employee-goals/create">
+              <Link to="/department-goals/create">
                 <Plus className="mr-2 h-4 w-4" />
                 Create New Goal
               </Link>
@@ -40,16 +38,12 @@ const EmployeeGoals = () => {
         {/* Placeholder content - would be replaced with actual goals components */}
         <Card>
           <CardHeader>
-            <CardTitle>{isEmployee ? 'My Performance Goals' : 'Employee Performance Goals'}</CardTitle>
-            <CardDescription>
-              {isEmployee 
-                ? 'Your individual goals and targets' 
-                : 'Individual employee goals and targets'}
-            </CardDescription>
+            <CardTitle>Division Goals</CardTitle>
+            <CardDescription>Strategic goals for your division</CardDescription>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              This page will display {isEmployee ? 'your personal' : 'employee'} goals and their progress.
+              This page will display division-level goals and their progress.
             </p>
           </CardContent>
         </Card>
@@ -58,4 +52,4 @@ const EmployeeGoals = () => {
   );
 };
 
-export default EmployeeGoals;
+export default DivisionGoals;

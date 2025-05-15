@@ -50,6 +50,8 @@ const TopBar = () => {
         return 'bg-amber-500 hover:bg-amber-600';
       case 'Employee':
         return 'bg-green-500 hover:bg-green-600';
+      case 'IT Admin':
+        return 'bg-blue-500 hover:bg-blue-600';
       default:
         return 'bg-blue-500 hover:bg-blue-600';
     }
@@ -73,6 +75,7 @@ const TopBar = () => {
               <SelectItem value="Director">Director</SelectItem>
               <SelectItem value="Supervisor">Supervisor</SelectItem>
               <SelectItem value="Employee">Employee</SelectItem>
+              <SelectItem value="IT Admin">IT Admin</SelectItem>
             </SelectContent>
           </Select>
           <Badge className={`${getRoleBadgeColor()} text-xs`}>{role}</Badge>
