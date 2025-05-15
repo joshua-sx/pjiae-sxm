@@ -24,7 +24,7 @@ export function SidebarContent() {
   };
   
   return (
-    <ScrollArea className="flex-1 h-full">
+    <ScrollArea className="flex-1 h-full pt-6">
       <SidebarMenu>
         <DashboardMenuItem isActive={isActive} />
         <GoalsMenuSection role={role} isActive={isActive} />
