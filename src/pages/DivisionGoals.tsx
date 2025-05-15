@@ -44,8 +44,8 @@ const DivisionGoals = () => {
     setIsFlagDialogOpen(true);
   };
   
-  // Handle approve goal action
-  const handleApproveGoal = (goal: UnifiedGoal) => {
+  // Handle approve goal action - opens the approval dialog
+  const handleApproveGoalClick = (goal: UnifiedGoal) => {
     setSelectedGoal(goal);
     setIsApproveDialogOpen(true);
   };
@@ -60,8 +60,8 @@ const DivisionGoals = () => {
     setIsFlagDialogOpen(false);
   };
   
-  // Handle approve submit
-  const handleApproveGoal = () => {
+  // Handle approve submit - confirms the approval
+  const handleApproveConfirm = () => {
     // In a real app, this would update the goal status in the database
     toast({
       title: "Goal Approved",
@@ -130,7 +130,7 @@ const DivisionGoals = () => {
               <DivisionGoalsTable 
                 goals={filteredGoals} 
                 onFlagGoal={handleFlagGoal}
-                onApproveGoal={handleApproveGoal}
+                onApproveGoal={handleApproveGoalClick}
               />
             ) : (
               <div className="text-center py-10">
@@ -158,7 +158,7 @@ const DivisionGoals = () => {
         <ApproveGoalDialog
           isOpen={isApproveDialogOpen}
           onClose={() => setIsApproveDialogOpen(false)}
-          onConfirm={handleApproveGoal}
+          onConfirm={handleApproveConfirm}
           goalTitle={selectedGoal.title}
         />
       )}
