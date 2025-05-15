@@ -83,9 +83,9 @@ const Index = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
           <h1>Dashboard</h1>
-          <Button onClick={() => navigate("/my-appraisals")}>
+          <Button onClick={() => navigate("/my-appraisals")} className="w-full sm:w-auto">
             View All Appraisals
             <ChevronRight size={16} className="ml-1" />
           </Button>
