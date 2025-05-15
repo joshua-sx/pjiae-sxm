@@ -1,5 +1,5 @@
 
-import { Bell, User, LogOut, Users } from 'lucide-react';
+import { Bell, User, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import {
   DropdownMenu,
@@ -17,7 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LAYOUT_CONSTANTS } from '@/lib/utils';
 
 const TopBar = () => {
   const [notificationCount] = useState(3);
@@ -40,47 +41,30 @@ const TopBar = () => {
     setRole(newRole);
   };
 
-  const getRoleBadgeColor = () => {
-    switch (role) {
-      case 'HR Officer':
-        return 'bg-purple-500 hover:bg-purple-600';
-      case 'Director':
-        return 'bg-red-500 hover:bg-red-600';
-      case 'Supervisor':
-        return 'bg-amber-500 hover:bg-amber-600';
-      case 'Employee':
-        return 'bg-green-500 hover:bg-green-600';
-      case 'IT Admin':
-        return 'bg-blue-500 hover:bg-blue-600';
-      default:
-        return 'bg-blue-500 hover:bg-blue-600';
-    }
-  };
-
   return (
-    <div className="h-16 border-b bg-white flex items-center justify-between px-6">
+    <div className={`border-b bg-white flex items-center justify-between px-6 ${LAYOUT_CONSTANTS.HEADER_HEIGHT}`}>
+      {/* Left side - App title only */}
       <div>
         <h1 className="text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
       </div>
       
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2">
-          <Users size={18} className="text-gray-500" />
-          <Select value={role} onValueChange={(value) => handleRoleChange(value as UserRole)}>
-            <SelectTrigger className="w-[180px] h-8 text-sm">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="HR Officer">HR Officer</SelectItem>
-              <SelectItem value="Director">Director</SelectItem>
-              <SelectItem value="Supervisor">Supervisor</SelectItem>
-              <SelectItem value="Employee">Employee</SelectItem>
-              <SelectItem value="IT Admin">IT Admin</SelectItem>
-            </SelectContent>
-          </Select>
-          <Badge className={`${getRoleBadgeColor()} text-xs`}>{role}</Badge>
-        </div>
+      {/* Right side - Role selector, notifications, user menu */}
+      <div className="flex items-center space-x-5">
+        {/* Role selector dropdown */}
+        <Select value={role} onValueChange={(value) => handleRoleChange(value as UserRole)}>
+          <SelectTrigger className="w-[150px] h-8 text-sm">
+            <SelectValue placeholder="Select role" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="HR Officer">HR Officer</SelectItem>
+            <SelectItem value="Director">Director</SelectItem>
+            <SelectItem value="Supervisor">Supervisor</SelectItem>
+            <SelectItem value="Employee">Employee</SelectItem>
+            <SelectItem value="IT Admin">IT Admin</SelectItem>
+          </SelectContent>
+        </Select>
         
+        {/* Notification bell with badge */}
         <div className="relative">
           <button className="p-2 rounded-full hover:bg-gray-100">
             <Bell size={20} />
@@ -92,23 +76,19 @@ const TopBar = () => {
           </button>
         </div>
         
+        {/* User avatar dropdown menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center space-x-3 px-2 py-1 rounded-full hover:bg-gray-100">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                <img 
-                  src={user.avatar} 
-                  alt="User avatar" 
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = '/placeholder.svg';
-                  }}
+            <button className="flex items-center space-x-2 px-2 py-1 rounded-full hover:bg-gray-100">
+              <Avatar className="h-8 w-8">
+                <AvatarImage 
+                  src={user.avatar}
+                  alt="User avatar"
                 />
-              </div>
+                <AvatarFallback>JD</AvatarFallback>
+              </Avatar>
               <div className="text-left hidden md:block">
                 <div className="font-medium text-sm">{user.name}</div>
-                <div className="text-xs text-gray-500">{role}</div>
               </div>
             </button>
           </DropdownMenuTrigger>
