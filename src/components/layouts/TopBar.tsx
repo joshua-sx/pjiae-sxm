@@ -42,7 +42,7 @@ const TopBar = () => {
   };
 
   return (
-    <div className={`border-b bg-white flex items-center justify-between px-6 ${LAYOUT_CONSTANTS.HEADER_HEIGHT}`}>
+    <div className={`border-b bg-white flex items-center justify-between px-6 fixed top-0 right-0 left-0 z-20 ml-0 md:ml-[var(--sidebar-width)] transition-[margin] ease-linear peer-data-[state=collapsed]:ml-0 peer-data-[collapsible=icon]:md:ml-[var(--sidebar-width-icon)] ${LAYOUT_CONSTANTS.HEADER_HEIGHT}`}>
       {/* Left side - App title only */}
       <div>
         <h1 className="text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
