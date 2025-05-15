@@ -1,5 +1,5 @@
 
-import { Bell } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, UserRole } from '@/contexts/AuthContext';
@@ -11,11 +11,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LAYOUT_CONSTANTS } from '@/lib/utils';
+import { useSidebar } from '@/components/ui/sidebar';
 
 const TopBar = () => {
   const [notificationCount] = useState(3);
   const navigate = useNavigate();
   const { role, setRole } = useAuth();
+  const { setOpenMobile } = useSidebar();
 
   const handleRoleChange = (newRole: UserRole) => {
     setRole(newRole);
@@ -23,8 +25,15 @@ const TopBar = () => {
 
   return (
     <div className={`border-b bg-white flex items-center justify-between px-6 fixed top-0 right-0 left-0 z-20 ml-0 md:ml-[var(--sidebar-width)] transition-[margin] ease-linear peer-data-[state=collapsed]:ml-0 peer-data-[collapsible=icon]:md:ml-[var(--sidebar-width-icon)] ${LAYOUT_CONSTANTS.HEADER_HEIGHT}`}>
-      {/* Left side - App title only */}
-      <div className="h-full flex items-center">
+      {/* Left side - Hamburger menu on mobile and app title */}
+      <div className="h-full flex items-center gap-3">
+        <button 
+          className="md:hidden p-1 rounded-md hover:bg-gray-100"
+          onClick={() => setOpenMobile(true)}
+          aria-label="Open menu"
+        >
+          <Menu size={24} />
+        </button>
         <h1 className="hidden md:block text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
       </div>
       
