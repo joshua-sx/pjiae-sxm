@@ -3,6 +3,7 @@ import { ReactNode } from 'react';
 import TopBar from './TopBar';
 import AppSidebar from './AppSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
+import { cn } from '@/lib/utils';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -15,7 +16,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <TopBar />
-          <main className="flex-1 p-6 overflow-auto">
+          <main className={cn(
+            "flex-1 overflow-auto",
+            "pt-6 px-6 pb-6" // Consistent padding all around
+          )}>
             {children}
           </main>
         </div>

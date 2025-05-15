@@ -1,4 +1,3 @@
-
 import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -55,8 +54,8 @@ export function AppSidebar() {
   
   return (
     <Sidebar>
-      <SidebarHeader className="border-b py-3">
-        <div className="px-4 flex items-center">
+      <SidebarHeader className="border-b h-16 flex items-center">
+        <div className="px-4 flex items-center h-full">
           {state === "expanded" ? (
             <div className="font-bold text-xl text-blue-600">PJIAE</div>
           ) : (
