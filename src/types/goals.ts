@@ -1,5 +1,4 @@
-
-export type GoalStatus = 'draft' | 'submitted' | 'flagged' | 'approved' | 'in-progress' | 'completed';
+export type GoalStatus = 'submitted' | 'flagged' | 'approved';
 
 export interface SmartCriteria {
   specific: string;
