@@ -16,6 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useNavigate } from 'react-router-dom';
 import { EmployeeGoalSortColumn, SortDirection } from '@/hooks/useEmployeeGoals';
+import { cn } from "@/lib/utils";
 
 interface EmployeeGoalsTableProps {
   goals: UnifiedGoal[];
@@ -50,8 +51,9 @@ const EmployeeGoalsTable = ({
   
   const getSortableHeaderProps = (column: EmployeeGoalSortColumn) => ({
     onClick: () => onSort(column),
-    className: "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5",
-    style: { position: 'relative' }
+    className: cn(
+      "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5"
+    )
   });
 
   return (

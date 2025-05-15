@@ -15,6 +15,7 @@ import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useNavigate } from 'react-router-dom';
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
+import { cn } from "@/lib/utils";
 
 interface DivisionGoalsTableProps {
   goals: UnifiedGoal[];
@@ -49,8 +50,9 @@ const DivisionGoalsTable = ({
   
   const getSortableHeaderProps = (column: SortColumn) => ({
     onClick: () => onSort(column),
-    className: "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5",
-    style: { position: 'relative' }
+    className: cn(
+      "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5",
+    )
   });
 
   return (
