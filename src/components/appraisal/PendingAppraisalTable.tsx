@@ -3,7 +3,7 @@ import React from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatusBadge from '@/components/appraisal/StatusBadge';
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertTriangle } from "lucide-react";
+import { CheckCircle, AlertTriangle, Eye } from "lucide-react";
 import { PendingAppraisal } from '@/types/pendingAppraisal';
 
 interface PendingAppraisalTableProps {
@@ -42,7 +42,7 @@ const PendingAppraisalTable = ({ appraisals, onReviewClick }: PendingAppraisalTa
                   {appraisal.submittedDate.toLocaleDateString()}
                 </TableCell>
                 <TableCell>
-                  <div className="flex gap-2">
+                  <div className="flex justify-end gap-2">
                     <Button
                       variant="outline"
                       size="sm"

@@ -59,16 +59,6 @@ const DivisionGoalsTable = ({
             </TableCell>
             <TableCell className="text-right">
               <div className="flex justify-end gap-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="h-8 w-8 p-0"
-                  onClick={() => handleViewGoal(goal.id)}
-                >
-                  <Eye className="h-4 w-4" />
-                  <span className="sr-only">View</span>
-                </Button>
-                
                 {goal.status === "submitted" && (
                   <>
                     <Button
@@ -92,6 +82,17 @@ const DivisionGoalsTable = ({
                     </Button>
                   </>
                 )}
+                
+                {/* View button moved to the far right */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => handleViewGoal(goal.id)}
+                >
+                  <Eye className="h-4 w-4" />
+                  <span className="sr-only">View</span>
+                </Button>
               </div>
             </TableCell>
           </TableRow>
