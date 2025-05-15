@@ -76,10 +76,10 @@ const TopBar = () => {
           </button>
         </div>
         
-        {/* User avatar dropdown menu */}
+        {/* User avatar dropdown menu - removed the text display */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center space-x-2 px-2 py-1 rounded-full hover:bg-gray-100">
+            <button className="flex items-center rounded-full hover:bg-gray-100">
               <Avatar className="h-8 w-8">
                 <AvatarImage 
                   src={user.avatar}
@@ -87,9 +87,6 @@ const TopBar = () => {
                 />
                 <AvatarFallback>JD</AvatarFallback>
               </Avatar>
-              <div className="text-left hidden md:block">
-                <div className="font-medium text-sm">{user.name}</div>
-              </div>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48">
