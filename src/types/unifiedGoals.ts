@@ -14,4 +14,6 @@ export type UnifiedGoal = {
   department: string;
   departmentName: string;
   employeeName: string;
+  progress?: number;
+  linkedDepartmentGoalId?: string;
 };
