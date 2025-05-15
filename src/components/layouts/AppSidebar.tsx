@@ -13,7 +13,7 @@ import { SidebarFooter } from './sidebar/SidebarFooter';
 export function AppSidebar() {
   return (
     <Sidebar>
-      <SidebarHeaderWrapper>
+      <SidebarHeaderWrapper className="p-0">
         <SidebarHeader />
       </SidebarHeaderWrapper>
       

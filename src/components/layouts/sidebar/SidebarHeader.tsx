@@ -7,7 +7,7 @@ export function SidebarHeader() {
   
   return (
     <div className={`border-b w-full flex items-center justify-center ${LAYOUT_CONSTANTS.HEADER_HEIGHT}`}>
-      <div className="px-6 flex items-center h-full w-full">
+      <div className="px-6 flex items-center justify-start h-full w-full">
         {state === "expanded" ? (
           <div className="font-bold text-xl text-blue-600">PJIAE</div>
         ) : (
