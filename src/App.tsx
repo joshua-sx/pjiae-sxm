@@ -80,11 +80,18 @@ import ProposeGoal from "./pages/employee/ProposeGoal";
 import EmployeeMidYearReview from "./pages/employee/MidYearReview";
 import EmployeeFinalReview from "./pages/employee/FinalReview";
 
-// Initialize the query client
-const queryClient = new QueryClient();
+// Initialize the query client with explicit configuration
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-const App = () => (
-  <React.StrictMode>
+const App = () => {
+  return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <TooltipProvider>
@@ -170,7 +177,7 @@ const App = () => (
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
-  </React.StrictMode>
-);
+  );
+};
 
 export default App;
