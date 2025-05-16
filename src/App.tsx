@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+
+import React, { Suspense, lazy } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,59 +8,71 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import Loading from "./components/Loading";
 
-// Core pages - Lazy loaded
-const Index = React.lazy(() => import("./pages/index")); // Changed from Index.tsx to index
-const Login = React.lazy(() => import("./pages/Login"));
-const NotFound = React.lazy(() => import("./pages/NotFound"));
-const Help = React.lazy(() => import("./pages/Help"));
+// Create a centralized lazy loading function to handle potential import errors
+const lazyLoad = (pageName: string) => {
+  return lazy(() => 
+    import('./pages/index')
+      .then(module => ({ default: module[pageName] }))
+      .catch(error => {
+        console.error(`Error loading ${pageName}:`, error);
+        return { default: () => <div>Failed to load {pageName}</div> };
+      })
+  );
+};
+
+// Core pages - Lazy loaded with error handling
+const Index = lazyLoad('IndexPage');
+const Login = lazyLoad('LoginPage');
+const NotFound = lazyLoad('NotFoundPage');
+const Help = lazyLoad('HelpPage');
 
 // Appraisal pages - Lazy loaded
-const MyAppraisals = React.lazy(() => import("./pages/MyAppraisals"));
-const AppraisalDetail = React.lazy(() => import("./pages/AppraisalDetail"));
-const PendingForms = React.lazy(() => import("./pages/PendingForms"));
-const FlaggedItems = React.lazy(() => import("./pages/FlaggedItems"));
-const MidYearReviews = React.lazy(() => import("./pages/MidYearReviews"));
-const FinalAssessments = React.lazy(() => import("./pages/FinalAssessments"));
+const MyAppraisals = lazyLoad('MyAppraisalsPage');
+const AppraisalDetail = lazyLoad('AppraisalDetailPage');
+const PendingForms = lazyLoad('PendingFormsPage');
+const FlaggedItems = lazyLoad('FlaggedItemsPage');
+const MidYearReviews = lazyLoad('MidYearReviewsPage');
+const FinalAssessments = lazyLoad('FinalAssessmentsPage');
 
 // Organization/Users - Lazy loaded
-const Organization = React.lazy(() => import("./pages/Organization"));
-const EmployeeDetail = React.lazy(() => import("./pages/EmployeeDetail"));
-const AppraiserAssignment = React.lazy(() => import("./pages/AppraiserAssignment"));
-const UserList = React.lazy(() => import("./pages/UserList"));
-const RoleAssignment = React.lazy(() => import("./pages/RoleAssignment"));
-const AccessLogs = React.lazy(() => import("./pages/AccessLogs"));
+const Organization = lazyLoad('OrganizationPage');
+const EmployeeDetail = lazyLoad('EmployeeDetailPage');
+const AppraiserAssignment = lazyLoad('AppraiserAssignmentPage');
+const UserList = lazyLoad('UserListPage');
+const RoleAssignment = lazyLoad('RoleAssignmentPage');
+const AccessLogs = lazyLoad('AccessLogsPage');
 
 // Goal management pages - Lazy loaded
-const Goals = React.lazy(() => import("./pages/Goals"));
-const DivisionGoals = React.lazy(() => import("./pages/DivisionGoals"));
-const EmployeeGoals = React.lazy(() => import("./pages/EmployeeGoals"));
-const DepartmentGoalDetail = React.lazy(() => import("./pages/DepartmentGoalDetail"));
-const DepartmentGoalForm = React.lazy(() => import("./pages/DepartmentGoalForm"));
-const EmployeeGoalDetail = React.lazy(() => import("./pages/EmployeeGoalDetail"));
-const HRGoalsDashboard = React.lazy(() => import("./pages/HRGoalsDashboard"));
+const Goals = lazyLoad('GoalsPage');
+const DivisionGoals = lazyLoad('DivisionGoalsPage');
+const EmployeeGoals = lazyLoad('EmployeeGoalsPage');
+const DepartmentGoalDetail = lazyLoad('DepartmentGoalDetailPage');
+const DepartmentGoalForm = lazyLoad('DepartmentGoalFormPage');
+const EmployeeGoalDetail = lazyLoad('EmployeeGoalDetailPage');
+const HRGoalsDashboard = lazyLoad('HRGoalsDashboardPage');
 
 // Reports and Analytics - Lazy loaded
-const Reports = React.lazy(() => import("./pages/Reports"));
-const GoalsAnalytics = React.lazy(() => import("./pages/GoalsAnalytics"));
-const MidYearReports = React.lazy(() => import("./pages/MidYearReports"));
-const FinalAssessmentReports = React.lazy(() => import("./pages/FinalAssessmentReports"));
-const SystemUsageReports = React.lazy(() => import("./pages/SystemUsageReports"));
-const ErrorPerformanceMetrics = React.lazy(() => import("./pages/ErrorPerformanceMetrics"));
+const Reports = lazyLoad('ReportsPage');
+const GoalsAnalytics = lazyLoad('GoalsAnalyticsPage');
+const MidYearReports = lazyLoad('MidYearReportsPage');
+const FinalAssessmentReports = lazyLoad('FinalAssessmentReportsPage');
+const SystemUsageReports = lazyLoad('SystemUsageReportsPage');
+const ErrorPerformanceMetrics = lazyLoad('ErrorPerformanceMetricsPage');
 
 // Settings pages - Lazy loaded
-const CycleSettings = React.lazy(() => import("./pages/CycleSettings"));
-const Profile = React.lazy(() => import("./pages/Profile"));
-const ChangePassword = React.lazy(() => import("./pages/ChangePassword"));
-const ProfileSecurity = React.lazy(() => import("./pages/ProfileSecurity"));
-const AppSettings = React.lazy(() => import("./pages/AppSettings"));
-const BackupRestore = React.lazy(() => import("./pages/BackupRestore"));
-const CICDConfiguration = React.lazy(() => import("./pages/CICDConfiguration"));
+const CycleSettings = lazyLoad('CycleSettingsPage');
+const Profile = lazyLoad('ProfilePage');
+const ChangePassword = lazyLoad('ChangePasswordPage');
+const ProfileSecurity = lazyLoad('ProfileSecurityPage');
+const AppSettings = lazyLoad('AppSettingsPage');
+const BackupRestore = lazyLoad('BackupRestorePage');
+const CICDConfiguration = lazyLoad('CICDConfigurationPage');
 
 // IT Admin pages - Lazy loaded
-const SystemHealth = React.lazy(() => import("./pages/SystemHealth"));
+const SystemHealth = lazyLoad('SystemHealthPage');
 
 // Audit logs - Lazy loaded
-const AuditLogs = React.lazy(() => import("./pages/AuditLogs"));
+const AuditLogs = lazyLoad('AuditLogsPage');
 
 // Initialize the query client
 const queryClient = new QueryClient();
