@@ -1,110 +1,55 @@
 
-import React, { memo } from 'react';
-import { UnifiedGoal } from '@/types/unifiedGoals'; 
+import React from 'react';
+import { AppTable } from '@/components/common/AppTable';
+import { divisionGoalColumns, getGoalActions } from '@/components/columns/goalColumns';
+import { UnifiedGoal } from '@/types/unifiedGoals';
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
 import { UserRole } from '@/lib/permissions';
-import SortableTableHeader from './SortableTableHeader';
-import DivisionGoalTableRow from './DivisionGoalTableRow';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableRow,
-  TableHead,
-  EmptyTableRow
-} from '@/components/ui/styled-table';
 
 interface DivisionGoalsTableProps {
   goals: UnifiedGoal[];
+  isLoading?: boolean;
+  isError?: boolean;
+  error?: Error | null;
   onFlagGoal: (goal: UnifiedGoal) => void;
-  onApproveGoal: (goal: UnifiedGoal) => void;
+  onApproveGoalClick: (goal: UnifiedGoal) => void;
   sortColumn: SortColumn;
   sortDirection: SortDirection;
-  onSort: (column: SortColumn) => void;
+  handleSort: (column: SortColumn) => void;
   userRole: UserRole;
 }
 
-// Use memo to prevent unnecessary re-renders of the table
-const DivisionGoalsTable = memo(({
+const DivisionGoalsTable = ({
   goals,
+  isLoading,
+  isError,
+  error,
   onFlagGoal,
-  onApproveGoal,
+  onApproveGoalClick,
   sortColumn,
   sortDirection,
-  onSort,
+  handleSort,
   userRole
 }: DivisionGoalsTableProps) => {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <SortableTableHeader 
-            column="departmentName"
-            label="Department"
-            currentSortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={onSort}
-          />
-          <SortableTableHeader 
-            column="createdBy"
-            label="Director"
-            currentSortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={onSort}
-          />
-          <SortableTableHeader 
-            column="title"
-            label="Goal Title"
-            currentSortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={onSort}
-          />
-          <SortableTableHeader 
-            column="status"
-            label="Status"
-            currentSortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={onSort}
-          />
-          <SortableTableHeader 
-            column="createdAt"
-            label="Year"
-            currentSortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={onSort}
-          />
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {goals.length > 0 ? (
-          goals.map(goal => (
-            <DivisionGoalTableRow 
-              key={goal.id}
-              goal={goal}
-              onFlagGoal={onFlagGoal}
-              onApproveGoal={onApproveGoal}
-              userRole={userRole}
-            />
-          ))
-        ) : (
-          <EmptyTableRow colSpan={6} message="No division goals found matching your filters." />
-        )}
-      </TableBody>
-    </Table>
-  );
-}, (prevProps, nextProps) => {
-  // Custom comparison function for memo
-  return (
-    prevProps.sortColumn === nextProps.sortColumn &&
-    prevProps.sortDirection === nextProps.sortDirection &&
-    prevProps.userRole === nextProps.userRole &&
-    prevProps.goals.length === nextProps.goals.length &&
-    JSON.stringify(prevProps.goals) === JSON.stringify(nextProps.goals)
-  );
-});
+  // Combine standard columns with role-specific action column
+  const columns = [
+    ...divisionGoalColumns,
+    getGoalActions(onFlagGoal, onApproveGoalClick, userRole)
+  ];
 
-// Add display name for debugging
-DivisionGoalsTable.displayName = 'DivisionGoalsTable';
+  return (
+    <AppTable
+      columns={columns}
+      data={goals}
+      isLoading={isLoading}
+      isError={isError}
+      errorMessage={error?.message}
+      sortColumn={sortColumn as keyof UnifiedGoal}
+      sortDirection={sortDirection}
+      onSort={handleSort as (column: keyof UnifiedGoal) => void}
+      emptyMessage="No division goals found matching your criteria."
+    />
+  );
+};
 
 export default DivisionGoalsTable;

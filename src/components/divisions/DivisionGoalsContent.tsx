@@ -1,9 +1,7 @@
 
-import React, { memo } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import DivisionGoalsTable from '@/components/divisions/goals/DivisionGoalsTable';
-import { LoadingState } from '@/components/ui/loading-state';
-import { ErrorAlert } from '@/components/ui/error-alert';
+import React from 'react';
+import { Button } from "@/components/ui/button";
+import DivisionGoalsTable from './goals/DivisionGoalsTable';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
 import { UserRole } from '@/lib/permissions';
@@ -11,7 +9,7 @@ import { UserRole } from '@/lib/permissions';
 interface DivisionGoalsContentProps {
   isLoading: boolean;
   isError: boolean;
-  error: any;
+  error: Error | null;
   refetch: () => void;
   filteredGoals: UnifiedGoal[];
   onFlagGoal: (goal: UnifiedGoal) => void;
@@ -20,10 +18,10 @@ interface DivisionGoalsContentProps {
   sortDirection: SortDirection;
   handleSort: (column: SortColumn) => void;
   isReadOnly: boolean;
-  userRole: UserRole; // Keep this as a prop instead of using useAuth() directly
+  userRole: UserRole;
 }
 
-const DivisionGoalsContent = memo(({
+const DivisionGoalsContent = ({
   isLoading,
   isError,
   error,
@@ -35,64 +33,38 @@ const DivisionGoalsContent = memo(({
   sortDirection,
   handleSort,
   isReadOnly,
-  userRole // Use the prop passed from parent
+  userRole
 }: DivisionGoalsContentProps) => {
-  if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Division Goals</h1>
-          <p className="text-muted-foreground mt-2">
-            {isReadOnly 
-              ? 'View division-level goals and their progress' 
-              : 'Manage and track division-level strategic goals'}
-          </p>
-        </div>
-        
-        <LoadingState count={6} variant="table" />
-      </div>
-    );
-  }
-
   if (isError) {
     return (
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Division Goals</h1>
-          <p className="text-muted-foreground mt-2">
-            {isReadOnly 
-              ? 'View division-level goals and their progress' 
-              : 'Manage and track division-level strategic goals'}
-          </p>
+      <div className="rounded-md p-4 bg-destructive/10">
+        <div className="flex flex-col space-y-3">
+          <h3 className="font-semibold text-destructive">Error Loading Division Goals</h3>
+          <p className="text-sm">{error?.message || 'An unknown error occurred'}</p>
+          <div>
+            <Button onClick={refetch} variant="outline" size="sm">
+              Try Again
+            </Button>
+          </div>
         </div>
-        
-        <ErrorAlert 
-          title="Failed to load division goals" 
-          description="Unable to retrieve division goals at this time." 
-          error={error}
-          onRetry={refetch}
-        />
       </div>
     );
   }
 
   return (
-    <Card className="bg-white">
-      <CardContent className="pt-6">
-        <DivisionGoalsTable 
-          goals={filteredGoals} 
-          onFlagGoal={onFlagGoal}
-          onApproveGoal={onApproveGoalClick}
-          sortColumn={sortColumn}
-          sortDirection={sortDirection}
-          onSort={handleSort}
-          userRole={userRole} // Pass user role to the table
-        />
-      </CardContent>
-    </Card>
+    <DivisionGoalsTable
+      goals={filteredGoals}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
+      onFlagGoal={onFlagGoal}
+      onApproveGoalClick={onApproveGoalClick}
+      sortColumn={sortColumn}
+      sortDirection={sortDirection}
+      handleSort={handleSort}
+      userRole={userRole}
+    />
   );
-});
-
-DivisionGoalsContent.displayName = 'DivisionGoalsContent';
+};
 
 export default DivisionGoalsContent;

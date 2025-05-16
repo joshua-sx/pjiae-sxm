@@ -20,7 +20,7 @@ const DivisionGoalTableRow = ({
   userRole
 }: DivisionGoalTableRowProps) => {
   return (
-    <TableRow>
+    <TableRow className="hover:bg-muted/30 transition-colors">
       <TableCell className="font-medium">{goal.departmentName}</TableCell>
       <TableCell>{goal.createdBy}</TableCell>
       <TableCell className="max-w-[300px] truncate">{goal.title}</TableCell>

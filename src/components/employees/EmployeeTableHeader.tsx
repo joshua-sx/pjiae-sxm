@@ -33,8 +33,12 @@ export default function EmployeeTableHeader({
     onClick: () => onSort(column),
     className: cn(
       "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5",
+      "h-11 text-left font-semibold text-muted-foreground",
       className
-    )
+    ),
+    "aria-sort": currentSortColumn === column ? 
+      (sortDirection === 'asc' ? 'ascending' : 'descending') : 
+      undefined
   });
 
   return (

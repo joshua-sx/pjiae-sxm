@@ -8,6 +8,7 @@ import {
   TableRow as UITableRow,
   TableCell as UITableCell,
   TableCaption as UITableCaption,
+  TableFooter as UITableFooter,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 
@@ -53,7 +54,7 @@ export const TableBody: React.FC<React.ComponentPropsWithoutRef<typeof UITableBo
   className,
   ...props
 }) => (
-  <UITableBody className={cn("[&_tr:last-child]:border-0", className)} {...props} />
+  <UITableBody className={cn("[&_tr:last-child]:border-0 bg-white", className)} {...props} />
 );
 
 export const TableCell: React.FC<React.ComponentPropsWithoutRef<typeof UITableCell>> = ({
@@ -68,6 +69,13 @@ export const TableCaption: React.FC<React.ComponentPropsWithoutRef<typeof UITabl
   ...props
 }) => (
   <UITableCaption className={cn("mt-2 text-sm text-muted-foreground", className)} {...props} />
+);
+
+export const TableFooter: React.FC<React.ComponentPropsWithoutRef<typeof UITableFooter>> = ({
+  className,
+  ...props
+}) => (
+  <UITableFooter className={cn("bg-muted/10 border-t", className)} {...props} />
 );
 
 export const EmptyTableRow: React.FC<{ colSpan: number; message?: string }> = ({ 
