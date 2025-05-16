@@ -20,7 +20,7 @@ interface DivisionGoalsContentProps {
   sortDirection: SortDirection;
   handleSort: (column: SortColumn) => void;
   isReadOnly: boolean;
-  userRole: UserRole; // Add user role property
+  userRole: UserRole; // Keep this as a prop instead of using useAuth() directly
 }
 
 const DivisionGoalsContent = ({
@@ -35,7 +35,7 @@ const DivisionGoalsContent = ({
   sortDirection,
   handleSort,
   isReadOnly,
-  userRole // Add user role parameter
+  userRole // Use the prop passed from parent
 }: DivisionGoalsContentProps) => {
   if (isLoading) {
     return (
