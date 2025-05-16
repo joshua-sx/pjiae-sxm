@@ -9,6 +9,8 @@ import { AppraisalsMenuSection } from './menu/AppraisalsMenuSection';
 import { ReportsMenuSection } from './menu/ReportsMenuSection';
 import { UserManagementMenuSection } from './menu/UserManagementMenuSection';
 import { AuditLogsMenuItem } from './menu/AuditLogsMenuItem';
+import { DocumentsMenuItem } from './menu/DocumentsMenuItem';
+import { UserManagementMenuItem } from './menu/UserManagementMenuItem';
 import { SettingsMenuSection } from './menu/SettingsMenuSection';
 import { HelpMenuItem } from './menu/HelpMenuItem';
 
@@ -30,6 +32,8 @@ export function SidebarContent() {
         <ReportsMenuSection isActive={isActive} />
         <UserManagementMenuSection isActive={isActive} />
         <AuditLogsMenuItem isActive={isActive} />
+        <DocumentsMenuItem isActive={isActive} />
+        <UserManagementMenuItem isActive={isActive} />
         <SettingsMenuSection isActive={isActive} />
         <HelpMenuItem isActive={isActive} />
       </SidebarMenu>

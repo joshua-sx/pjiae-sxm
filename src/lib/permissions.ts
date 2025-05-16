@@ -23,7 +23,12 @@ export type Capability =
   | 'canModifyMidYearReviews'
   | 'canViewPendingForms'
   | 'canViewFlaggedItems'
-  | 'canAccessHRDashboard';
+  | 'canAccessHRDashboard'
+  | 'canUploadDocs'
+  | 'canAssignRoles'
+  | 'canProposeGoal'
+  | 'canSubmitSelfReview'
+  | 'canOverseeAppraisals';
 
 export const rolePermissions: Record<UserRole, Capability[]> = {
   [UserRole.HR_OFFICER]: [
@@ -40,24 +45,31 @@ export const rolePermissions: Record<UserRole, Capability[]> = {
     'canModifyMidYearReviews',
     'canViewPendingForms',
     'canViewFlaggedItems',
-    'canAccessHRDashboard'
+    'canAccessHRDashboard',
+    'canUploadDocs',
+    'canAssignRoles'
   ],
   [UserRole.DIRECTOR]: [
     'canCreateGoal',
     'canApproveGoal',
     'canViewReports',
-    'canViewDivisionGoals'
+    'canViewDivisionGoals',
+    'canOverseeAppraisals',
+    'canSubmitSelfReview'
   ],
   [UserRole.SUPERVISOR]: [
     'canCreateGoal',
     'canViewReports',
     'canViewDivisionGoals',
     'canModifyFinalAssessments',
-    'canModifyMidYearReviews'
+    'canModifyMidYearReviews',
+    'canSubmitSelfReview'
   ],
   [UserRole.EMPLOYEE]: [
     'canModifyFinalAssessments',
-    'canModifyMidYearReviews'
+    'canModifyMidYearReviews',
+    'canProposeGoal',
+    'canSubmitSelfReview'
   ],
   [UserRole.IT_ADMIN]: [
     'canManageUsers',

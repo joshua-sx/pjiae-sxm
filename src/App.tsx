@@ -61,6 +61,25 @@ import SystemHealth from "./pages/SystemHealth";
 // Audit logs
 import AuditLogs from "./pages/AuditLogs";
 
+// HR Officer pages
+import Documents from "./pages/hr/Documents";
+import UserManagement from "./pages/hr/UserManagement";
+
+// Director pages
+import AppraisalOversight from "./pages/director/AppraisalOversight";
+import AppraisalDetailDirector from "./pages/director/AppraisalDetailDirector";
+
+// Manager pages
+import EmployeeGoalForm from "./pages/manager/EmployeeGoalForm";
+import ManagerMidYearReview from "./pages/manager/MidYearReview";
+import ManagerFinalReview from "./pages/manager/FinalReview";
+
+// Employee pages
+import MyGoals from "./pages/employee/MyGoals";
+import ProposeGoal from "./pages/employee/ProposeGoal";
+import EmployeeMidYearReview from "./pages/employee/MidYearReview";
+import EmployeeFinalReview from "./pages/employee/FinalReview";
+
 // Initialize the query client
 const queryClient = new QueryClient();
 
@@ -125,6 +144,25 @@ const App = () => (
               
               {/* Audit Logs */}
               <Route path="/audit-logs" element={<AuditLogs />} />
+              
+              {/* HR Officer Routes */}
+              <Route path="/hr/documents" element={<Documents />} />
+              <Route path="/hr/users" element={<UserManagement />} />
+              
+              {/* Director Routes */}
+              <Route path="/director/appraisals" element={<AppraisalOversight />} />
+              <Route path="/director/appraisals/:id" element={<AppraisalDetailDirector />} />
+              
+              {/* Manager Routes */}
+              <Route path="/employee-goals/create" element={<EmployeeGoalForm />} />
+              <Route path="/manager/mid-year-review" element={<ManagerMidYearReview />} />
+              <Route path="/manager/final-review" element={<ManagerFinalReview />} />
+              
+              {/* Employee Routes */}
+              <Route path="/my-goals" element={<MyGoals />} />
+              <Route path="/my-goals/propose" element={<ProposeGoal />} />
+              <Route path="/my/mid-year-review" element={<EmployeeMidYearReview />} />
+              <Route path="/my/final-review" element={<EmployeeFinalReview />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
