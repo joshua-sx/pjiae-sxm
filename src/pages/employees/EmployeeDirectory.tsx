@@ -12,8 +12,8 @@ import EmployeeDirectoryTable from '@/components/employees/EmployeeDirectoryTabl
 import EmployeeSearchInput from '@/components/employees/EmployeeSearchInput';
 import EmployeeFilters from '@/components/employees/EmployeeFilters';
 import EmployeePagination from '@/components/employees/EmployeePagination';
-import { EmployeeFilters as FiltersType, SortColumn, SortDirection } from '@/types/employee';
-import { useAuth, UserRole } from '@/contexts/AuthContext';
+import { EmployeeFilters as FiltersType, SortColumn, SortDirection, EmployeeStatus } from '@/types/employee';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function EmployeeDirectory() {
   // Access control
@@ -35,8 +35,8 @@ export default function EmployeeDirectory() {
     search: searchTerm,
     ...(division !== 'all' && { divisions: [division] }),
     ...(department !== 'all' && { departments: [department] }),
-    ...(role !== 'all' && { roles: [role as UserRole] }), // Cast role to UserRole
-    ...(status !== 'all' && { status: [status] }),
+    ...(role !== 'all' && { roles: [role] }), // Remove the explicit cast to UserRole
+    ...(status !== 'all' && { status: [status as EmployeeStatus] }), // Cast the status string to EmployeeStatus
   };
 
   // Fetch employees with filters and pagination

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/select';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRole } from '@/lib/permissions';
+import { EmployeeStatus } from '@/types/employee';
 
 interface FilterOption {
   id: string;

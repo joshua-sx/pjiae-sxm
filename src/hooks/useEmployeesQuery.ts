@@ -2,7 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { toast } from '@/hooks/use-toast';
 import employeesData from '../mocks/employees.json';
-import { Employee, EmployeeFilters, PaginationParams, EmployeesResponse, SortColumn, SortDirection } from '@/types/employee';
+import { Employee, EmployeeFilters, PaginationParams, EmployeesResponse, SortColumn, SortDirection, EmployeeStatus } from '@/types/employee';
 import { useAuth } from '@/contexts/AuthContext';
 import { UserRole } from '@/lib/permissions';
 
@@ -60,9 +60,11 @@ function applyFilters(employees: Employee[], filters: EmployeeFilters): Employee
     );
   }
   
-  // Filter by status
+  // Filter by status - ensure we're comparing against EmployeeStatus values
   if (filters.status && filters.status.length > 0) {
-    filtered = filtered.filter(emp => filters.status!.includes(emp.status));
+    filtered = filtered.filter(emp => 
+      filters.status!.some(status => status === emp.status)
+    );
   }
   
   return filtered;

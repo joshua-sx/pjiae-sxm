@@ -27,8 +27,8 @@ export interface EmployeeFilters {
   search?: string;
   divisions?: string[];
   departments?: string[];
-  roles?: UserRole[];
-  status?: EmployeeStatus[];
+  roles?: string[]; // Changed from UserRole[] to string[] for flexibility
+  status?: EmployeeStatus[]; // This must be an array of EmployeeStatus values
 }
 
 export interface PaginationParams {
@@ -45,4 +45,3 @@ export interface EmployeesResponse {
 
 export type SortColumn = 'lastName' | 'firstName' | 'departmentName' | 'divisionName' | 'role' | 'status' | 'hireDate' | 'email';
 export type SortDirection = 'asc' | 'desc';
-
