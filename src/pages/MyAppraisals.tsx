@@ -1,4 +1,3 @@
-
 import MainLayout from "@/components/layouts/MainLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AppraisalCard from "@/components/appraisal/AppraisalCard";
@@ -23,6 +22,7 @@ const MyAppraisals = () => {
   const { searchQuery, setSearchQuery, statusFilter, setStatusFilter } = useUIState();
   const [currentTab, setCurrentTab] = useState("my");
   const { role } = useAuth();
+  // Fix comparison by using string literal instead of enum comparison
   const isManager = role === "Manager" || role === "Director";
 
   const { data: appraisals, isLoading, isError, error, refetch } = useAppraisalsQuery();
@@ -59,16 +59,19 @@ const MyAppraisals = () => {
   const myAppraisals = appraisals?.filter(a => a.employeeId === "101"); // In a real app, use current user ID
   const teamAppraisals = appraisals?.filter(a => a.employeeId !== "101"); // Simple filter for demo purposes
 
+  // Type-casting to ensure the status values match the expected types
   const filteredMyAppraisals = myAppraisals?.filter(appraisal => {
     const matchesSearch = appraisal.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || appraisal.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || 
+      (appraisal.status as "completed" | "pending" | "flagged" | "approved" | "appealed" | "draft") === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const filteredTeamAppraisals = teamAppraisals?.filter(appraisal => {
     const matchesSearch = appraisal.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           appraisal.employeeName.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || appraisal.status === statusFilter;
+    const matchesStatus = statusFilter === 'all' || 
+      (appraisal.status as "completed" | "pending" | "flagged" | "approved" | "appealed" | "draft") === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
@@ -125,7 +128,7 @@ const MyAppraisals = () => {
                     key={appraisal.id}
                     id={appraisal.id}
                     title={appraisal.title}
-                    status={appraisal.status}
+                    status={appraisal.status as "completed" | "pending" | "flagged" | "approved" | "appealed" | "draft"}
                     cycle={appraisal.cycle}
                     dueDate={appraisal.dueDate}
                   />
@@ -147,7 +150,7 @@ const MyAppraisals = () => {
                       key={appraisal.id}
                       id={appraisal.id}
                       title={appraisal.title}
-                      status={appraisal.status}
+                      status={appraisal.status as "completed" | "pending" | "flagged" | "approved" | "appealed" | "draft"}
                       cycle={appraisal.cycle}
                       dueDate={appraisal.dueDate}
                       employeeName={appraisal.employeeName}

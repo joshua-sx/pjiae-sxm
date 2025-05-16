@@ -19,3 +19,6 @@ export function useDepartmentGoalsQuery(options = {}) {
     ...options
   });
 }
+
+// Export an alias for compatibility with existing code
+export const useDivisionGoalsQuery = useDepartmentGoalsQuery;
