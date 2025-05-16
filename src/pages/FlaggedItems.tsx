@@ -10,14 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { 
   Dialog, 
@@ -31,6 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Search, Flag, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 import { FlaggedItem, flaggedItems as initialFlaggedItems } from "@/data/mockFlaggedItems";
 import { useToast } from "@/hooks/use-toast";
+import { AppTable, Column } from "@/components/common/AppTable";
 
 const FlaggedItems = () => {
   const { toast } = useToast();
@@ -154,6 +147,77 @@ const FlaggedItems = () => {
         return <Badge>{status}</Badge>;
     }
   };
+
+  // Define columns for AppTable
+  const columns: Column<FlaggedItem>[] = [
+    { 
+      key: 'type', 
+      label: 'Type',
+      render: (item) => (
+        <Badge variant="outline" className="capitalize">
+          {item.type}
+        </Badge>
+      )
+    },
+    { 
+      key: 'employeeName', 
+      label: 'Employee',
+      width: 'w-1/6',
+      sortable: true
+    },
+    { 
+      key: 'department', 
+      label: 'Department',
+      width: 'w-1/6',
+      sortable: true
+    },
+    { 
+      key: 'itemTitle', 
+      label: 'Item',
+      width: 'w-1/5',
+      render: (item) => (
+        <div className="max-w-[200px] truncate" title={item.itemTitle}>
+          {item.itemTitle}
+        </div>
+      )
+    },
+    { 
+      key: 'phase', 
+      label: 'Phase',
+      render: (item) => (
+        <>
+          {item.phase === "goal-setting" && "Goal Setting"}
+          {item.phase === "mid-year-review" && "Mid-Year Review"}
+          {item.phase === "year-end-evaluation" && "Year-End Evaluation"}
+        </>
+      )
+    },
+    { 
+      key: 'flagDate', 
+      label: 'Flag Date',
+      sortable: true
+    },
+    { 
+      key: 'status', 
+      label: 'Status',
+      render: (item) => getStatusBadge(item.status)
+    },
+    { 
+      key: 'actions', 
+      label: 'Actions',
+      render: (item) => (
+        <div className="text-right">
+          <Button 
+            variant="outline" 
+            size="sm"
+            onClick={() => handleDetailClick(item)}
+          >
+            View Details
+          </Button>
+        </div>
+      )
+    }
+  ];
   
   return (
     <MainLayout>
@@ -228,64 +292,11 @@ const FlaggedItems = () => {
           </div>
         </div>
         
-        <div className="rounded-md border shadow overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Type</TableHead>
-                <TableHead>Employee</TableHead>
-                <TableHead>Department</TableHead>
-                <TableHead>Item</TableHead>
-                <TableHead>Phase</TableHead>
-                <TableHead>Flag Date</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredItems.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={8} className="text-center py-10 text-gray-500">
-                    No flagged items found.
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredItems.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell>
-                      <Badge variant="outline" className="capitalize">
-                        {item.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="font-medium">{item.employeeName}</TableCell>
-                    <TableCell>{item.department}</TableCell>
-                    <TableCell className="max-w-[200px] truncate" title={item.itemTitle}>
-                      {item.itemTitle}
-                    </TableCell>
-                    <TableCell>
-                      {item.phase === "goal-setting" && "Goal Setting"}
-                      {item.phase === "mid-year-review" && "Mid-Year Review"}
-                      {item.phase === "year-end-evaluation" && "Year-End Evaluation"}
-                    </TableCell>
-                    <TableCell>{item.flagDate}</TableCell>
-                    <TableCell>
-                      {getStatusBadge(item.status)}
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => handleDetailClick(item)}
-                      >
-                        View Details
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </div>
+        <AppTable
+          columns={columns}
+          data={filteredItems}
+          emptyMessage="No flagged items found."
+        />
       </div>
       
       {/* Detail Dialog */}
