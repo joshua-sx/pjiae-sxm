@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
-import { toast } from '@/components/ui/sonner';
+import { toast } from '@/hooks/use-toast';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useDepartmentGoalsQuery } from '@/hooks/useDepartmentGoalsQuery';
 import { useDivisionGoals } from '@/hooks/useDivisionGoals';

@@ -1,7 +1,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import departmentGoalsData from '../mocks/departmentGoals.json';
-import { toast } from '@/components/ui/sonner';
+import { toast } from '@/hooks/use-toast';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 
 export function useDepartmentGoalsQuery(options = {}) {
@@ -31,7 +31,11 @@ export function useDepartmentGoalsQuery(options = {}) {
         
         return transformedGoals;
       } catch (error) {
-        toast.error('Failed to fetch department goals data');
+        toast({
+          title: "Error",
+          description: 'Failed to fetch department goals data',
+          variant: "destructive"
+        });
         throw new Error('Failed to fetch department goals data');
       }
     },

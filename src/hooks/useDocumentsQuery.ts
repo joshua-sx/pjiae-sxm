@@ -1,7 +1,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import documentsData from '../mocks/documents.json';
-import { toast } from '@/components/ui/sonner';
+import { toast } from '@/hooks/use-toast';
 
 export function useDocumentsQuery(options = {}) {
   return useQuery({
@@ -12,7 +12,11 @@ export function useDocumentsQuery(options = {}) {
         await new Promise(resolve => setTimeout(resolve, 500));
         return documentsData;
       } catch (error) {
-        toast.error('Failed to fetch documents data');
+        toast({
+          title: "Error",
+          description: 'Failed to fetch documents data',
+          variant: "destructive"
+        });
         throw new Error('Failed to fetch documents data');
       }
     },

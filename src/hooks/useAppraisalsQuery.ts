@@ -1,7 +1,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import appraisalsData from '../mocks/appraisals.json';
-import { toast } from '@/components/ui/sonner';
+import { toast } from '@/hooks/use-toast';
 
 export function useAppraisalsQuery(options = {}) {
   return useQuery({
@@ -12,7 +12,11 @@ export function useAppraisalsQuery(options = {}) {
         await new Promise(resolve => setTimeout(resolve, 500));
         return appraisalsData;
       } catch (error) {
-        toast.error('Failed to fetch appraisals data');
+        toast({
+          title: "Error",
+          description: 'Failed to fetch appraisals data',
+          variant: "destructive"
+        });
         throw new Error('Failed to fetch appraisals data');
       }
     },
