@@ -68,8 +68,8 @@ const MyGoals = () => {
                   <CardTitle className="text-lg">{goal.title}</CardTitle>
                   <Badge 
                     variant={
-                      goal.status === 'Completed' ? 'success' :
-                      goal.status === 'In Progress' ? 'default' : 'secondary'
+                      goal.status === 'Completed' ? 'secondary' :
+                      goal.status === 'In Progress' ? 'default' : 'outline'
                     }
                   >
                     {goal.status}
