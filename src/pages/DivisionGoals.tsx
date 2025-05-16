@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import DivisionGoalsHeader from '@/components/divisions/DivisionGoalsHeader';
 import DivisionGoalsFilters from '@/components/divisions/DivisionGoalsFilters';
@@ -17,7 +17,7 @@ export default function DivisionGoals() {
   // Check for read-only access
   const canReadOnly = hasPermission('canViewDivisionGoals');
   const canEdit = hasPermission('canManageDivisionGoals');
-  const isReadOnly = canReadOnly && !canEdit;
+  const isReadOnly = useMemo(() => canReadOnly && !canEdit, [canReadOnly, canEdit]);
   
   // If the user doesn't have permission to view division goals, show access denied
   if (!canReadOnly && !canEdit) {
@@ -67,7 +67,7 @@ export default function DivisionGoals() {
   
   // Determine if the division filter should be disabled
   // Directors can only see their own division's goals
-  const disableDivisionFilter = role === UserRole.DIRECTOR;
+  const disableDivisionFilter = useMemo(() => role === UserRole.DIRECTOR, [role]);
   
   return (
     <MainLayout>

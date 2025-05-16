@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import DivisionGoalsTable from '@/components/divisions/goals/DivisionGoalsTable';
 import { LoadingState } from '@/components/ui/loading-state';
@@ -23,7 +23,7 @@ interface DivisionGoalsContentProps {
   userRole: UserRole; // Keep this as a prop instead of using useAuth() directly
 }
 
-const DivisionGoalsContent = ({
+const DivisionGoalsContent = memo(({
   isLoading,
   isError,
   error,
@@ -99,6 +99,8 @@ const DivisionGoalsContent = ({
       </CardContent>
     </Card>
   );
-};
+});
+
+DivisionGoalsContent.displayName = 'DivisionGoalsContent';
 
 export default DivisionGoalsContent;

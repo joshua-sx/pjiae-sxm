@@ -1,5 +1,4 @@
-
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
@@ -41,7 +40,7 @@ export const useDivisionGoalsState = () => {
   const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
   
   // Handle flag goal action - now with permission check
-  const handleFlagGoal = (goal: UnifiedGoal) => {
+  const handleFlagGoal = useCallback((goal: UnifiedGoal) => {
     // Only HR Officers can flag goals
     if (role !== UserRole.HR_OFFICER) {
       toast({
@@ -54,10 +53,10 @@ export const useDivisionGoalsState = () => {
     
     setSelectedGoal(goal);
     setIsFlagDialogOpen(true);
-  };
+  }, [role]);
   
   // Handle approve goal action - now with permission check
-  const handleApproveGoalClick = (goal: UnifiedGoal) => {
+  const handleApproveGoalClick = useCallback((goal: UnifiedGoal) => {
     // Only HR Officers can approve goals
     if (role !== UserRole.HR_OFFICER) {
       toast({
@@ -70,27 +69,27 @@ export const useDivisionGoalsState = () => {
     
     setSelectedGoal(goal);
     setIsApproveDialogOpen(true);
-  };
+  }, [role]);
   
   // Handle flag submit
-  const handleFlagSubmit = (comment: string) => {
+  const handleFlagSubmit = useCallback((comment: string) => {
     // In a real app, this would send the flag comment to the API
     toast({
       title: "Goal Flagged",
       description: `The goal "${selectedGoal?.title}" has been flagged for review.`,
     });
     setIsFlagDialogOpen(false);
-  };
+  }, [selectedGoal]);
   
   // Handle approve submit - confirms the approval
-  const handleApproveConfirm = () => {
+  const handleApproveConfirm = useCallback(() => {
     // In a real app, this would update the goal status in the database
     toast({
       title: "Goal Approved",
       description: `The goal "${selectedGoal?.title}" has been approved.`,
     });
     setIsApproveDialogOpen(false);
-  };
+  }, [selectedGoal]);
 
   // Calculate available divisions from data
   const divisions = useMemo(() => {
@@ -113,7 +112,7 @@ export const useDivisionGoalsState = () => {
   }, [departmentGoals]);
 
   // Available years for filtering
-  const availableYears = ['all', '2023', '2024'];
+  const availableYears = useMemo(() => ['all', '2023', '2024'], []);
 
   // Apply role-based filtering
   const roleFilteredGoals = useMemo(() => {

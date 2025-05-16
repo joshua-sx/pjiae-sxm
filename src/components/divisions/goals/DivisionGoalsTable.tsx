@@ -84,6 +84,15 @@ const DivisionGoalsTable = memo(({
       </Table>
     </div>
   );
+}, (prevProps, nextProps) => {
+  // Custom comparison function for memo
+  return (
+    prevProps.sortColumn === nextProps.sortColumn &&
+    prevProps.sortDirection === nextProps.sortDirection &&
+    prevProps.userRole === nextProps.userRole &&
+    prevProps.goals.length === nextProps.goals.length &&
+    JSON.stringify(prevProps.goals) === JSON.stringify(nextProps.goals)
+  );
 });
 
 // Add display name for debugging
