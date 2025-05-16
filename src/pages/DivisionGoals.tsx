@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
@@ -9,10 +8,13 @@ import { useDivisionGoals } from '@/hooks/useDivisionGoals';
 import DivisionGoalsFilters from '@/components/divisions/DivisionGoalsFilters';
 import DivisionGoalsContent from '@/components/divisions/DivisionGoalsContent';
 import DivisionGoalsDialogs from '@/components/divisions/DivisionGoalsDialogs';
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 const DivisionGoals = () => {
   const { role } = useAuth();
   const isHROrIT = role === 'HR Officer' || role === 'IT Admin';
+  const isDirector = role === 'Director';
   const isReadOnly = role === 'IT Admin';
   
   // Use our custom hook for division goals filtering UI state
@@ -89,14 +91,77 @@ const DivisionGoals = () => {
   // Available years for filtering
   const availableYears = ['all', '2023', '2024'];
 
+  // Apply role-based filtering
+  const roleFilteredGoals = useMemo(() => {
+    if (!departmentGoals) return [];
+    
+    if (isHROrIT) {
+      // HR Officers and IT Admins can see all goals
+      return departmentGoals;
+    } else if (isDirector) {
+      // Directors can see only their own division's goals
+      // In a real app, we would match the user's ID with the division director ID
+      // For this mock, we'll filter by the director's name which is in createdBy
+      const directorName = "Jennifer Lee"; // Mock - in a real app, get from user profile
+      return departmentGoals.filter(goal => goal.createdBy === directorName);
+    } else {
+      // Other roles see nothing or a filtered subset
+      return [];
+    }
+  }, [departmentGoals, isHROrIT, isDirector]);
+
   // Filter goals based on selected filters
-  const filteredGoals = departmentGoals?.filter(goal => {
-    const matchesDivision = divisionFilter === 'all' || goal.department === divisionFilter;
-    // Extract the year from createdAt
-    const goalYear = new Date(goal.createdAt).getFullYear().toString();
-    const matchesYear = yearFilter === 'all' || goalYear === yearFilter;
-    return matchesDivision && matchesYear;
-  }) || [];
+  const filteredGoals = useMemo(() => {
+    return roleFilteredGoals.filter(goal => {
+      const matchesDivision = divisionFilter === 'all' || goal.department === divisionFilter;
+      // Extract the year from createdAt
+      const goalYear = new Date(goal.createdAt).getFullYear().toString();
+      const matchesYear = yearFilter === 'all' || goalYear === yearFilter;
+      return matchesDivision && matchesYear;
+    });
+  }, [roleFilteredGoals, divisionFilter, yearFilter]);
+  
+  // If the user is a director, auto-select their division
+  // In a real app, this would be done when we know the director's division
+  // For now, we'll just use the first goal in roleFilteredGoals if they're a director
+  const directorDivision = useMemo(() => {
+    if (isDirector && roleFilteredGoals.length > 0) {
+      return roleFilteredGoals[0].department;
+    }
+    return 'all';
+  }, [isDirector, roleFilteredGoals]);
+
+  // Auto-select the director's division on initial load
+  // Only update if the division filter is 'all' and we have a directorDivision
+  React.useEffect(() => {
+    if (isDirector && divisionFilter === 'all' && directorDivision !== 'all') {
+      setDivisionFilter(directorDivision);
+    }
+  }, [isDirector, directorDivision, divisionFilter]);
+
+  // Show no access alert for unauthorized users
+  if (!isHROrIT && !isDirector) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold">Division Goals</h1>
+            <p className="text-muted-foreground mt-2">
+              Division-level strategic goals
+            </p>
+          </div>
+          
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Access Denied</AlertTitle>
+            <AlertDescription>
+              You don't have permission to view division goals. Please contact HR if you believe this is an error.
+            </AlertDescription>
+          </Alert>
+        </div>
+      </MainLayout>
+    );
+  }
   
   return (
     <MainLayout>
@@ -110,7 +175,7 @@ const DivisionGoals = () => {
           </p>
         </div>
         
-        {/* Filters */}
+        {/* Filters - disable division selector for directors */}
         <DivisionGoalsFilters
           divisionFilter={divisionFilter}
           setDivisionFilter={setDivisionFilter}
@@ -118,6 +183,7 @@ const DivisionGoals = () => {
           setYearFilter={setYearFilter}
           divisions={uniqueDivisions}
           availableYears={availableYears}
+          disableDivisionFilter={isDirector}
         />
 
         {/* Goals Table */}

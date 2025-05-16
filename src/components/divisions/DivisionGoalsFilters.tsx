@@ -15,6 +15,7 @@ interface DivisionGoalsFiltersProps {
   setYearFilter: (value: string) => void;
   divisions: { id: string; name: string }[];
   availableYears: string[];
+  disableDivisionFilter?: boolean; // New prop for directors
 }
 
 const DivisionGoalsFilters = ({
@@ -23,7 +24,8 @@ const DivisionGoalsFilters = ({
   yearFilter,
   setYearFilter,
   divisions,
-  availableYears
+  availableYears,
+  disableDivisionFilter = false // Default to enabled
 }: DivisionGoalsFiltersProps) => {
   return (
     <div className="flex flex-wrap gap-4">
@@ -32,6 +34,7 @@ const DivisionGoalsFilters = ({
         <Select 
           value={divisionFilter} 
           onValueChange={setDivisionFilter}
+          disabled={disableDivisionFilter}
         >
           <SelectTrigger>
             <SelectValue placeholder="Select division" />
@@ -44,6 +47,11 @@ const DivisionGoalsFilters = ({
             ))}
           </SelectContent>
         </Select>
+        {disableDivisionFilter && (
+          <p className="text-xs text-muted-foreground mt-1">
+            As a director, you can only view your division's goals
+          </p>
+        )}
       </div>
       
       <div className="w-64">

@@ -13,21 +13,30 @@ export function useDepartmentGoalsQuery(options = {}) {
         await new Promise(resolve => setTimeout(resolve, 500));
         
         // Transform department goals into UnifiedGoal format
-        const transformedGoals: UnifiedGoal[] = departmentGoalsData.map(goal => ({
-          id: goal.id,
-          title: goal.title,
-          description: goal.description,
-          status: goal.status as any, // Will be properly typed in UnifiedGoal
-          createdBy: goal.assignedBy,
-          createdAt: new Date(goal.createdAt),
-          type: 'department',
-          creatorName: goal.assignedBy,
-          creatorRole: 'Director',
-          department: goal.departmentId,
-          departmentName: goal.departmentName,
-          employeeName: '',
-          progress: goal.progress,
-        }));
+        const transformedGoals: UnifiedGoal[] = departmentGoalsData.map(goal => {
+          // Ensure we only use valid statuses
+          let status = goal.status;
+          // Convert any invalid status to 'submitted' as default
+          if (!['submitted', 'flagged', 'approved'].includes(status as string)) {
+            status = 'submitted';
+          }
+          
+          return {
+            id: goal.id,
+            title: goal.title,
+            description: goal.description,
+            status: status as any, // Will be properly typed in UnifiedGoal
+            createdBy: goal.assignedBy,
+            createdAt: new Date(goal.createdAt),
+            type: 'department',
+            creatorName: goal.assignedBy,
+            creatorRole: 'Director',
+            department: goal.departmentId,
+            departmentName: goal.departmentName,
+            employeeName: '',
+            progress: goal.progress,
+          };
+        });
         
         return transformedGoals;
       } catch (error) {
