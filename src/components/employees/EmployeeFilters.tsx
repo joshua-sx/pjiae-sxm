@@ -49,7 +49,6 @@ export default function EmployeeFilters({
   
   // Determine which filters to show based on user role
   const showDivisionFilter = role === UserRole.HR_OFFICER || role === UserRole.IT_ADMIN;
-  const showDepartmentFilter = true; // All users except Employee can see this
   
   // For Director, division should be disabled and pre-selected
   const isDivisionDisabled = role === UserRole.DIRECTOR;
@@ -59,7 +58,7 @@ export default function EmployeeFilters({
   
   return (
     <div className="flex flex-wrap gap-3 mb-6">
-      {showDivisionFilter && (
+      {(showDivisionFilter || role === UserRole.DIRECTOR) && (
         <Select
           value={selectedDivision}
           onValueChange={onDivisionChange}
@@ -70,7 +69,7 @@ export default function EmployeeFilters({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">All Divisions</SelectItem>
+              {!isDivisionDisabled && <SelectItem value="all">All Divisions</SelectItem>}
               {divisions.map((division) => (
                 <SelectItem key={division.id} value={division.id}>
                   {division.name}
@@ -81,7 +80,7 @@ export default function EmployeeFilters({
         </Select>
       )}
       
-      {showDepartmentFilter && (
+      {(role !== UserRole.EMPLOYEE) && (
         <Select
           value={selectedDepartment}
           onValueChange={onDepartmentChange}
@@ -92,7 +91,7 @@ export default function EmployeeFilters({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="all">All Departments</SelectItem>
+              {!isDepartmentDisabled && <SelectItem value="all">All Departments</SelectItem>}
               {departments.map((department) => (
                 <SelectItem key={department.id} value={department.id}>
                   {department.name}

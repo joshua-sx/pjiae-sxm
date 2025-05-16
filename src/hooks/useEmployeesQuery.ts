@@ -9,13 +9,17 @@ import { UserRole } from '@/lib/permissions';
 // Helper function to filter employees based on user role and filters
 function filterEmployeesByRole(employees: Employee[], userRole: UserRole, userDeptId?: string, userDivId?: string): Employee[] {
   if (userRole === UserRole.HR_OFFICER || userRole === UserRole.IT_ADMIN) {
-    return employees;
+    return employees; // HR and IT Admin see all employees
   } else if (userRole === UserRole.DIRECTOR && userDivId) {
-    return employees.filter(emp => emp.divisionId === userDivId);
+    return employees.filter(emp => emp.divisionId === userDivId); // Directors see employees in their division
   } else if (userRole === UserRole.SUPERVISOR && userDeptId) {
-    return employees.filter(emp => emp.departmentId === userDeptId);
+    return employees.filter(emp => emp.departmentId === userDeptId); // Supervisors see employees in their department
+  } else if (userRole === UserRole.EMPLOYEE) {
+    // Employees should only see themselves, but for this mock implementation, 
+    // we'll just return an empty array as they shouldn't see the directory
+    return []; 
   } else {
-    // For regular employees, return empty array (they shouldn't see directory)
+    // Default case, return empty array
     return [];
   }
 }
@@ -51,7 +55,9 @@ function applyFilters(employees: Employee[], filters: EmployeeFilters): Employee
   
   // Filter by roles
   if (filters.roles && filters.roles.length > 0) {
-    filtered = filtered.filter(emp => filters.roles!.includes(emp.role as UserRole));
+    filtered = filtered.filter(emp => 
+      filters.roles!.some(role => role === emp.role)
+    );
   }
   
   // Filter by status
@@ -107,12 +113,17 @@ export function useEmployeesQuery(
   sortColumn: SortColumn = 'lastName',
   sortDirection: SortDirection = 'asc',
 ) {
-  const { role } = useAuth();
+  const { role, hasPermission } = useAuth();
   
   return useQuery({
     queryKey: ['employees', filters, pagination, sortColumn, sortDirection],
     queryFn: async (): Promise<EmployeesResponse> => {
       try {
+        // Check if user has permission to view employee directory
+        if (!hasPermission('canViewEmployeeDirectory')) {
+          throw new Error('Access denied: You do not have permission to view the employee directory');
+        }
+        
         // Simulate network delay
         await new Promise(resolve => setTimeout(resolve, 500));
         
@@ -136,7 +147,7 @@ export function useEmployeesQuery(
       } catch (error) {
         toast({
           title: "Error",
-          description: 'Failed to fetch employees data',
+          description: error instanceof Error ? error.message : 'Failed to fetch employees data',
           variant: "destructive"
         });
         throw new Error('Failed to fetch employees data');
@@ -148,15 +159,19 @@ export function useEmployeesQuery(
 
 // Get unique values for dropdown filters
 export function useEmployeeFiltersData() {
-  const { role } = useAuth();
+  const { role, hasPermission } = useAuth();
   
   return useQuery({
     queryKey: ['employeeFiltersData'],
     queryFn: async () => {
+      // Check if user has permission to view employee directory
+      if (!hasPermission('canViewEmployeeDirectory')) {
+        throw new Error('Access denied: You do not have permission to view the employee directory');
+      }
+      
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 300));
       
-      // In a real app, this would be filtered by the user's role
       // Mock user department and division IDs - in a real app these would come from auth context
       const userDeptId = '1'; // HR Department
       const userDivId = '1';  // Administration Division

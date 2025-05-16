@@ -2,81 +2,203 @@
 export enum UserRole {
   HR_OFFICER = 'HR Officer',
   DIRECTOR = 'Director',
-  SUPERVISOR = 'Supervisor', // This seems to be used instead of MANAGER in the codebase
+  SUPERVISOR = 'Supervisor',
   EMPLOYEE = 'Employee',
   IT_ADMIN = 'IT Admin',
 }
 
 export type Capability =
+  // User Management
+  | 'canManageUsers'
+  | 'canAssignRoles'
+  | 'canViewEmployeeDirectory'
+  
+  // Organization Structure
+  | 'canManageDepartments'
+  | 'canManageDivisions'
+  | 'canViewDivisionStructure'
+  | 'canViewDepartmentStructure'
+  
+  // Appraisal Cycles
+  | 'canManageCycles'
+  | 'canViewCycles'
+  
+  // Goals
   | 'canCreateGoal'
   | 'canApproveGoal'
   | 'canFlagGoals'
-  | 'canViewReports'
-  | 'canViewDivisionGoals'
-  | 'canAccessAuditLogs'
-  | 'canManageUsers'
-  | 'canAssignAppraisers'
-  | 'canManageCycles'
-  | 'canAccessSystemHealth'
-  | 'canManageBackups'
+  | 'canEditTeamGoals'
+  | 'canProposeGoal'
+  
+  // Appraisals
+  | 'canSubmitSelfReview'
   | 'canModifyFinalAssessments'
   | 'canModifyMidYearReviews'
+  | 'canOverseeAppraisals'
+  | 'canAssignAppraisers'
+  
+  // Reports & Analytics
+  | 'canViewReports'
+  | 'canViewDivisionGoals'
+  | 'canAccessHRDashboard'
   | 'canViewPendingForms'
   | 'canViewFlaggedItems'
-  | 'canAccessHRDashboard'
+  
+  // System & Audit
+  | 'canAccessAuditLogs'
   | 'canUploadDocs'
-  | 'canAssignRoles'
-  | 'canProposeGoal'
-  | 'canSubmitSelfReview'
-  | 'canOverseeAppraisals';
+  | 'canAccessSystemHealth'
+  | 'canManageBackups'
+  | 'canManageSystemSettings';
 
 export const rolePermissions: Record<UserRole, Capability[]> = {
-  [UserRole.HR_OFFICER]: [
+  [UserRole.IT_ADMIN]: [
+    // User Management
+    'canManageUsers',
+    'canAssignRoles',
+    'canViewEmployeeDirectory',
+    
+    // Organization Structure
+    'canManageDepartments',
+    'canManageDivisions',
+    'canViewDivisionStructure',
+    'canViewDepartmentStructure',
+    
+    // Appraisal Cycles
+    'canManageCycles',
+    'canViewCycles',
+    
+    // Goals
     'canCreateGoal',
     'canApproveGoal',
     'canFlagGoals',
-    'canViewReports',
-    'canViewDivisionGoals',
-    'canAccessAuditLogs',
-    'canManageUsers',
-    'canAssignAppraisers',
-    'canManageCycles',
+    'canEditTeamGoals',
+    'canProposeGoal',
+    
+    // Appraisals
+    'canSubmitSelfReview',
     'canModifyFinalAssessments',
     'canModifyMidYearReviews',
+    'canOverseeAppraisals',
+    'canAssignAppraisers',
+    
+    // Reports & Analytics
+    'canViewReports',
+    'canViewDivisionGoals',
+    'canAccessHRDashboard',
     'canViewPendingForms',
     'canViewFlaggedItems',
-    'canAccessHRDashboard',
+    
+    // System & Audit
+    'canAccessAuditLogs',
     'canUploadDocs',
-    'canAssignRoles'
+    'canAccessSystemHealth',
+    'canManageBackups',
+    'canManageSystemSettings'
   ],
-  [UserRole.DIRECTOR]: [
+  
+  [UserRole.HR_OFFICER]: [
+    // User Management
+    'canManageUsers',
+    'canAssignRoles',
+    'canViewEmployeeDirectory',
+    
+    // Organization Structure
+    'canViewDivisionStructure',
+    'canViewDepartmentStructure',
+    
+    // Appraisal Cycles
+    'canManageCycles',
+    'canViewCycles',
+    
+    // Goals
     'canCreateGoal',
     'canApproveGoal',
-    'canViewReports',
-    'canViewDivisionGoals',
-    'canOverseeAppraisals',
-    'canSubmitSelfReview'
-  ],
-  [UserRole.SUPERVISOR]: [
-    'canCreateGoal',
-    'canViewReports',
-    'canViewDivisionGoals',
-    'canModifyFinalAssessments',
-    'canModifyMidYearReviews',
-    'canSubmitSelfReview'
-  ],
-  [UserRole.EMPLOYEE]: [
-    'canModifyFinalAssessments',
-    'canModifyMidYearReviews',
+    'canFlagGoals',
+    'canEditTeamGoals',
     'canProposeGoal',
-    'canSubmitSelfReview'
-  ],
-  [UserRole.IT_ADMIN]: [
-    'canManageUsers',
+    
+    // Appraisals
+    'canSubmitSelfReview',
+    'canModifyFinalAssessments',
+    'canModifyMidYearReviews',
+    'canOverseeAppraisals',
+    'canAssignAppraisers',
+    
+    // Reports & Analytics
     'canViewReports',
+    'canViewDivisionGoals',
+    'canAccessHRDashboard',
+    'canViewPendingForms',
+    'canViewFlaggedItems',
+    
+    // System & Audit
     'canAccessAuditLogs',
-    'canAccessSystemHealth',
-    'canManageBackups'
+    'canUploadDocs'
+  ],
+  
+  [UserRole.DIRECTOR]: [
+    // User Management
+    'canViewEmployeeDirectory',
+    
+    // Organization Structure
+    'canViewDivisionStructure',
+    'canViewDepartmentStructure',
+    
+    // Appraisal Cycles
+    'canViewCycles',
+    
+    // Goals
+    'canCreateGoal',
+    'canApproveGoal',
+    'canFlagGoals',
+    'canProposeGoal',
+    
+    // Appraisals
+    'canSubmitSelfReview',
+    'canOverseeAppraisals',
+    
+    // Reports & Analytics
+    'canViewReports',
+    'canViewDivisionGoals'
+  ],
+  
+  [UserRole.SUPERVISOR]: [
+    // User Management
+    'canViewEmployeeDirectory',
+    
+    // Organization Structure
+    'canViewDepartmentStructure',
+    
+    // Appraisal Cycles
+    'canViewCycles',
+    
+    // Goals
+    'canCreateGoal',
+    'canEditTeamGoals',
+    'canProposeGoal',
+    
+    // Appraisals
+    'canSubmitSelfReview',
+    'canModifyFinalAssessments',
+    'canModifyMidYearReviews',
+    
+    // Reports & Analytics
+    'canViewReports',
+    'canViewDivisionGoals'
+  ],
+  
+  [UserRole.EMPLOYEE]: [
+    // Appraisal Cycles
+    'canViewCycles',
+    
+    // Goals
+    'canProposeGoal',
+    
+    // Appraisals
+    'canSubmitSelfReview',
+    'canModifyFinalAssessments',
+    'canModifyMidYearReviews'
   ],
 };
 

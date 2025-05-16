@@ -12,14 +12,14 @@ export default function EmployeeStatusBadge({
   status, 
   className 
 }: EmployeeStatusBadgeProps) {
-  let variant: "default" | "outline" | "secondary" | "destructive" | null = "default";
+  let variant: "default" | "outline" | "secondary" | "destructive" = "default";
   
   switch (status) {
     case 'Active':
       variant = "default"; // Using the primary color
       break;
     case 'Inactive':
-      variant = "outline"; // Using a muted style
+      variant = "destructive"; // Using a destructive style
       break;
     case 'On Leave':
       variant = "secondary"; // Using a secondary style

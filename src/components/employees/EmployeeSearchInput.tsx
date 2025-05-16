@@ -13,7 +13,7 @@ interface EmployeeSearchInputProps {
 export default function EmployeeSearchInput({ 
   value, 
   onChange, 
-  placeholder = "Search by name, email, or ID...",
+  placeholder = "Search by name, email, or employee ID...",
   className 
 }: EmployeeSearchInputProps) {
   return (

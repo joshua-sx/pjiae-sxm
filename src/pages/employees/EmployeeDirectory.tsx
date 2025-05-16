@@ -13,7 +13,7 @@ import EmployeeSearchInput from '@/components/employees/EmployeeSearchInput';
 import EmployeeFilters from '@/components/employees/EmployeeFilters';
 import EmployeePagination from '@/components/employees/EmployeePagination';
 import { EmployeeFilters as FiltersType, SortColumn, SortDirection } from '@/types/employee';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
 
 export default function EmployeeDirectory() {
   // Access control
@@ -35,7 +35,7 @@ export default function EmployeeDirectory() {
     search: searchTerm,
     ...(division !== 'all' && { divisions: [division] }),
     ...(department !== 'all' && { departments: [department] }),
-    ...(role !== 'all' && { roles: [role] }),
+    ...(role !== 'all' && { roles: [role as UserRole] }), // Cast role to UserRole
     ...(status !== 'all' && { status: [status] }),
   };
 
@@ -74,7 +74,7 @@ export default function EmployeeDirectory() {
   }, []);
 
   // Check if user has permission to access this page
-  if (!hasPermission('canManageUsers')) {
+  if (!hasPermission('canViewEmployeeDirectory')) {
     return (
       <MainLayout>
         <div className="flex items-center justify-center h-[calc(100vh-200px)]">
@@ -102,12 +102,14 @@ export default function EmployeeDirectory() {
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
-            <Button asChild>
-              <Link to="/employees/new">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Employee
-              </Link>
-            </Button>
+            {hasPermission('canManageUsers') && (
+              <Button asChild>
+                <Link to="/employees/new">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Add Employee
+                </Link>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -147,7 +149,7 @@ export default function EmployeeDirectory() {
 
               {isLoadingFilters ? (
                 <div className="p-4">
-                  <LoadingState message="Loading filters..." />
+                  <LoadingState />
                 </div>
               ) : filtersData ? (
                 <EmployeeFilters
@@ -168,7 +170,7 @@ export default function EmployeeDirectory() {
 
               {isLoadingEmployees ? (
                 <div className="py-20">
-                  <LoadingState message="Loading employees..." />
+                  <LoadingState />
                 </div>
               ) : employeesError ? (
                 <ErrorAlert

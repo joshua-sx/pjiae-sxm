@@ -45,7 +45,7 @@ export default function EmployeePagination({
       if (startPage > 2) {
         pages.push(
           <PaginationItem key="ellipsis-start">
-            <PaginationLink disabled>...</PaginationLink>
+            <PaginationLink aria-disabled="true">...</PaginationLink>
           </PaginationItem>
         );
       }
@@ -70,7 +70,7 @@ export default function EmployeePagination({
       if (endPage < totalPages - 1) {
         pages.push(
           <PaginationItem key="ellipsis-end">
-            <PaginationLink disabled>...</PaginationLink>
+            <PaginationLink aria-disabled="true">...</PaginationLink>
           </PaginationItem>
         );
       }
@@ -92,7 +92,9 @@ export default function EmployeePagination({
         <PaginationItem>
           <PaginationPrevious 
             onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-            disabled={currentPage === 1}
+            aria-disabled={currentPage === 1 ? "true" : undefined}
+            tabIndex={currentPage === 1 ? -1 : undefined}
+            className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
           />
         </PaginationItem>
         
@@ -101,7 +103,9 @@ export default function EmployeePagination({
         <PaginationItem>
           <PaginationNext 
             onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-            disabled={currentPage === totalPages}
+            aria-disabled={currentPage === totalPages ? "true" : undefined}
+            tabIndex={currentPage === totalPages ? -1 : undefined}
+            className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
           />
         </PaginationItem>
       </PaginationContent>

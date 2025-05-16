@@ -13,11 +13,13 @@ interface UserManagementMenuSectionProps {
 export function UserManagementMenuSection({ isActive }: UserManagementMenuSectionProps) {
   const { hasPermission } = useAuth();
   
-  if (!hasPermission('canManageUsers')) return null;
+  if (!hasPermission('canViewEmployeeDirectory')) return null;
   
   return (
     <>
-      <UserManagementMenuItem isActive={isActive} />
+      {hasPermission('canManageUsers') && (
+        <UserManagementMenuItem isActive={isActive} />
+      )}
       <SidebarMenuItem>
         <SidebarMenuButton asChild isActive={isActive('/employees')} tooltip="Employee Directory">
           <Link to="/employees">
