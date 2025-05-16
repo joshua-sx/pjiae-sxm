@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { TableRow, TableCell } from "@/components/ui/table";
+import { TableRow, TableCell } from "@/components/ui/styled-table";
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { UserRole } from '@/lib/permissions';
@@ -20,7 +20,7 @@ const DivisionGoalTableRow = ({
   userRole
 }: DivisionGoalTableRowProps) => {
   return (
-    <TableRow className="border-b hover:bg-muted/20">
+    <TableRow>
       <TableCell className="font-medium">{goal.departmentName}</TableCell>
       <TableCell>{goal.createdBy}</TableCell>
       <TableCell className="max-w-[300px] truncate">{goal.title}</TableCell>

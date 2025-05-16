@@ -1,14 +1,5 @@
 
 import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Eye, Flag, Check, ArrowUpAZ, ArrowDownAZ, LinkIcon } from "lucide-react";
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
@@ -17,6 +8,16 @@ import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useNavigate } from 'react-router-dom';
 import { EmployeeGoalSortColumn, SortDirection } from '@/hooks/useEmployeeGoals';
 import { cn } from "@/lib/utils";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableHead,
+  EmptyTableRow,
+  TableCaption
+} from '@/components/ui/styled-table';
 
 interface EmployeeGoalsTableProps {
   goals: UnifiedGoal[];
@@ -57,62 +58,62 @@ const EmployeeGoalsTable = ({
   });
 
   return (
-    <div className="rounded-md border overflow-hidden">
-      <Table>
-        <TableCaption>Employee Goals Overview</TableCaption>
-        <TableHeader className="bg-muted/20 sticky top-0">
-          <TableRow>
-            <TableHead {...getSortableHeaderProps('employeeName')} className="font-semibold">
-              Employee
-              {renderSortIcon('employeeName')}
-              {!renderSortIcon('employeeName') && (
-                <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpAZ className="h-4 w-4" />
-                </span>
-              )}
-            </TableHead>
-            <TableHead className="w-[300px] font-semibold" {...getSortableHeaderProps('title')}>
-              Goal
-              {renderSortIcon('title')}
-              {!renderSortIcon('title') && (
-                <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpAZ className="h-4 w-4" />
-                </span>
-              )}
-            </TableHead>
-            <TableHead {...getSortableHeaderProps('status')} className="font-semibold">
-              Status
-              {renderSortIcon('status')}
-              {!renderSortIcon('status') && (
-                <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpAZ className="h-4 w-4" />
-                </span>
-              )}
-            </TableHead>
-            <TableHead {...getSortableHeaderProps('departmentName')} className="font-semibold">
-              Division
-              {renderSortIcon('departmentName')}
-              {!renderSortIcon('departmentName') && (
-                <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpAZ className="h-4 w-4" />
-                </span>
-              )}
-            </TableHead>
-            <TableHead {...getSortableHeaderProps('progress')} className="font-semibold">
-              Progress
-              {renderSortIcon('progress')}
-              {!renderSortIcon('progress') && (
-                <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpAZ className="h-4 w-4" />
-                </span>
-              )}
-            </TableHead>
-            <TableHead className="text-right font-semibold">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {goals.map((goal) => (
-            <TableRow key={goal.id} className="border-b hover:bg-muted/20">
+    <Table>
+      <TableCaption>Employee Goals Overview</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead {...getSortableHeaderProps('employeeName')} className="font-semibold">
+            Employee
+            {renderSortIcon('employeeName')}
+            {!renderSortIcon('employeeName') && (
+              <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpAZ className="h-4 w-4" />
+              </span>
+            )}
+          </TableHead>
+          <TableHead className="w-[300px]" {...getSortableHeaderProps('title')}>
+            Goal
+            {renderSortIcon('title')}
+            {!renderSortIcon('title') && (
+              <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpAZ className="h-4 w-4" />
+              </span>
+            )}
+          </TableHead>
+          <TableHead {...getSortableHeaderProps('status')}>
+            Status
+            {renderSortIcon('status')}
+            {!renderSortIcon('status') && (
+              <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpAZ className="h-4 w-4" />
+              </span>
+            )}
+          </TableHead>
+          <TableHead {...getSortableHeaderProps('departmentName')}>
+            Division
+            {renderSortIcon('departmentName')}
+            {!renderSortIcon('departmentName') && (
+              <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpAZ className="h-4 w-4" />
+              </span>
+            )}
+          </TableHead>
+          <TableHead {...getSortableHeaderProps('progress')}>
+            Progress
+            {renderSortIcon('progress')}
+            {!renderSortIcon('progress') && (
+              <span className="text-muted-foreground/30 absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpAZ className="h-4 w-4" />
+              </span>
+            )}
+          </TableHead>
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {goals.length > 0 ? (
+          goals.map((goal) => (
+            <TableRow key={goal.id}>
               <TableCell className="font-medium">{goal.employeeName}</TableCell>
               <TableCell className="max-w-[300px] truncate">
                 <div className="flex items-start gap-1">
@@ -172,10 +173,12 @@ const EmployeeGoalsTable = ({
                 </div>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          ))
+        ) : (
+          <EmptyTableRow colSpan={6} message="No employee goals found matching your filters." />
+        )}
+      </TableBody>
+    </Table>
   );
 };
 

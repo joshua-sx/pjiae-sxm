@@ -1,10 +1,9 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Eye } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
 import { Link } from 'react-router-dom';
 import {
   Table,
@@ -12,8 +11,9 @@ import {
   TableHead,
   TableRow,
   TableBody,
-  TableCell
-} from '@/components/ui/table';
+  TableCell,
+  EmptyTableRow
+} from '@/components/ui/styled-table';
 
 // Mock appraisals for director view
 const mockAppraisals = [
@@ -41,8 +41,6 @@ const mockAppraisals = [
 ];
 
 const AppraisalOversight = () => {
-  const { toast } = useToast();
-  
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -53,7 +51,7 @@ const AppraisalOversight = () => {
           </div>
         </div>
 
-        <Card>
+        <Card className="bg-white">
           <CardHeader>
             <CardTitle>Submitted Appraisals</CardTitle>
           </CardHeader>
@@ -69,32 +67,29 @@ const AppraisalOversight = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {mockAppraisals.map((appraisal) => (
-                  <TableRow key={appraisal.id}>
-                    <TableCell>{appraisal.employeeName}</TableCell>
-                    <TableCell>{appraisal.formType}</TableCell>
-                    <TableCell>{appraisal.submissionDate}</TableCell>
-                    <TableCell>{appraisal.status}</TableCell>
-                    <TableCell className="text-right">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        asChild
-                      >
-                        <Link to={`/director/appraisals/${appraisal.id}`}>
-                          <Eye className="h-4 w-4 mr-2" />
-                          View
-                        </Link>
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {mockAppraisals.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-8 text-gray-500">
-                      No appraisals pending review.
-                    </TableCell>
-                  </TableRow>
+                {mockAppraisals.length > 0 ? (
+                  mockAppraisals.map((appraisal) => (
+                    <TableRow key={appraisal.id}>
+                      <TableCell>{appraisal.employeeName}</TableCell>
+                      <TableCell>{appraisal.formType}</TableCell>
+                      <TableCell>{appraisal.submissionDate}</TableCell>
+                      <TableCell>{appraisal.status}</TableCell>
+                      <TableCell className="text-right">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          asChild
+                        >
+                          <Link to={`/director/appraisals/${appraisal.id}`}>
+                            <Eye className="h-4 w-4 mr-2" />
+                            View
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <EmptyTableRow colSpan={5} message="No appraisals pending review." />
                 )}
               </TableBody>
             </Table>

@@ -1,11 +1,18 @@
 
 import React, { memo } from 'react';
-import { Table, TableBody, TableHeader, TableRow, TableHead } from '@/components/ui/table';
 import { UnifiedGoal } from '@/types/unifiedGoals'; 
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
+import { UserRole } from '@/lib/permissions';
 import SortableTableHeader from './SortableTableHeader';
 import DivisionGoalTableRow from './DivisionGoalTableRow';
-import { UserRole } from '@/lib/permissions';
+import {
+  Table,
+  TableBody,
+  TableHeader,
+  TableRow,
+  TableHead,
+  EmptyTableRow
+} from '@/components/ui/styled-table';
 
 interface DivisionGoalsTableProps {
   goals: UnifiedGoal[];
@@ -28,50 +35,50 @@ const DivisionGoalsTable = memo(({
   userRole
 }: DivisionGoalsTableProps) => {
   return (
-    <div className="w-full overflow-auto">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <SortableTableHeader 
-              column="departmentName"
-              label="Department"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <SortableTableHeader 
-              column="createdBy"
-              label="Director"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <SortableTableHeader 
-              column="title"
-              label="Goal Title"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <SortableTableHeader 
-              column="status"
-              label="Status"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <SortableTableHeader 
-              column="createdAt"
-              label="Year"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {goals.map(goal => (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <SortableTableHeader 
+            column="departmentName"
+            label="Department"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <SortableTableHeader 
+            column="createdBy"
+            label="Director"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <SortableTableHeader 
+            column="title"
+            label="Goal Title"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <SortableTableHeader 
+            column="status"
+            label="Status"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <SortableTableHeader 
+            column="createdAt"
+            label="Year"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {goals.length > 0 ? (
+          goals.map(goal => (
             <DivisionGoalTableRow 
               key={goal.id}
               goal={goal}
@@ -79,10 +86,12 @@ const DivisionGoalsTable = memo(({
               onApproveGoal={onApproveGoal}
               userRole={userRole}
             />
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          ))
+        ) : (
+          <EmptyTableRow colSpan={6} message="No division goals found matching your filters." />
+        )}
+      </TableBody>
+    </Table>
   );
 }, (prevProps, nextProps) => {
   // Custom comparison function for memo

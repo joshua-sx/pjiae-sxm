@@ -1,10 +1,19 @@
 
 import React from 'react';
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import StatusBadge from '@/components/appraisal/StatusBadge';
 import { Button } from "@/components/ui/button";
 import { CheckCircle, AlertTriangle, Eye } from "lucide-react";
 import { PendingAppraisal } from '@/types/pendingAppraisal';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  EmptyTableRow
+} from '@/components/ui/styled-table';
 
 interface PendingAppraisalTableProps {
   appraisals: PendingAppraisal[];
@@ -24,7 +33,7 @@ const PendingAppraisalTable = ({ appraisals, onReviewClick }: PendingAppraisalTa
               <TableHead>Phase</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Submitted Date</TableHead>
-              <TableHead>Actions</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -66,7 +75,7 @@ const PendingAppraisalTable = ({ appraisals, onReviewClick }: PendingAppraisalTa
           </TableBody>
         </Table>
       ) : (
-        <div className="text-center py-10 border rounded-lg">
+        <div className="bg-white text-center py-10 border rounded-lg shadow-sm">
           <p className="text-muted-foreground">
             No pending appraisals found matching your filters.
           </p>

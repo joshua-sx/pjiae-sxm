@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { TableHead } from "@/components/ui/table";
 import { ArrowUpAZ, ArrowDownAZ } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TableHead } from '@/components/ui/styled-table';
 
 interface EmployeeTableHeaderProps {
   column: string;
@@ -32,7 +32,7 @@ export default function EmployeeTableHeader({
   const getSortableHeaderProps = () => ({
     onClick: () => onSort(column),
     className: cn(
-      "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5 font-semibold",
+      "cursor-pointer hover:bg-muted/50 transition-colors relative group px-5",
       className
     )
   });

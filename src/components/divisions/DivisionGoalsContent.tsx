@@ -77,25 +77,17 @@ const DivisionGoalsContent = memo(({
   }
 
   return (
-    <Card>
+    <Card className="bg-white">
       <CardContent className="pt-6">
-        {filteredGoals.length > 0 ? (
-          <DivisionGoalsTable 
-            goals={filteredGoals} 
-            onFlagGoal={onFlagGoal}
-            onApproveGoal={onApproveGoalClick}
-            sortColumn={sortColumn}
-            sortDirection={sortDirection}
-            onSort={handleSort}
-            userRole={userRole} // Pass user role to the table
-          />
-        ) : (
-          <div className="text-center py-10">
-            <p className="text-muted-foreground">
-              No division goals found matching your filters.
-            </p>
-          </div>
-        )}
+        <DivisionGoalsTable 
+          goals={filteredGoals} 
+          onFlagGoal={onFlagGoal}
+          onApproveGoal={onApproveGoalClick}
+          sortColumn={sortColumn}
+          sortDirection={sortDirection}
+          onSort={handleSort}
+          userRole={userRole} // Pass user role to the table
+        />
       </CardContent>
     </Card>
   );

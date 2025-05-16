@@ -1,19 +1,20 @@
 
 import React from 'react';
-import { 
-  Table, 
-  TableHeader, 
-  TableHead, 
-  TableBody, 
-  TableRow, 
-  TableCell 
-} from "@/components/ui/table";
 import { Button } from '@/components/ui/button';
 import { Edit, Eye } from 'lucide-react';
 import { Employee } from '@/types/employee';
 import EmployeeStatusBadge from './EmployeeStatusBadge';
 import { Link } from 'react-router-dom';
 import EmployeeTableHeader from './EmployeeTableHeader';
+import { 
+  Table, 
+  TableHeader, 
+  TableBody, 
+  TableRow, 
+  TableCell,
+  TableHead,
+  EmptyTableRow
+} from '@/components/ui/styled-table';
 
 interface EmployeeDirectoryTableProps {
   employees: Employee[];
@@ -29,65 +30,60 @@ export default function EmployeeDirectoryTable({
   onSort 
 }: EmployeeDirectoryTableProps) {
   return (
-    <div className="w-full rounded-md border overflow-hidden">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <EmployeeTableHeader 
-              column="lastName"
-              label="Name"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <EmployeeTableHeader 
-              column="role"
-              label="Role"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <EmployeeTableHeader 
-              column="departmentName"
-              label="Department"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <EmployeeTableHeader 
-              column="divisionName"
-              label="Division"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <EmployeeTableHeader 
-              column="status"
-              label="Status"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <EmployeeTableHeader 
-              column="email"
-              label="Email"
-              currentSortColumn={sortColumn}
-              sortDirection={sortDirection}
-              onSort={onSort}
-            />
-            <TableHead className="text-right">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {employees.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                No employees found
-              </TableCell>
-            </TableRow>
-          )}
-          {employees.map((employee) => (
-            <TableRow key={employee.id} className="hover:bg-muted/50">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <EmployeeTableHeader 
+            column="lastName"
+            label="Name"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <EmployeeTableHeader 
+            column="role"
+            label="Role"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <EmployeeTableHeader 
+            column="departmentName"
+            label="Department"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <EmployeeTableHeader 
+            column="divisionName"
+            label="Division"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <EmployeeTableHeader 
+            column="status"
+            label="Status"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <EmployeeTableHeader 
+            column="email"
+            label="Email"
+            currentSortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={onSort}
+          />
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {employees.length === 0 ? (
+          <EmptyTableRow colSpan={7} message="No employees found" />
+        ) : (
+          employees.map((employee) => (
+            <TableRow key={employee.id}>
               <TableCell className="font-medium">
                 {`${employee.lastName}, ${employee.firstName}`}
                 <div className="text-xs text-muted-foreground mt-1">
@@ -118,9 +114,9 @@ export default function EmployeeDirectoryTable({
                 </Button>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          ))
+        )}
+      </TableBody>
+    </Table>
   );
 }

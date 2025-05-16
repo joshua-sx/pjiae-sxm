@@ -1,16 +1,15 @@
-
 import React, { useState, useMemo } from "react";
 import MainLayout from "@/components/layouts/MainLayout";
 import { Input } from "@/components/ui/input";
-import { Search, SortAsc, SortDesc, ChevronDown } from "lucide-react";
+import { Search, SortAsc, SortDesc } from "lucide-react";
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
   TableHeader,
+  TableHead,
+  TableBody,
   TableRow,
-} from "@/components/ui/table";
+  TableCell
+} from "@/components/ui/styled-table";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -20,7 +19,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useNavigate } from "react-router-dom";
-import { Badge } from "@/components/ui/badge";
 import { StatusIndicator } from "@/components/organization/StatusIndicator";
 import { RatingDisplay } from "@/components/organization/RatingDisplay";
 import { EmployeeData } from "@/types/organization";
@@ -345,148 +343,144 @@ const Organization = () => {
           </div>
         </div>
 
-        <div className="rounded-md border shadow overflow-hidden">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort("name")}
-                  >
-                    <div className="flex items-center">
-                      Employee Name
-                      {sortBy === "name" && (
-                        <span className="ml-2">
-                          {sortDirection === "asc" ? (
-                            <SortAsc className="h-4 w-4" />
-                          ) : (
-                            <SortDesc className="h-4 w-4" />
-                          )}
-                        </span>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("name")}
+              >
+                <div className="flex items-center">
+                  Employee Name
+                  {sortBy === "name" && (
+                    <span className="ml-2">
+                      {sortDirection === "asc" ? (
+                        <SortAsc className="h-4 w-4" />
+                      ) : (
+                        <SortDesc className="h-4 w-4" />
                       )}
-                    </div>
-                  </TableHead>
+                    </span>
+                  )}
+                </div>
+              </TableHead>
 
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort("department")}
-                  >
-                    <div className="flex items-center">
-                      Department
-                      {sortBy === "department" && (
-                        <span className="ml-2">
-                          {sortDirection === "asc" ? (
-                            <SortAsc className="h-4 w-4" />
-                          ) : (
-                            <SortDesc className="h-4 w-4" />
-                          )}
-                        </span>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("department")}
+              >
+                <div className="flex items-center">
+                  Department
+                  {sortBy === "department" && (
+                    <span className="ml-2">
+                      {sortDirection === "asc" ? (
+                        <SortAsc className="h-4 w-4" />
+                      ) : (
+                        <SortDesc className="h-4 w-4" />
                       )}
-                    </div>
-                  </TableHead>
+                    </span>
+                  )}
+                </div>
+              </TableHead>
 
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort("jobTitle")}
-                  >
-                    <div className="flex items-center">
-                      Job Title
-                      {sortBy === "jobTitle" && (
-                        <span className="ml-2">
-                          {sortDirection === "asc" ? (
-                            <SortAsc className="h-4 w-4" />
-                          ) : (
-                            <SortDesc className="h-4 w-4" />
-                          )}
-                        </span>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("jobTitle")}
+              >
+                <div className="flex items-center">
+                  Job Title
+                  {sortBy === "jobTitle" && (
+                    <span className="ml-2">
+                      {sortDirection === "asc" ? (
+                        <SortAsc className="h-4 w-4" />
+                      ) : (
+                        <SortDesc className="h-4 w-4" />
                       )}
-                    </div>
-                  </TableHead>
+                    </span>
+                  )}
+                </div>
+              </TableHead>
 
-                  <TableHead>Mid-Year Status</TableHead>
+              <TableHead>Mid-Year Status</TableHead>
 
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort("midYearRating")}
-                  >
-                    <div className="flex items-center">
-                      Mid-Year Rating
-                      {sortBy === "midYearRating" && (
-                        <span className="ml-2">
-                          {sortDirection === "asc" ? (
-                            <SortAsc className="h-4 w-4" />
-                          ) : (
-                            <SortDesc className="h-4 w-4" />
-                          )}
-                        </span>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("midYearRating")}
+              >
+                <div className="flex items-center">
+                  Mid-Year Rating
+                  {sortBy === "midYearRating" && (
+                    <span className="ml-2">
+                      {sortDirection === "asc" ? (
+                        <SortAsc className="h-4 w-4" />
+                      ) : (
+                        <SortDesc className="h-4 w-4" />
                       )}
-                    </div>
-                  </TableHead>
+                    </span>
+                  )}
+                </div>
+              </TableHead>
 
-                  <TableHead>End-Year Status</TableHead>
+              <TableHead>End-Year Status</TableHead>
 
-                  <TableHead
-                    className="cursor-pointer"
-                    onClick={() => handleSort("endYearRating")}
-                  >
-                    <div className="flex items-center">
-                      End-Year Rating
-                      {sortBy === "endYearRating" && (
-                        <span className="ml-2">
-                          {sortDirection === "asc" ? (
-                            <SortAsc className="h-4 w-4" />
-                          ) : (
-                            <SortDesc className="h-4 w-4" />
-                          )}
-                        </span>
+              <TableHead
+                className="cursor-pointer"
+                onClick={() => handleSort("endYearRating")}
+              >
+                <div className="flex items-center">
+                  End-Year Rating
+                  {sortBy === "endYearRating" && (
+                    <span className="ml-2">
+                      {sortDirection === "asc" ? (
+                        <SortAsc className="h-4 w-4" />
+                      ) : (
+                        <SortDesc className="h-4 w-4" />
                       )}
-                    </div>
-                  </TableHead>
+                    </span>
+                  )}
+                </div>
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+
+          <TableBody>
+            {filteredEmployees.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="h-24 text-center text-muted-foreground"
+                >
+                  No employees found.
+                </TableCell>
+              </TableRow>
+            ) : (
+              filteredEmployees.map((employee) => (
+                <TableRow
+                  key={employee.id}
+                  className="cursor-pointer"
+                  onClick={() => handleRowClick(employee.id)}
+                >
+                  <TableCell className="font-medium">
+                    {employee.name}
+                  </TableCell>
+                  <TableCell>{employee.department}</TableCell>
+                  <TableCell>{employee.jobTitle}</TableCell>
+                  <TableCell>
+                    <StatusIndicator status={employee.midYearStatus} />
+                  </TableCell>
+                  <TableCell>
+                    <RatingDisplay rating={employee.midYearRating} />
+                  </TableCell>
+                  <TableCell>
+                    <StatusIndicator status={employee.endYearStatus} />
+                  </TableCell>
+                  <TableCell>
+                    <RatingDisplay rating={employee.endYearRating} />
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {filteredEmployees.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={7}
-                      className="h-24 text-center text-muted-foreground"
-                    >
-                      No employees found.
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredEmployees.map((employee) => (
-                    <TableRow
-                      key={employee.id}
-                      className="cursor-pointer hover:bg-muted/60"
-                      onClick={() => handleRowClick(employee.id)}
-                    >
-                      <TableCell className="font-medium">
-                        {employee.name}
-                      </TableCell>
-                      <TableCell>{employee.department}</TableCell>
-                      <TableCell>{employee.jobTitle}</TableCell>
-                      <TableCell>
-                        <StatusIndicator status={employee.midYearStatus} />
-                      </TableCell>
-                      <TableCell>
-                        <RatingDisplay rating={employee.midYearRating} />
-                      </TableCell>
-                      <TableCell>
-                        <StatusIndicator status={employee.endYearStatus} />
-                      </TableCell>
-                      <TableCell>
-                        <RatingDisplay rating={employee.endYearRating} />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
+              ))
+            )}
+          </TableBody>
+        </Table>
       </div>
     </MainLayout>
   );

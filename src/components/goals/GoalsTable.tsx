@@ -2,6 +2,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
+import { Eye, Check, Flag } from "lucide-react";
+import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
+import FlagCommentDialog from '@/components/goals/FlagCommentDialog';
+import ApproveGoalDialog from '@/components/goals/ApproveGoalDialog';
+import { useToast } from "@/components/ui/use-toast";
+import { UnifiedGoal } from '@/types/unifiedGoals';
 import {
   Table,
   TableBody,
@@ -10,13 +16,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Eye, Check, Flag } from "lucide-react";
-import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
-import FlagCommentDialog from '@/components/goals/FlagCommentDialog';
-import ApproveGoalDialog from '@/components/goals/ApproveGoalDialog';
-import { useToast } from "@/components/ui/use-toast";
-import { UnifiedGoal } from '@/types/unifiedGoals';
+  EmptyTableRow
+} from "@/components/ui/styled-table";
 
 interface GoalsTableProps {
   goals: UnifiedGoal[];
@@ -57,6 +58,7 @@ const GoalsTable = ({ goals, canFlagGoals, canApproveGoals }: GoalsTableProps) =
       title: "Goal Flagged",
       description: `The goal "${selectedGoal?.title}" has been flagged for review.`,
     });
+    setIsFlagDialogOpen(false);
   };
 
   const handleApproveConfirm = () => {
@@ -65,6 +67,7 @@ const GoalsTable = ({ goals, canFlagGoals, canApproveGoals }: GoalsTableProps) =
       title: "Goal Approved",
       description: `The goal "${selectedGoal?.title}" has been approved.`,
     });
+    setIsApproveDialogOpen(false);
   };
 
   return (
@@ -83,59 +86,63 @@ const GoalsTable = ({ goals, canFlagGoals, canApproveGoals }: GoalsTableProps) =
           </TableRow>
         </TableHeader>
         <TableBody>
-          {goals.map((goal) => (
-            <TableRow key={goal.id}>
-              <TableCell>{goal.departmentName}</TableCell>
-              <TableCell>{goal.createdBy}</TableCell>
-              <TableCell>{goal.creatorRole}</TableCell>
-              <TableCell className="font-medium">
-                {goal.type === 'department' ? 'All Department Members' : goal.employeeName}
-              </TableCell>
-              <TableCell>{goal.title}</TableCell>
-              <TableCell>
-                <GoalStatusBadge status={goal.status} />
-              </TableCell>
-              <TableCell className="text-right">
-                <div className="flex justify-end gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-8 w-8 p-0"
-                    onClick={() => handleGoalClick(goal.id, goal.type)}
-                  >
-                    <Eye className="h-4 w-4" />
-                    <span className="sr-only">View</span>
-                  </Button>
-                  
-                  {/* Flag button - only visible for HR Officers and only for submitted goals */}
-                  {canFlagGoals && goal.status === "submitted" && (
+          {goals.length > 0 ? (
+            goals.map((goal) => (
+              <TableRow key={goal.id}>
+                <TableCell>{goal.departmentName}</TableCell>
+                <TableCell>{goal.createdBy}</TableCell>
+                <TableCell>{goal.creatorRole}</TableCell>
+                <TableCell className="font-medium">
+                  {goal.type === 'department' ? 'All Department Members' : goal.employeeName}
+                </TableCell>
+                <TableCell>{goal.title}</TableCell>
+                <TableCell>
+                  <GoalStatusBadge status={goal.status} />
+                </TableCell>
+                <TableCell className="text-right">
+                  <div className="flex justify-end gap-2">
                     <Button
                       variant="outline"
                       size="sm"
-                      className="h-8 w-8 p-0 text-amber-500 hover:text-amber-600 hover:bg-amber-50"
-                      onClick={(e) => openFlagDialog(e, goal)}
+                      className="h-8 w-8 p-0"
+                      onClick={() => handleGoalClick(goal.id, goal.type)}
                     >
-                      <Flag className="h-4 w-4" />
-                      <span className="sr-only">Flag</span>
+                      <Eye className="h-4 w-4" />
+                      <span className="sr-only">View</span>
                     </Button>
-                  )}
-                  
-                  {/* Approve button - only visible for Directors and HR Officers and only for submitted goals */}
-                  {canApproveGoals && goal.status === "submitted" && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="h-8 w-8 p-0 text-green-500 hover:text-green-600 hover:bg-green-50"
-                      onClick={(e) => openApproveDialog(e, goal)}
-                    >
-                      <Check className="h-4 w-4" />
-                      <span className="sr-only">Approve</span>
-                    </Button>
-                  )}
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                    
+                    {/* Flag button - only visible for HR Officers and only for submitted goals */}
+                    {canFlagGoals && goal.status === "submitted" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-amber-500 hover:text-amber-600 hover:bg-amber-50"
+                        onClick={(e) => openFlagDialog(e, goal)}
+                      >
+                        <Flag className="h-4 w-4" />
+                        <span className="sr-only">Flag</span>
+                      </Button>
+                    )}
+                    
+                    {/* Approve button - only visible for Directors and HR Officers and only for submitted goals */}
+                    {canApproveGoals && goal.status === "submitted" && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-8 w-8 p-0 text-green-500 hover:text-green-600 hover:bg-green-50"
+                        onClick={(e) => openApproveDialog(e, goal)}
+                      >
+                        <Check className="h-4 w-4" />
+                        <span className="sr-only">Approve</span>
+                      </Button>
+                    )}
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          ) : (
+            <EmptyTableRow colSpan={7} message="No goals found matching your criteria." />
+          )}
         </TableBody>
       </Table>
 
