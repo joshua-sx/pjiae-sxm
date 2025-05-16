@@ -1,6 +1,6 @@
 
-import React, { memo } from 'react'; // Add memo to prevent unnecessary renders
-import { Table, TableBody } from '@/components/ui/table';
+import React, { memo } from 'react';
+import { Table, TableBody, TableHeader, TableRow, TableHead } from '@/components/ui/table';
 import { UnifiedGoal } from '@/types/unifiedGoals'; 
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
 import SortableTableHeader from './SortableTableHeader';
@@ -30,11 +30,46 @@ const DivisionGoalsTable = memo(({
   return (
     <div className="w-full overflow-auto">
       <Table>
-        <SortableTableHeader 
-          sortColumn={sortColumn}
-          sortDirection={sortDirection}
-          onSort={onSort}
-        />
+        <TableHeader>
+          <TableRow>
+            <SortableTableHeader 
+              column="departmentName"
+              label="Department"
+              currentSortColumn={sortColumn}
+              sortDirection={sortDirection}
+              onSort={onSort}
+            />
+            <SortableTableHeader 
+              column="createdBy"
+              label="Director"
+              currentSortColumn={sortColumn}
+              sortDirection={sortDirection}
+              onSort={onSort}
+            />
+            <SortableTableHeader 
+              column="title"
+              label="Goal Title"
+              currentSortColumn={sortColumn}
+              sortDirection={sortDirection}
+              onSort={onSort}
+            />
+            <SortableTableHeader 
+              column="status"
+              label="Status"
+              currentSortColumn={sortColumn}
+              sortDirection={sortDirection}
+              onSort={onSort}
+            />
+            <SortableTableHeader 
+              column="createdAt"
+              label="Year"
+              currentSortColumn={sortColumn}
+              sortDirection={sortDirection}
+              onSort={onSort}
+            />
+            <TableHead className="text-right">Actions</TableHead>
+          </TableRow>
+        </TableHeader>
         <TableBody>
           {goals.map(goal => (
             <DivisionGoalTableRow 

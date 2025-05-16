@@ -173,6 +173,7 @@ export const useDivisionGoalsState = () => {
     refetch,
     filteredGoals,
     selectedGoal,
+    setSelectedGoal, // Explicitly expose the setter
     isFlagDialogOpen,
     isApproveDialogOpen,
     setIsFlagDialogOpen,
@@ -184,7 +185,7 @@ export const useDivisionGoalsState = () => {
     sortColumn,
     sortDirection,
     handleSort,
-    uniqueDivisions,
+    divisions: uniqueDivisions, // Expose as divisions for consistency
     availableYears,
     directorDivision
   };

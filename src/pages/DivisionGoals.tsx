@@ -1,12 +1,11 @@
 
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import DivisionGoalsHeader from '@/components/divisions/DivisionGoalsHeader';
 import DivisionGoalsFilters from '@/components/divisions/DivisionGoalsFilters';
 import DivisionGoalsContent from '@/components/divisions/DivisionGoalsContent';
 import DivisionGoalsAccessDenied from '@/components/divisions/DivisionGoalsAccessDenied';
 import DivisionGoalsDialogs from '@/components/divisions/DivisionGoalsDialogs';
-import { useDivisionGoals } from '@/hooks/useDivisionGoals';
 import { useDivisionGoalsState } from '@/hooks/useDivisionGoalsState';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
@@ -30,52 +29,47 @@ export default function DivisionGoals() {
     );
   }
 
-  // Memoize the state to prevent unnecessary re-renders
+  // Memoize the user role to prevent unnecessary re-renders
   const memoizedUserRole = useMemo(() => role, [role]);
   
-  // Use the division goals state hook
+  // Use the division goals state hook - this now provides all the data we need
   const {
+    // Filter state
     divisionFilter,
     setDivisionFilter,
     yearFilter,
     setYearFilter,
+    
+    // Data and loading state
     filteredGoals,
+    isLoading,
+    isError,
+    error,
+    refetch,
+    divisions,
+    availableYears,
+    
+    // Dialog state
     selectedGoal,
     setSelectedGoal,
     isFlagDialogOpen,
     setIsFlagDialogOpen,
     isApproveDialogOpen,
     setIsApproveDialogOpen,
+    
+    // Action handlers
+    handleFlagGoal,
+    handleApproveGoalClick,
+    
+    // Sorting
     sortColumn,
     sortDirection,
     handleSort,
   } = useDivisionGoalsState();
   
-  // Fetch division goals data
-  const { 
-    isLoading, 
-    isError, 
-    error, 
-    refetch,
-    divisions,
-    availableYears,
-  } = useDivisionGoals(divisionFilter, yearFilter, role);
-  
   // Determine if the division filter should be disabled
   // Directors can only see their own division's goals
   const disableDivisionFilter = role === UserRole.DIRECTOR;
-  
-  // Handle flagging a goal
-  const handleFlagGoal = useCallback((goal) => {
-    setSelectedGoal(goal);
-    setIsFlagDialogOpen(true);
-  }, [setSelectedGoal, setIsFlagDialogOpen]);
-  
-  // Handle approving a goal
-  const handleApproveGoalClick = useCallback((goal) => {
-    setSelectedGoal(goal);
-    setIsApproveDialogOpen(true);
-  }, [setSelectedGoal, setIsApproveDialogOpen]);
   
   // Handle flag submission
   const handleFlagSubmit = useCallback((comment: string) => {
@@ -111,8 +105,8 @@ export default function DivisionGoals() {
           setDivisionFilter={setDivisionFilter}
           yearFilter={yearFilter}
           setYearFilter={setYearFilter}
-          divisions={divisions || []}
-          availableYears={availableYears || []}
+          divisions={divisions}
+          availableYears={availableYears}
           disableDivisionFilter={disableDivisionFilter}
         />
         

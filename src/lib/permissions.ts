@@ -29,6 +29,7 @@ export type Capability =
   | 'canFlagGoals'
   | 'canEditTeamGoals'
   | 'canProposeGoal'
+  | 'canManageDivisionGoals'
   
   // Appraisals
   | 'canSubmitSelfReview'
@@ -74,6 +75,7 @@ export const rolePermissions: Record<UserRole, Capability[]> = {
     'canFlagGoals',
     'canEditTeamGoals',
     'canProposeGoal',
+    'canManageDivisionGoals',
     
     // Appraisals
     'canSubmitSelfReview',
@@ -117,6 +119,7 @@ export const rolePermissions: Record<UserRole, Capability[]> = {
     'canFlagGoals',
     'canEditTeamGoals',
     'canProposeGoal',
+    'canManageDivisionGoals',
     
     // Appraisals
     'canSubmitSelfReview',
