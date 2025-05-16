@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from 'react';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useAuth } from '@/contexts/AuthContext';
@@ -16,7 +17,9 @@ export const useDivisionGoalsState = () => {
   const {
     sortColumn,
     sortDirection,
-    handleSort
+    handleSort,
+    getSortedGoals,
+    setGoals
   } = useDivisionGoals();
 
   // State for filters
@@ -127,14 +130,23 @@ export const useDivisionGoalsState = () => {
 
   // Filter goals based on selected filters
   const filteredGoals = useMemo(() => {
-    return roleFilteredGoals.filter(goal => {
+    if (!roleFilteredGoals) return [];
+    
+    // Apply filters first
+    const filtered = roleFilteredGoals.filter(goal => {
       const matchesDivision = divisionFilter === 'all' || goal.department === divisionFilter;
       // Extract the year from createdAt
       const goalYear = new Date(goal.createdAt).getFullYear().toString();
       const matchesYear = yearFilter === 'all' || goalYear === yearFilter;
       return matchesDivision && matchesYear;
     });
-  }, [roleFilteredGoals, divisionFilter, yearFilter]);
+    
+    // Update the sorted goals state
+    setGoals(filtered);
+    
+    // Return the sorted filtered goals
+    return getSortedGoals();
+  }, [roleFilteredGoals, divisionFilter, yearFilter, getSortedGoals, setGoals]);
   
   // If the user is a director, auto-select their division
   // In a real app, this would be done when we know the director's division

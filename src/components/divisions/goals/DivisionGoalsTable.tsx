@@ -11,8 +11,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
 import { UserRole } from '@/lib/permissions';
-import SortableTableHeader from './table/SortableTableHeader';
-import DivisionGoalTableRow from './table/DivisionGoalTableRow';
+import SortableTableHeader from './SortableTableHeader';
+import DivisionGoalTableRow from './DivisionGoalTableRow';
 
 interface DivisionGoalsTableProps {
   goals: UnifiedGoal[];

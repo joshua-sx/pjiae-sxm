@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import DivisionGoalsTable from '@/components/goals/DivisionGoalsTable';
+import DivisionGoalsTable from '@/components/divisions/goals/DivisionGoalsTable';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { UnifiedGoal } from '@/types/unifiedGoals';
