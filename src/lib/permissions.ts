@@ -1,4 +1,3 @@
-
 export enum UserRole {
   HR_OFFICER = 'HR Officer',
   DIRECTOR = 'Director',
@@ -30,6 +29,7 @@ export type Capability =
   | 'canEditTeamGoals'
   | 'canProposeGoal'
   | 'canManageDivisionGoals'
+  | 'canViewDivisionGoals'
   
   // Appraisals
   | 'canSubmitSelfReview'
@@ -40,7 +40,6 @@ export type Capability =
   
   // Reports & Analytics
   | 'canViewReports'
-  | 'canViewDivisionGoals'
   | 'canAccessHRDashboard'
   | 'canViewPendingForms'
   | 'canViewFlaggedItems'

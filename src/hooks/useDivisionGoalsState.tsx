@@ -93,18 +93,24 @@ export const useDivisionGoalsState = () => {
   };
 
   // Calculate available divisions from data
-  const divisions = departmentGoals 
-    ? [{ id: 'all', name: 'All Divisions' }, ...departmentGoals.map(goal => ({
+  const divisions = useMemo(() => {
+    if (!departmentGoals) return [{ id: 'all', name: 'All Divisions' }];
+    
+    // Create array with 'All Divisions' option and all departments from goals
+    const allDivisions = [
+      { id: 'all', name: 'All Divisions' }, 
+      ...departmentGoals.map(goal => ({
         id: goal.department,
         name: goal.departmentName
-      }))]
-    : [{ id: 'all', name: 'All Divisions' }];
-
-  // Remove duplicates from divisions array
-  const uniqueDivisions = divisions.filter(
-    (division, index, self) => 
-      index === self.findIndex((d) => d.id === division.id)
-  );
+      }))
+    ];
+    
+    // Remove duplicates
+    return allDivisions.filter(
+      (division, index, self) => 
+        index === self.findIndex((d) => d.id === division.id)
+    );
+  }, [departmentGoals]);
 
   // Available years for filtering
   const availableYears = ['all', '2023', '2024'];
@@ -149,8 +155,6 @@ export const useDivisionGoalsState = () => {
   }, [roleFilteredGoals, divisionFilter, yearFilter, getSortedGoals, setGoals]);
   
   // If the user is a director, auto-select their division
-  // In a real app, this would be done when we know the director's division
-  // For now, we'll just use the first goal in roleFilteredGoals if they're a director
   const directorDivision = useMemo(() => {
     if (isDirector && roleFilteredGoals.length > 0) {
       return roleFilteredGoals[0].department;
@@ -173,7 +177,7 @@ export const useDivisionGoalsState = () => {
     refetch,
     filteredGoals,
     selectedGoal,
-    setSelectedGoal, // Explicitly expose the setter
+    setSelectedGoal,
     isFlagDialogOpen,
     isApproveDialogOpen,
     setIsFlagDialogOpen,
@@ -185,7 +189,7 @@ export const useDivisionGoalsState = () => {
     sortColumn,
     sortDirection,
     handleSort,
-    divisions: uniqueDivisions, // Expose as divisions for consistency
+    divisions,
     availableYears,
     directorDivision
   };

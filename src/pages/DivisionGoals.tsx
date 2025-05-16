@@ -1,5 +1,5 @@
 
-import React, { useCallback, useMemo } from 'react';
+import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import DivisionGoalsHeader from '@/components/divisions/DivisionGoalsHeader';
 import DivisionGoalsFilters from '@/components/divisions/DivisionGoalsFilters';
@@ -8,7 +8,6 @@ import DivisionGoalsAccessDenied from '@/components/divisions/DivisionGoalsAcces
 import DivisionGoalsDialogs from '@/components/divisions/DivisionGoalsDialogs';
 import { useDivisionGoalsState } from '@/hooks/useDivisionGoalsState';
 import { useAuth } from '@/contexts/AuthContext';
-import { toast } from '@/hooks/use-toast';
 import { UserRole } from '@/lib/permissions';
 
 export default function DivisionGoals() {
@@ -28,9 +27,6 @@ export default function DivisionGoals() {
       </MainLayout>
     );
   }
-
-  // Memoize the user role to prevent unnecessary re-renders
-  const memoizedUserRole = useMemo(() => role, [role]);
   
   // Use the division goals state hook - this now provides all the data we need
   const {
@@ -60,6 +56,8 @@ export default function DivisionGoals() {
     // Action handlers
     handleFlagGoal,
     handleApproveGoalClick,
+    handleFlagSubmit,
+    handleApproveConfirm,
     
     // Sorting
     sortColumn,
@@ -71,30 +69,6 @@ export default function DivisionGoals() {
   // Directors can only see their own division's goals
   const disableDivisionFilter = role === UserRole.DIRECTOR;
   
-  // Handle flag submission
-  const handleFlagSubmit = useCallback((comment: string) => {
-    // This is mocked - in a real app, it would make an API call
-    toast({
-      title: "Goal flagged",
-      description: `The goal has been flagged with your comment: ${comment}`,
-    });
-    
-    setIsFlagDialogOpen(false);
-    refetch(); // Refresh the data
-  }, [toast, setIsFlagDialogOpen, refetch]);
-  
-  // Handle approve goal confirmation
-  const handleApproveConfirm = useCallback(() => {
-    // This is mocked - in a real app, it would make an API call
-    toast({
-      title: "Goal approved",
-      description: "The goal has been approved successfully.",
-    });
-    
-    setIsApproveDialogOpen(false);
-    refetch(); // Refresh the data
-  }, [toast, setIsApproveDialogOpen, refetch]);
-  
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -105,8 +79,8 @@ export default function DivisionGoals() {
           setDivisionFilter={setDivisionFilter}
           yearFilter={yearFilter}
           setYearFilter={setYearFilter}
-          divisions={divisions}
-          availableYears={availableYears}
+          divisions={divisions || []}
+          availableYears={availableYears || []}
           disableDivisionFilter={disableDivisionFilter}
         />
         
@@ -122,7 +96,7 @@ export default function DivisionGoals() {
           sortDirection={sortDirection}
           handleSort={handleSort}
           isReadOnly={isReadOnly}
-          userRole={memoizedUserRole}
+          userRole={role}
         />
         
         <DivisionGoalsDialogs
