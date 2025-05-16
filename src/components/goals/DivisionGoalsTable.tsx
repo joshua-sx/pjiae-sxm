@@ -1,3 +1,4 @@
+
 import React from 'react';
 import {
   Table,
@@ -10,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Eye, Flag, Check, ArrowUpAZ, ArrowDownAZ } from "lucide-react";
-import Tooltip, { TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { TooltipProvider, TooltipContent, TooltipTrigger, Tooltip } from "@/components/ui/tooltip";
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useNavigate } from 'react-router-dom';
