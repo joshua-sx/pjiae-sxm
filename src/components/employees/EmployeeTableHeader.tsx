@@ -28,6 +28,14 @@ export default function EmployeeTableHeader({
       ? <ArrowUpAZ className="ml-1 h-5 w-5 inline text-primary" />
       : <ArrowDownAZ className="ml-1 h-5 w-5 inline text-primary" />;
   };
+  
+  // Map internal sort direction to valid aria-sort values
+  const ariaSortValue: "none" | "ascending" | "descending" | "other" = 
+    currentSortColumn !== column 
+      ? 'none'
+      : sortDirection === 'asc'
+        ? 'ascending'
+        : 'descending';
 
   const getSortableHeaderProps = () => ({
     onClick: () => onSort(column),
@@ -36,9 +44,7 @@ export default function EmployeeTableHeader({
       "h-11 text-left font-semibold text-muted-foreground",
       className
     ),
-    "aria-sort": currentSortColumn === column ? 
-      (sortDirection === 'asc' ? 'ascending' : 'descending') : 
-      undefined
+    "aria-sort": ariaSortValue
   });
 
   return (

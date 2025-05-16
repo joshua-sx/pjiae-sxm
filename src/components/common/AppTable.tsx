@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export interface Column<T> {
-  key: keyof T;
+  key: keyof T | 'actions';  // Allow 'actions' as a special key
   label: string;
   sortable?: boolean;
   width?: string;      // tailwind width class, e.g. 'w-1/4'
@@ -77,10 +77,10 @@ export function AppTable<T extends { id: string }>({
                       className={`px-4 py-2 text-left font-semibold ${col.width || ''} ${
                         col.sortable ? 'cursor-pointer select-none hover:bg-muted/50 transition-colors' : ''
                       }`}
-                      onClick={() => col.sortable && onSort?.(col.key)}
+                      onClick={() => col.sortable && onSort?.(col.key as keyof T)}
                       aria-sort={col.sortable && sortColumn === col.key ? 
                         (sortDirection === 'asc' ? 'ascending' : 'descending') : 
-                        undefined}
+                        'none'}
                     >
                       <div className="flex items-center gap-1">
                         {col.label}
@@ -101,7 +101,7 @@ export function AppTable<T extends { id: string }>({
                   <TableRow key={row.id} className="hover:bg-muted/30 border-b transition-colors">
                     {columns.map(col => (
                       <TableCell key={String(col.key)} className="px-4 py-2">
-                        {col.render ? col.render(row) : String(row[col.key] ?? '')}
+                        {col.render ? col.render(row) : String(row[col.key as keyof T] ?? '')}
                       </TableCell>
                     ))}
                   </TableRow>
