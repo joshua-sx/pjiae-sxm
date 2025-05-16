@@ -1,5 +1,4 @@
 
-import { useAuth } from '@/contexts/AuthContext';
 import { useLocation } from 'react-router-dom';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { SidebarMenu } from '@/components/ui/sidebar';
@@ -14,7 +13,6 @@ import { SettingsMenuSection } from './menu/SettingsMenuSection';
 import { HelpMenuItem } from './menu/HelpMenuItem';
 
 export function SidebarContent() {
-  const { role } = useAuth();
   const location = useLocation();
   
   const isActive = (path: string) => {
@@ -27,12 +25,12 @@ export function SidebarContent() {
     <ScrollArea className="flex-1 h-full pt-6">
       <SidebarMenu>
         <DashboardMenuItem isActive={isActive} />
-        <GoalsMenuSection role={role} isActive={isActive} />
-        <AppraisalsMenuSection role={role} isActive={isActive} />
-        <ReportsMenuSection role={role} isActive={isActive} />
-        <UserManagementMenuSection role={role} isActive={isActive} />
-        <AuditLogsMenuItem role={role} isActive={isActive} />
-        <SettingsMenuSection role={role} isActive={isActive} />
+        <GoalsMenuSection isActive={isActive} />
+        <AppraisalsMenuSection isActive={isActive} />
+        <ReportsMenuSection isActive={isActive} />
+        <UserManagementMenuSection isActive={isActive} />
+        <AuditLogsMenuItem isActive={isActive} />
+        <SettingsMenuSection isActive={isActive} />
         <HelpMenuItem isActive={isActive} />
       </SidebarMenu>
     </ScrollArea>

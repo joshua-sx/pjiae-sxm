@@ -19,8 +19,8 @@ const TopBar = () => {
   const { role, setRole } = useAuth();
   const { setOpenMobile } = useSidebar();
 
-  const handleRoleChange = (newRole: UserRole) => {
-    setRole(newRole);
+  const handleRoleChange = (newRole: string) => {
+    setRole(newRole as UserRole);
   };
 
   return (
@@ -40,16 +40,16 @@ const TopBar = () => {
       {/* Right side - Role selector and notifications only */}
       <div className="flex items-center space-x-5">
         {/* Role selector dropdown */}
-        <Select value={role} onValueChange={(value) => handleRoleChange(value as UserRole)}>
+        <Select value={role} onValueChange={handleRoleChange}>
           <SelectTrigger className="w-[150px] h-8 text-sm">
             <SelectValue placeholder="Select role" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="HR Officer">HR Officer</SelectItem>
-            <SelectItem value="Director">Director</SelectItem>
-            <SelectItem value="Supervisor">Supervisor</SelectItem>
-            <SelectItem value="Employee">Employee</SelectItem>
-            <SelectItem value="IT Admin">IT Admin</SelectItem>
+            <SelectItem value={UserRole.HR_OFFICER}>{UserRole.HR_OFFICER}</SelectItem>
+            <SelectItem value={UserRole.DIRECTOR}>{UserRole.DIRECTOR}</SelectItem>
+            <SelectItem value={UserRole.SUPERVISOR}>{UserRole.SUPERVISOR}</SelectItem>
+            <SelectItem value={UserRole.EMPLOYEE}>{UserRole.EMPLOYEE}</SelectItem>
+            <SelectItem value={UserRole.IT_ADMIN}>{UserRole.IT_ADMIN}</SelectItem>
           </SelectContent>
         </Select>
         

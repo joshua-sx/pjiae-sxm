@@ -1,16 +1,17 @@
 
 import { FileText } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 
 interface AuditLogsMenuItemProps {
-  role: UserRole;
   isActive: (path: string) => boolean;
 }
 
-export function AuditLogsMenuItem({ role, isActive }: AuditLogsMenuItemProps) {
-  if (role !== 'HR Officer' && role !== 'IT Admin') return null;
+export function AuditLogsMenuItem({ isActive }: AuditLogsMenuItemProps) {
+  const { hasPermission } = useAuth();
+  
+  if (!hasPermission('canAccessAuditLogs')) return null;
   
   return (
     <SidebarMenuItem>

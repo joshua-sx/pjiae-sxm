@@ -1,7 +1,7 @@
 
 import { Target, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '@/contexts/AuthContext';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -12,11 +12,12 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface GoalsMenuSectionProps {
-  role: UserRole;
   isActive: (path: string) => boolean;
 }
 
-export function GoalsMenuSection({ role, isActive }: GoalsMenuSectionProps) {
+export function GoalsMenuSection({ isActive }: GoalsMenuSectionProps) {
+  const { hasPermission } = useAuth();
+  
   return (
     <Collapsible defaultOpen className="group/collapsible w-full">
       <SidebarMenuItem>
@@ -30,7 +31,7 @@ export function GoalsMenuSection({ role, isActive }: GoalsMenuSectionProps) {
         <CollapsibleContent>
           <SidebarMenuSub>
             {/* Division Goals - Available to all except Employee */}
-            {role !== 'Employee' && (
+            {hasPermission('canViewDivisionGoals') && (
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton 
                   asChild 
@@ -50,6 +51,18 @@ export function GoalsMenuSection({ role, isActive }: GoalsMenuSectionProps) {
                 <Link to="/employee-goals">Employee Goals</Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
+            
+            {/* HR Goals Dashboard - Only for HR */}
+            {hasPermission('canAccessHRDashboard') && (
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton 
+                  asChild 
+                  isActive={isActive('/hr-goals-dashboard')}
+                >
+                  <Link to="/hr-goals-dashboard">HR Goals Dashboard</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            )}
           </SidebarMenuSub>
         </CollapsibleContent>
       </SidebarMenuItem>

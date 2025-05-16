@@ -1,7 +1,7 @@
 
 import { BarChart, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '@/contexts/AuthContext';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -12,12 +12,13 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface ReportsMenuSectionProps {
-  role: UserRole;
   isActive: (path: string) => boolean;
 }
 
-export function ReportsMenuSection({ role, isActive }: ReportsMenuSectionProps) {
-  if (role === 'Employee') return null;
+export function ReportsMenuSection({ isActive }: ReportsMenuSectionProps) {
+  const { role, hasPermission } = useAuth();
+  
+  if (!hasPermission('canViewReports')) return null;
   
   return (
     <Collapsible defaultOpen className="group/collapsible w-full">
@@ -42,7 +43,7 @@ export function ReportsMenuSection({ role, isActive }: ReportsMenuSectionProps) 
             </SidebarMenuSubItem>
             
             {/* Mid-Year Reports - Not for Director */}
-            {role !== 'Director' && (
+            {role !== UserRole.DIRECTOR && (
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton 
                   asChild 
@@ -54,7 +55,7 @@ export function ReportsMenuSection({ role, isActive }: ReportsMenuSectionProps) 
             )}
             
             {/* Final Assessment Reports - Not for Director */}
-            {role !== 'Director' && (
+            {role !== UserRole.DIRECTOR && (
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton 
                   asChild 
@@ -66,7 +67,7 @@ export function ReportsMenuSection({ role, isActive }: ReportsMenuSectionProps) 
             )}
             
             {/* IT Admin specific reports */}
-            {role === 'IT Admin' && (
+            {hasPermission('canAccessSystemHealth') && (
               <>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton 

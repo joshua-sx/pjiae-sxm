@@ -1,7 +1,7 @@
 
 import { Users, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -12,12 +12,13 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface UserManagementMenuSectionProps {
-  role: UserRole;
   isActive: (path: string) => boolean;
 }
 
-export function UserManagementMenuSection({ role, isActive }: UserManagementMenuSectionProps) {
-  if (role !== 'HR Officer' && role !== 'IT Admin') return null;
+export function UserManagementMenuSection({ isActive }: UserManagementMenuSectionProps) {
+  const { hasPermission } = useAuth();
+  
+  if (!hasPermission('canManageUsers')) return null;
   
   return (
     <Collapsible defaultOpen className="group/collapsible w-full">
@@ -57,7 +58,7 @@ export function UserManagementMenuSection({ role, isActive }: UserManagementMenu
             </SidebarMenuSubItem>
             
             {/* HR Officer specific */}
-            {role === 'HR Officer' && (
+            {hasPermission('canAssignAppraisers') && (
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton 
                   asChild 

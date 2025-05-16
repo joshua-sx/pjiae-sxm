@@ -1,16 +1,16 @@
+
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
 
 const EmployeeGoals = () => {
-  const { role } = useAuth();
-  const canCreate = role === 'Supervisor' || role === 'HR Officer';
-  const isEmployee = role === 'Employee';
-  const isReadOnly = role === 'IT Admin';
+  const { role, hasPermission } = useAuth();
+  const isEmployee = role === UserRole.EMPLOYEE;
+  const isReadOnly = role === UserRole.IT_ADMIN;
   
   return (
     <MainLayout>
@@ -27,7 +27,7 @@ const EmployeeGoals = () => {
             </p>
           </div>
           
-          {canCreate && (
+          {hasPermission('canCreateGoal') && (
             <Button asChild>
               <Link to="/employee-goals/create">
                 <Plus className="mr-2 h-4 w-4" />

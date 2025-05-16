@@ -1,7 +1,7 @@
 
 import { Settings, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '@/contexts/AuthContext';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -12,11 +12,12 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface SettingsMenuSectionProps {
-  role: UserRole;
   isActive: (path: string) => boolean;
 }
 
-export function SettingsMenuSection({ role, isActive }: SettingsMenuSectionProps) {
+export function SettingsMenuSection({ isActive }: SettingsMenuSectionProps) {
+  const { role, hasPermission } = useAuth();
+  
   return (
     <Collapsible className="group/collapsible w-full">
       <SidebarMenuItem>
@@ -40,7 +41,7 @@ export function SettingsMenuSection({ role, isActive }: SettingsMenuSectionProps
             </SidebarMenuSubItem>
             
             {/* Password settings - All roles except HR (has security included) */}
-            {role !== 'HR Officer' && (
+            {role !== UserRole.HR_OFFICER && (
               <SidebarMenuSubItem>
                 <SidebarMenuSubButton 
                   asChild 
@@ -52,29 +53,30 @@ export function SettingsMenuSection({ role, isActive }: SettingsMenuSectionProps
             )}
             
             {/* HR Officer specific settings */}
-            {role === 'HR Officer' && (
-              <>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton 
-                    asChild 
-                    isActive={isActive('/cycle-settings')}
-                  >
-                    <Link to="/cycle-settings">Appraisal Cycle Settings</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton 
-                    asChild 
-                    isActive={isActive('/profile-security')}
-                  >
-                    <Link to="/profile-security">My Profile & Security</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              </>
+            {hasPermission('canManageCycles') && (
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton 
+                  asChild 
+                  isActive={isActive('/cycle-settings')}
+                >
+                  <Link to="/cycle-settings">Appraisal Cycle Settings</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            )}
+            
+            {role === UserRole.HR_OFFICER && (
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton 
+                  asChild 
+                  isActive={isActive('/profile-security')}
+                >
+                  <Link to="/profile-security">My Profile & Security</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
             )}
             
             {/* IT Admin specific settings */}
-            {role === 'IT Admin' && (
+            {hasPermission('canAccessSystemHealth') && (
               <>
                 <SidebarMenuSubItem>
                   <SidebarMenuSubButton 

@@ -1,7 +1,7 @@
 
 import { ClipboardCheck, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { UserRole } from '@/contexts/AuthContext';
+import { useAuth, UserRole } from '@/contexts/AuthContext';
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -12,12 +12,14 @@ import {
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 interface AppraisalsMenuSectionProps {
-  role: UserRole;
   isActive: (path: string) => boolean;
 }
 
-export function AppraisalsMenuSection({ role, isActive }: AppraisalsMenuSectionProps) {
-  if (role === 'Director') return null;
+export function AppraisalsMenuSection({ isActive }: AppraisalsMenuSectionProps) {
+  const { role, hasPermission } = useAuth();
+  
+  // Only directors can't see appraisals
+  if (role === UserRole.DIRECTOR) return null;
   
   return (
     <Collapsible defaultOpen className="group/collapsible w-full">
@@ -38,7 +40,7 @@ export function AppraisalsMenuSection({ role, isActive }: AppraisalsMenuSectionP
                 isActive={isActive('/mid-year-reviews')}
               >
                 <Link to="/mid-year-reviews">
-                  {role === 'Employee' ? 'My Mid-Year Review' : 'Mid-Year Reviews'}
+                  {role === UserRole.EMPLOYEE ? 'My Mid-Year Review' : 'Mid-Year Reviews'}
                 </Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
@@ -50,31 +52,32 @@ export function AppraisalsMenuSection({ role, isActive }: AppraisalsMenuSectionP
                 isActive={isActive('/final-assessments')}
               >
                 <Link to="/final-assessments">
-                  {role === 'Employee' ? 'My Final Assessment' : 'Final Assessments'}
+                  {role === UserRole.EMPLOYEE ? 'My Final Assessment' : 'Final Assessments'}
                 </Link>
               </SidebarMenuSubButton>
             </SidebarMenuSubItem>
             
             {/* HR Officer specific items */}
-            {role === 'HR Officer' && (
-              <>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton 
-                    asChild 
-                    isActive={isActive('/pending-forms')}
-                  >
-                    <Link to="/pending-forms">Pending Forms</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton 
-                    asChild 
-                    isActive={isActive('/flagged-items')}
-                  >
-                    <Link to="/flagged-items">Flagged Items</Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-              </>
+            {hasPermission('canViewPendingForms') && (
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton 
+                  asChild 
+                  isActive={isActive('/pending-forms')}
+                >
+                  <Link to="/pending-forms">Pending Forms</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
+            )}
+            
+            {hasPermission('canViewFlaggedItems') && (
+              <SidebarMenuSubItem>
+                <SidebarMenuSubButton 
+                  asChild 
+                  isActive={isActive('/flagged-items')}
+                >
+                  <Link to="/flagged-items">Flagged Items</Link>
+                </SidebarMenuSubButton>
+              </SidebarMenuSubItem>
             )}
           </SidebarMenuSub>
         </CollapsibleContent>

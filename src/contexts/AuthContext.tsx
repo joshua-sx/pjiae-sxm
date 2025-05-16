@@ -1,13 +1,12 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-
-// Define available roles
-export type UserRole = 'HR Officer' | 'Director' | 'Supervisor' | 'Employee' | 'IT Admin';
+import { UserRole, hasPermission, Capability } from '@/lib/permissions';
 
 // Context interface
 interface AuthContextType {
   role: UserRole;
   setRole: (role: UserRole) => void;
+  hasPermission: (capability: Capability) => boolean;
   // This would be expanded with real auth in the future
 }
 
@@ -17,10 +16,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Provider component
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Change default role to HR Officer temporarily to see the Organization menu
-  const [role, setRole] = useState<UserRole>('HR Officer');
+  const [role, setRole] = useState<UserRole>(UserRole.HR_OFFICER);
+
+  const checkPermission = (capability: Capability): boolean => {
+    return hasPermission(role, capability);
+  };
 
   return (
-    <AuthContext.Provider value={{ role, setRole }}>
+    <AuthContext.Provider value={{ 
+      role, 
+      setRole,
+      hasPermission: checkPermission
+    }}>
       {children}
     </AuthContext.Provider>
   );
@@ -34,3 +41,6 @@ export const useAuth = () => {
   }
   return context;
 };
+
+// Re-export UserRole for convenience
+export { UserRole, type Capability } from '@/lib/permissions';
