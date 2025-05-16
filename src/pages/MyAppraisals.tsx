@@ -22,8 +22,10 @@ const MyAppraisals = () => {
   const { searchQuery, setSearchQuery, statusFilter, setStatusFilter } = useUIState();
   const [currentTab, setCurrentTab] = useState("my");
   const { role } = useAuth();
-  // Fix comparison by using string literal instead of enum comparison
-  const isManager = role === "Manager" || role === "Director";
+  
+  // Fix the type comparison by using string literals explicitly
+  // We'll cast role to a string to resolve the type mismatch
+  const isManager = (role as string) === "Manager" || (role as string) === "Director";
 
   const { data: appraisals, isLoading, isError, error, refetch } = useAppraisalsQuery();
 
