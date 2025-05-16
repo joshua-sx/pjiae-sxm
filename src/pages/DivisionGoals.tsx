@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -10,12 +11,13 @@ import DivisionGoalsContent from '@/components/divisions/DivisionGoalsContent';
 import DivisionGoalsDialogs from '@/components/divisions/DivisionGoalsDialogs';
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
+import { UserRole } from '@/lib/permissions';
 
 const DivisionGoals = () => {
   const { role } = useAuth();
-  const isHROrIT = role === 'HR Officer' || role === 'IT Admin';
-  const isDirector = role === 'Director';
-  const isReadOnly = role === 'IT Admin';
+  const isHROrIT = role === UserRole.HR_OFFICER || role === UserRole.IT_ADMIN;
+  const isDirector = role === UserRole.DIRECTOR;
+  const isReadOnly = role === UserRole.IT_ADMIN;
   
   // Use our custom hook for division goals filtering UI state
   const {
@@ -42,14 +44,34 @@ const DivisionGoals = () => {
   const [isFlagDialogOpen, setIsFlagDialogOpen] = useState(false);
   const [isApproveDialogOpen, setIsApproveDialogOpen] = useState(false);
   
-  // Handle flag goal action
+  // Handle flag goal action - now with permission check
   const handleFlagGoal = (goal: UnifiedGoal) => {
+    // Only HR Officers can flag goals
+    if (role !== UserRole.HR_OFFICER) {
+      toast({
+        title: "Permission Denied",
+        description: "Only HR Officers can flag goals",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setSelectedGoal(goal);
     setIsFlagDialogOpen(true);
   };
   
-  // Handle approve goal action - opens the approval dialog
+  // Handle approve goal action - now with permission check
   const handleApproveGoalClick = (goal: UnifiedGoal) => {
+    // Only HR Officers can approve goals
+    if (role !== UserRole.HR_OFFICER) {
+      toast({
+        title: "Permission Denied",
+        description: "Only HR Officers can approve goals",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setSelectedGoal(goal);
     setIsApproveDialogOpen(true);
   };
@@ -199,6 +221,7 @@ const DivisionGoals = () => {
           sortDirection={sortDirection}
           handleSort={handleSort}
           isReadOnly={isReadOnly}
+          userRole={role}
         />
       </div>
 

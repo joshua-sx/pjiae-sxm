@@ -6,6 +6,7 @@ import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { SortColumn, SortDirection } from '@/hooks/useDivisionGoals';
+import { UserRole } from '@/lib/permissions';
 
 interface DivisionGoalsContentProps {
   isLoading: boolean;
@@ -19,6 +20,7 @@ interface DivisionGoalsContentProps {
   sortDirection: SortDirection;
   handleSort: (column: SortColumn) => void;
   isReadOnly: boolean;
+  userRole: UserRole; // Add user role property
 }
 
 const DivisionGoalsContent = ({
@@ -32,7 +34,8 @@ const DivisionGoalsContent = ({
   sortColumn,
   sortDirection,
   handleSort,
-  isReadOnly
+  isReadOnly,
+  userRole // Add user role parameter
 }: DivisionGoalsContentProps) => {
   if (isLoading) {
     return (
@@ -84,6 +87,7 @@ const DivisionGoalsContent = ({
             sortColumn={sortColumn}
             sortDirection={sortDirection}
             onSort={handleSort}
+            userRole={userRole} // Pass user role to the table
           />
         ) : (
           <div className="text-center py-10">
