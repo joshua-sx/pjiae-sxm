@@ -1,4 +1,3 @@
-
 import React, { Suspense } from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,7 +8,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Loading from "./components/Loading";
 
 // Core pages - Lazy loaded
-const Index = React.lazy(() => import("./pages/Index"));
+const Index = React.lazy(() => import("./pages/index")); // Changed from Index.tsx to index
 const Login = React.lazy(() => import("./pages/Login"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
 const Help = React.lazy(() => import("./pages/Help"));
