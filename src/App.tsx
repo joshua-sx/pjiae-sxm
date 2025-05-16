@@ -1,78 +1,65 @@
 
-import React, { Suspense, lazy } from 'react';
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
-import Loading from "./components/Loading";
 
-// Create a centralized lazy loading function to handle potential import errors
-const lazyLoad = (pageName: string) => {
-  return lazy(() => 
-    import('./pages/index')
-      .then(module => ({ default: module[pageName] }))
-      .catch(error => {
-        console.error(`Error loading ${pageName}:`, error);
-        return { default: () => <div>Failed to load {pageName}</div> };
-      })
-  );
-};
+// Core pages
+import Index from "./pages/Index";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
+import Help from "./pages/Help";
 
-// Core pages - Lazy loaded with error handling
-const Index = lazyLoad('IndexPage');
-const Login = lazyLoad('LoginPage');
-const NotFound = lazyLoad('NotFoundPage');
-const Help = lazyLoad('HelpPage');
+// Appraisal pages
+import MyAppraisals from "./pages/MyAppraisals";
+import AppraisalDetail from "./pages/AppraisalDetail";
+import PendingForms from "./pages/PendingForms";
+import FlaggedItems from "./pages/FlaggedItems";
+import MidYearReviews from "./pages/MidYearReviews";
+import FinalAssessments from "./pages/FinalAssessments";
 
-// Appraisal pages - Lazy loaded
-const MyAppraisals = lazyLoad('MyAppraisalsPage');
-const AppraisalDetail = lazyLoad('AppraisalDetailPage');
-const PendingForms = lazyLoad('PendingFormsPage');
-const FlaggedItems = lazyLoad('FlaggedItemsPage');
-const MidYearReviews = lazyLoad('MidYearReviewsPage');
-const FinalAssessments = lazyLoad('FinalAssessmentsPage');
+// Organization/Users
+import Organization from "./pages/Organization";
+import EmployeeDetail from "./pages/EmployeeDetail";
+import AppraiserAssignment from "./pages/AppraiserAssignment";
+import UserList from "./pages/UserList";
+import RoleAssignment from "./pages/RoleAssignment";
+import AccessLogs from "./pages/AccessLogs";
 
-// Organization/Users - Lazy loaded
-const Organization = lazyLoad('OrganizationPage');
-const EmployeeDetail = lazyLoad('EmployeeDetailPage');
-const AppraiserAssignment = lazyLoad('AppraiserAssignmentPage');
-const UserList = lazyLoad('UserListPage');
-const RoleAssignment = lazyLoad('RoleAssignmentPage');
-const AccessLogs = lazyLoad('AccessLogsPage');
+// Goal management pages
+import Goals from "./pages/Goals"; 
+import DivisionGoals from "./pages/DivisionGoals";
+import EmployeeGoals from "./pages/EmployeeGoals";
+import DepartmentGoalDetail from "./pages/DepartmentGoalDetail";
+import DepartmentGoalForm from "./pages/DepartmentGoalForm";
+import EmployeeGoalDetail from "./pages/EmployeeGoalDetail";
+import HRGoalsDashboard from "./pages/HRGoalsDashboard";
 
-// Goal management pages - Lazy loaded
-const Goals = lazyLoad('GoalsPage');
-const DivisionGoals = lazyLoad('DivisionGoalsPage');
-const EmployeeGoals = lazyLoad('EmployeeGoalsPage');
-const DepartmentGoalDetail = lazyLoad('DepartmentGoalDetailPage');
-const DepartmentGoalForm = lazyLoad('DepartmentGoalFormPage');
-const EmployeeGoalDetail = lazyLoad('EmployeeGoalDetailPage');
-const HRGoalsDashboard = lazyLoad('HRGoalsDashboardPage');
+// Reports and Analytics
+import Reports from "./pages/Reports";
+import GoalsAnalytics from "./pages/GoalsAnalytics";
+import MidYearReports from "./pages/MidYearReports";
+import FinalAssessmentReports from "./pages/FinalAssessmentReports";
+import SystemUsageReports from "./pages/SystemUsageReports";
+import ErrorPerformanceMetrics from "./pages/ErrorPerformanceMetrics";
 
-// Reports and Analytics - Lazy loaded
-const Reports = lazyLoad('ReportsPage');
-const GoalsAnalytics = lazyLoad('GoalsAnalyticsPage');
-const MidYearReports = lazyLoad('MidYearReportsPage');
-const FinalAssessmentReports = lazyLoad('FinalAssessmentReportsPage');
-const SystemUsageReports = lazyLoad('SystemUsageReportsPage');
-const ErrorPerformanceMetrics = lazyLoad('ErrorPerformanceMetricsPage');
+// Settings pages
+import CycleSettings from "./pages/CycleSettings";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
+import ProfileSecurity from "./pages/ProfileSecurity";
+import AppSettings from "./pages/AppSettings";
+import BackupRestore from "./pages/BackupRestore";
+import CICDConfiguration from "./pages/CICDConfiguration";
 
-// Settings pages - Lazy loaded
-const CycleSettings = lazyLoad('CycleSettingsPage');
-const Profile = lazyLoad('ProfilePage');
-const ChangePassword = lazyLoad('ChangePasswordPage');
-const ProfileSecurity = lazyLoad('ProfileSecurityPage');
-const AppSettings = lazyLoad('AppSettingsPage');
-const BackupRestore = lazyLoad('BackupRestorePage');
-const CICDConfiguration = lazyLoad('CICDConfigurationPage');
+// IT Admin pages
+import SystemHealth from "./pages/SystemHealth";
 
-// IT Admin pages - Lazy loaded
-const SystemHealth = lazyLoad('SystemHealthPage');
-
-// Audit logs - Lazy loaded
-const AuditLogs = lazyLoad('AuditLogsPage');
+// Audit logs
+import AuditLogs from "./pages/AuditLogs";
 
 // Initialize the query client
 const queryClient = new QueryClient();
@@ -86,333 +73,60 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <Routes>
-              <Route 
-                path="/login" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Login />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Index />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/help" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Help />
-                  </Suspense>
-                } 
-              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/" element={<Index />} />
+              <Route path="/help" element={<Help />} />
               
               {/* Appraisals */}
-              <Route 
-                path="/my-appraisals" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <MyAppraisals />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/appraisal/:id" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <AppraisalDetail />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/pending-forms" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <PendingForms />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/flagged-items" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <FlaggedItems />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/mid-year-reviews" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <MidYearReviews />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/final-assessments" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <FinalAssessments />
-                  </Suspense>
-                } 
-              />
+              <Route path="/my-appraisals" element={<MyAppraisals />} />
+              <Route path="/appraisal/:id" element={<AppraisalDetail />} />
+              <Route path="/pending-forms" element={<PendingForms />} />
+              <Route path="/flagged-items" element={<FlaggedItems />} />
+              <Route path="/mid-year-reviews" element={<MidYearReviews />} />
+              <Route path="/final-assessments" element={<FinalAssessments />} />
               
               {/* User Management */}
-              <Route 
-                path="/organization" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Organization />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/employee/:id" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <EmployeeDetail />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/appraiser-assignments" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <AppraiserAssignment />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/user-list" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <UserList />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/role-assignment" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <RoleAssignment />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/access-logs" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <AccessLogs />
-                  </Suspense>
-                } 
-              />
+              <Route path="/organization" element={<Organization />} />
+              <Route path="/employee/:id" element={<EmployeeDetail />} />
+              <Route path="/appraiser-assignments" element={<AppraiserAssignment />} />
+              <Route path="/user-list" element={<UserList />} />
+              <Route path="/role-assignment" element={<RoleAssignment />} />
+              <Route path="/access-logs" element={<AccessLogs />} />
               
               {/* Goals */}
-              <Route 
-                path="/goals" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Goals />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/division-goals" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <DivisionGoals />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/employee-goals" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <EmployeeGoals />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/department-goals/:id" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <DepartmentGoalDetail />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/department-goals/create" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <DepartmentGoalForm />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/department-goals/edit/:id" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <DepartmentGoalForm />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/employee-goals/:id" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <EmployeeGoalDetail />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/hr-goals-dashboard" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <HRGoalsDashboard />
-                  </Suspense>
-                } 
-              />
+              <Route path="/goals" element={<Goals />} />
+              <Route path="/division-goals" element={<DivisionGoals />} />
+              <Route path="/employee-goals" element={<EmployeeGoals />} />
+              <Route path="/department-goals/:id" element={<DepartmentGoalDetail />} />
+              <Route path="/department-goals/create" element={<DepartmentGoalForm />} />
+              <Route path="/department-goals/edit/:id" element={<DepartmentGoalForm />} />
+              <Route path="/employee-goals/:id" element={<EmployeeGoalDetail />} />
+              <Route path="/hr-goals-dashboard" element={<HRGoalsDashboard />} />
               
               {/* Reports and Analytics */}
-              <Route 
-                path="/reports" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Reports />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/goals-analytics" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <GoalsAnalytics />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/mid-year-reports" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <MidYearReports />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/final-assessment-reports" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <FinalAssessmentReports />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/system-usage-reports" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <SystemUsageReports />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/error-performance-metrics" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <ErrorPerformanceMetrics />
-                  </Suspense>
-                } 
-              />
+              <Route path="/reports" element={<Reports />} />
+              <Route path="/goals-analytics" element={<GoalsAnalytics />} />
+              <Route path="/mid-year-reports" element={<MidYearReports />} />
+              <Route path="/final-assessment-reports" element={<FinalAssessmentReports />} />
+              <Route path="/system-usage-reports" element={<SystemUsageReports />} />
+              <Route path="/error-performance-metrics" element={<ErrorPerformanceMetrics />} />
               
               {/* Settings */}
-              <Route 
-                path="/cycle-settings" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <CycleSettings />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/profile" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <Profile />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/change-password" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <ChangePassword />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/profile-security" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <ProfileSecurity />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/app-settings" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <AppSettings />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/backup-restore" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <BackupRestore />
-                  </Suspense>
-                } 
-              />
-              <Route 
-                path="/ci-cd-configuration" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <CICDConfiguration />
-                  </Suspense>
-                } 
-              />
+              <Route path="/cycle-settings" element={<CycleSettings />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/change-password" element={<ChangePassword />} />
+              <Route path="/profile-security" element={<ProfileSecurity />} />
+              <Route path="/app-settings" element={<AppSettings />} />
+              <Route path="/backup-restore" element={<BackupRestore />} />
+              <Route path="/ci-cd-configuration" element={<CICDConfiguration />} />
               
               {/* IT Admin */}
-              <Route 
-                path="/system-health" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <SystemHealth />
-                  </Suspense>
-                } 
-              />
+              <Route path="/system-health" element={<SystemHealth />} />
               
               {/* Audit Logs */}
-              <Route 
-                path="/audit-logs" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <AuditLogs />
-                  </Suspense>
-                } 
-              />
+              <Route path="/audit-logs" element={<AuditLogs />} />
               
-              <Route 
-                path="*" 
-                element={
-                  <Suspense fallback={<Loading />}>
-                    <NotFound />
-                  </Suspense>
-                } 
-              />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>
