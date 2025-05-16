@@ -12,7 +12,7 @@ import { useAuth, UserRole } from "@/contexts/AuthContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [selectedRole, setSelectedRole] = useState<UserRole>("Employee");
+  const [selectedRole, setSelectedRole] = useState<UserRole>(UserRole.EMPLOYEE);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
