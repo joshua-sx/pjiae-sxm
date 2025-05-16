@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Plus, Download, History, Trash } from 'lucide-react';
+import { Plus, Download, History, Trash, FileText } from 'lucide-react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { 
