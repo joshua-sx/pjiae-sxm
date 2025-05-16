@@ -1,0 +1,66 @@
+
+[
+  {
+    "id": "1",
+    "title": "Goal Setting 2023",
+    "status": "completed",
+    "cycle": "Q1 2023",
+    "dueDate": "2023-01-31",
+    "employeeId": "101",
+    "employeeName": "John Smith"
+  },
+  {
+    "id": "2",
+    "title": "Mid-Year Review 2023",
+    "status": "completed",
+    "cycle": "Q2 2023",
+    "dueDate": "2023-06-30",
+    "employeeId": "101",
+    "employeeName": "John Smith"
+  },
+  {
+    "id": "3",
+    "title": "Year-End Evaluation 2023",
+    "status": "pending",
+    "cycle": "Q4 2023",
+    "dueDate": "2023-11-30",
+    "employeeId": "101",
+    "employeeName": "John Smith"
+  },
+  {
+    "id": "4",
+    "title": "Goal Setting",
+    "status": "flagged",
+    "cycle": "Q1 2023",
+    "dueDate": "2023-01-31",
+    "employeeId": "102",
+    "employeeName": "Sarah Johnson"
+  },
+  {
+    "id": "5",
+    "title": "Mid-Year Review",
+    "status": "completed",
+    "cycle": "Q2 2023",
+    "dueDate": "2023-06-30",
+    "employeeId": "102",
+    "employeeName": "Sarah Johnson"
+  },
+  {
+    "id": "6",
+    "title": "Year-End Evaluation",
+    "status": "approved",
+    "cycle": "Q4 2023",
+    "dueDate": "2023-11-30",
+    "employeeId": "103",
+    "employeeName": "Michael Brown"
+  },
+  {
+    "id": "7",
+    "title": "Year-End Evaluation",
+    "status": "appealed",
+    "cycle": "Q4 2023",
+    "dueDate": "2023-11-30",
+    "employeeId": "104",
+    "employeeName": "David Wilson"
+  }
+]

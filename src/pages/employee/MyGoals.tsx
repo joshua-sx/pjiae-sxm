@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
@@ -8,38 +8,64 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Plus, Eye } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
-
-// Mock goals
-const mockGoals = [
-  {
-    id: '1',
-    title: 'Complete Project X Documentation',
-    description: 'Finalize all technical documentation for Project X',
-    status: 'In Progress',
-    progress: 60,
-    dueDate: '2024-06-30',
-  },
-  {
-    id: '2',
-    title: 'Improve Customer Response Time',
-    description: 'Reduce average customer response time from 24 hours to 4 hours',
-    status: 'Not Started',
-    progress: 0,
-    dueDate: '2024-07-15',
-  },
-  {
-    id: '3',
-    title: 'Learn New Framework',
-    description: 'Complete online course and build a sample application',
-    status: 'Completed',
-    progress: 100,
-    dueDate: '2024-05-31',
-  }
-];
+import { useGoalsQuery } from '@/hooks/useGoalsQuery';
+import { LoadingState } from '@/components/ui/loading-state';
+import { ErrorAlert } from '@/components/ui/error-alert';
 
 const MyGoals = () => {
   const { hasPermission } = useAuth();
   const canProposeGoal = hasPermission('canProposeGoal') || hasPermission('canSubmitSelfReview');
+  
+  const { data: goals, isLoading, isError, error, refetch } = useGoalsQuery({
+    select: (data) => data.filter(goal => goal.employeeId === "101") // In a real app, use the current user's ID
+  });
+  
+  const getBadgeVariant = (status: string) => {
+    switch(status) {
+      case 'Completed': return 'secondary';
+      case 'In Progress': return 'default';
+      default: return 'outline';
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">My Goals</h1>
+              <p className="text-muted-foreground mt-2">Track and manage your personal goals</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <LoadingState count={3} variant="card" />
+          </div>
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold">My Goals</h1>
+              <p className="text-muted-foreground mt-2">Track and manage your personal goals</p>
+            </div>
+          </div>
+          <ErrorAlert 
+            title="Failed to load goals" 
+            description="Unable to retrieve your goals at this time." 
+            error={error}
+            onRetry={refetch}
+          />
+        </div>
+      </MainLayout>
+    );
+  }
   
   return (
     <MainLayout>
@@ -61,17 +87,12 @@ const MyGoals = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mockGoals.map((goal) => (
+          {goals && goals.map((goal) => (
             <Card key={goal.id} className="flex flex-col">
               <CardHeader className="pb-2">
                 <div className="flex items-start justify-between">
                   <CardTitle className="text-lg">{goal.title}</CardTitle>
-                  <Badge 
-                    variant={
-                      goal.status === 'Completed' ? 'secondary' :
-                      goal.status === 'In Progress' ? 'default' : 'outline'
-                    }
-                  >
+                  <Badge variant={getBadgeVariant(goal.status)}>
                     {goal.status}
                   </Badge>
                 </div>
@@ -99,7 +120,7 @@ const MyGoals = () => {
             </Card>
           ))}
           
-          {mockGoals.length === 0 && (
+          {goals && goals.length === 0 && (
             <Card className="col-span-full p-8 text-center">
               <p className="text-muted-foreground mb-4">You don't have any goals yet.</p>
               {canProposeGoal && (

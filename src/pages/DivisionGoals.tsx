@@ -10,11 +10,14 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { LoadingState } from "@/components/ui/loading-state";
+import { ErrorAlert } from "@/components/ui/error-alert";
 import DivisionGoalsTable from '@/components/goals/DivisionGoalsTable';
 import FlagCommentDialog from '@/components/goals/FlagCommentDialog';
 import ApproveGoalDialog from '@/components/goals/ApproveGoalDialog';
 import { toast } from '@/components/ui/use-toast';
 import { UnifiedGoal } from '@/types/unifiedGoals';
+import { useDivisionGoalsQuery } from '@/hooks/useDepartmentGoalsQuery';
 import { useDivisionGoals } from '@/hooks/useDivisionGoals';
 
 const DivisionGoals = () => {
@@ -22,19 +25,25 @@ const DivisionGoals = () => {
   const isHROrIT = role === 'HR Officer' || role === 'IT Admin';
   const isReadOnly = role === 'IT Admin';
   
-  // Use our custom hook for division goals
+  // Use our custom hook for division goals filtering UI state
   const {
-    filteredGoals,
-    divisionFilter,
-    setDivisionFilter,
-    yearFilter,
-    setYearFilter,
-    parentDivisions,
-    availableYears,
     sortColumn,
     sortDirection,
     handleSort
   } = useDivisionGoals();
+
+  // State for filters
+  const [divisionFilter, setDivisionFilter] = useState('all');
+  const [yearFilter, setYearFilter] = useState('all');
+  
+  // Fetch data with React Query
+  const { 
+    data: departmentGoals, 
+    isLoading, 
+    isError, 
+    error, 
+    refetch 
+  } = useDivisionGoalsQuery();
 
   // State for dialogs
   const [selectedGoal, setSelectedGoal] = useState<UnifiedGoal | null>(null);
@@ -72,6 +81,74 @@ const DivisionGoals = () => {
     });
     setIsApproveDialogOpen(false);
   };
+
+  // Calculate available divisions from data
+  const divisions = departmentGoals 
+    ? [{ id: 'all', name: 'All Divisions' }, ...departmentGoals.map(goal => ({
+        id: goal.departmentId,
+        name: goal.departmentName
+      }))]
+    : [{ id: 'all', name: 'All Divisions' }];
+
+  // Remove duplicates from divisions array
+  const uniqueDivisions = divisions.filter(
+    (division, index, self) => 
+      index === self.findIndex((d) => d.id === division.id)
+  );
+
+  // Available years for filtering
+  const availableYears = ['all', '2023', '2024'];
+
+  // Filter goals based on selected filters
+  const filteredGoals = departmentGoals?.filter(goal => {
+    const matchesDivision = divisionFilter === 'all' || goal.departmentId === divisionFilter;
+    // We would extract year from dueDate in a real app
+    const matchesYear = yearFilter === 'all' || goal.dueDate.includes(yearFilter);
+    return matchesDivision && matchesYear;
+  }) || [];
+  
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold">Division Goals</h1>
+            <p className="text-muted-foreground mt-2">
+              {isReadOnly 
+                ? 'View division-level goals and their progress' 
+                : 'Manage and track division-level strategic goals'}
+            </p>
+          </div>
+          
+          <LoadingState count={6} variant="table" />
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold">Division Goals</h1>
+            <p className="text-muted-foreground mt-2">
+              {isReadOnly 
+                ? 'View division-level goals and their progress' 
+                : 'Manage and track division-level strategic goals'}
+            </p>
+          </div>
+          
+          <ErrorAlert 
+            title="Failed to load division goals" 
+            description="Unable to retrieve division goals at this time." 
+            error={error}
+            onRetry={refetch}
+          />
+        </div>
+      </MainLayout>
+    );
+  }
   
   return (
     <MainLayout>
@@ -97,7 +174,7 @@ const DivisionGoals = () => {
                 <SelectValue placeholder="Select division" />
               </SelectTrigger>
               <SelectContent>
-                {parentDivisions.map((division) => (
+                {uniqueDivisions.map((division) => (
                   <SelectItem key={division.id} value={division.id}>
                     {division.name}
                   </SelectItem>

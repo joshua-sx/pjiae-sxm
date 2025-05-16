@@ -1,0 +1,48 @@
+
+[
+  {
+    "id": "1",
+    "title": "Performance Review Guidelines",
+    "type": "pdf",
+    "createdAt": "2023-01-15",
+    "size": "1.2 MB",
+    "createdBy": "Lisa Garcia",
+    "category": "Guidelines"
+  },
+  {
+    "id": "2",
+    "title": "Goal Setting Template",
+    "type": "docx",
+    "createdAt": "2023-02-10",
+    "size": "420 KB",
+    "createdBy": "Lisa Garcia",
+    "category": "Templates"
+  },
+  {
+    "id": "3",
+    "title": "Employee Handbook 2023",
+    "type": "pdf",
+    "createdAt": "2023-03-01",
+    "size": "3.5 MB",
+    "createdBy": "Lisa Garcia",
+    "category": "Handbooks"
+  },
+  {
+    "id": "4",
+    "title": "Performance Improvement Plan Template",
+    "type": "docx",
+    "createdAt": "2023-03-15",
+    "size": "350 KB",
+    "createdBy": "Lisa Garcia",
+    "category": "Templates"
+  },
+  {
+    "id": "5",
+    "title": "Quarterly Review Checklist",
+    "type": "xlsx",
+    "createdAt": "2023-04-05",
+    "size": "180 KB",
+    "createdBy": "Robert Miller",
+    "category": "Checklists"
+  }
+]

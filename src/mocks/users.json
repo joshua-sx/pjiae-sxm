@@ -1,0 +1,75 @@
+
+[
+  {
+    "id": "101",
+    "name": "John Smith",
+    "email": "john.smith@example.com",
+    "department": "IT",
+    "position": "Senior Developer",
+    "managerId": "105",
+    "role": "Employee"
+  },
+  {
+    "id": "102",
+    "name": "Sarah Johnson",
+    "email": "sarah.johnson@example.com",
+    "department": "Customer Service",
+    "position": "Customer Support Lead",
+    "managerId": "106",
+    "role": "Employee"
+  },
+  {
+    "id": "103",
+    "name": "Michael Brown",
+    "email": "michael.brown@example.com",
+    "department": "IT",
+    "position": "Database Administrator",
+    "managerId": "105",
+    "role": "Employee"
+  },
+  {
+    "id": "104",
+    "name": "David Wilson",
+    "email": "david.wilson@example.com",
+    "department": "Sales",
+    "position": "Account Executive",
+    "managerId": "106",
+    "role": "Employee"
+  },
+  {
+    "id": "105",
+    "name": "Jennifer Lee",
+    "email": "jennifer.lee@example.com",
+    "department": "IT",
+    "position": "IT Director",
+    "managerId": null,
+    "role": "Director"
+  },
+  {
+    "id": "106",
+    "name": "Robert Miller",
+    "email": "robert.miller@example.com",
+    "department": "Operations",
+    "position": "Operations Director",
+    "managerId": null,
+    "role": "Director"
+  },
+  {
+    "id": "107",
+    "name": "Lisa Garcia",
+    "email": "lisa.garcia@example.com",
+    "department": "HR",
+    "position": "HR Officer",
+    "managerId": null,
+    "role": "HR Officer"
+  },
+  {
+    "id": "108",
+    "name": "James Anderson",
+    "email": "james.anderson@example.com",
+    "department": "IT",
+    "position": "IT Admin",
+    "managerId": "105",
+    "role": "IT Admin"
+  }
+]

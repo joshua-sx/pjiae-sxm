@@ -1,0 +1,63 @@
+
+[
+  {
+    "id": "1",
+    "title": "Increase IT Department Efficiency",
+    "description": "Implement new project management tools and methodologies to increase team productivity by 20%",
+    "departmentId": "IT",
+    "departmentName": "Information Technology",
+    "progress": 65,
+    "status": "in-progress",
+    "dueDate": "2023-12-31",
+    "assignedBy": "Jennifer Lee",
+    "createdAt": "2023-01-15"
+  },
+  {
+    "id": "2",
+    "title": "Reduce Customer Support Response Time",
+    "description": "Decrease average ticket response time from 24 hours to 4 hours through improved workflows and training",
+    "departmentId": "CS",
+    "departmentName": "Customer Service",
+    "progress": 80,
+    "status": "in-progress",
+    "dueDate": "2023-10-01",
+    "assignedBy": "Robert Miller",
+    "createdAt": "2023-02-01"
+  },
+  {
+    "id": "3",
+    "title": "Increase Sales Revenue",
+    "description": "Achieve 15% year-over-year sales growth through new market development and improved lead conversion",
+    "departmentId": "SALES",
+    "departmentName": "Sales",
+    "progress": 45,
+    "status": "in-progress",
+    "dueDate": "2023-12-31",
+    "assignedBy": "Robert Miller",
+    "createdAt": "2023-01-20"
+  },
+  {
+    "id": "4",
+    "title": "Modernize HR Systems",
+    "description": "Implement new HR management system to improve employee onboarding and performance tracking",
+    "departmentId": "HR",
+    "departmentName": "Human Resources",
+    "progress": 30,
+    "status": "submitted",
+    "dueDate": "2023-11-15",
+    "assignedBy": "Lisa Garcia",
+    "createdAt": "2023-03-10"
+  },
+  {
+    "id": "5",
+    "title": "Optimize Supply Chain Operations",
+    "description": "Reduce supply chain costs by 10% through improved vendor management and logistics optimization",
+    "departmentId": "OPS",
+    "departmentName": "Operations",
+    "progress": 20,
+    "status": "draft",
+    "dueDate": "2023-12-01",
+    "assignedBy": "Robert Miller",
+    "createdAt": "2023-04-05"
+  }
+]

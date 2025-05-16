@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
+import { UIStateProvider } from "./contexts/UIStateContext";
 
 // Core pages
 import Index from "./pages/Index";
@@ -84,8 +85,10 @@ import EmployeeFinalReview from "./pages/employee/FinalReview";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
+      retry: 1,
       refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      cacheTime: 1000 * 60 * 30, // 30 minutes
     },
   },
 });
@@ -94,87 +97,89 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route path="/" element={<Index />} />
-              <Route path="/help" element={<Help />} />
-              
-              {/* Appraisals */}
-              <Route path="/my-appraisals" element={<MyAppraisals />} />
-              <Route path="/appraisal/:id" element={<AppraisalDetail />} />
-              <Route path="/pending-forms" element={<PendingForms />} />
-              <Route path="/flagged-items" element={<FlaggedItems />} />
-              <Route path="/mid-year-reviews" element={<MidYearReviews />} />
-              <Route path="/final-assessments" element={<FinalAssessments />} />
-              
-              {/* User Management */}
-              <Route path="/organization" element={<Organization />} />
-              <Route path="/employee/:id" element={<EmployeeDetail />} />
-              <Route path="/appraiser-assignments" element={<AppraiserAssignment />} />
-              <Route path="/user-list" element={<UserList />} />
-              <Route path="/role-assignment" element={<RoleAssignment />} />
-              <Route path="/access-logs" element={<AccessLogs />} />
-              
-              {/* Goals */}
-              <Route path="/goals" element={<Goals />} />
-              <Route path="/division-goals" element={<DivisionGoals />} />
-              <Route path="/employee-goals" element={<EmployeeGoals />} />
-              <Route path="/department-goals/:id" element={<DepartmentGoalDetail />} />
-              <Route path="/department-goals/create" element={<DepartmentGoalForm />} />
-              <Route path="/department-goals/edit/:id" element={<DepartmentGoalForm />} />
-              <Route path="/employee-goals/:id" element={<EmployeeGoalDetail />} />
-              <Route path="/hr-goals-dashboard" element={<HRGoalsDashboard />} />
-              
-              {/* Reports and Analytics */}
-              <Route path="/reports" element={<Reports />} />
-              <Route path="/goals-analytics" element={<GoalsAnalytics />} />
-              <Route path="/mid-year-reports" element={<MidYearReports />} />
-              <Route path="/final-assessment-reports" element={<FinalAssessmentReports />} />
-              <Route path="/system-usage-reports" element={<SystemUsageReports />} />
-              <Route path="/error-performance-metrics" element={<ErrorPerformanceMetrics />} />
-              
-              {/* Settings */}
-              <Route path="/cycle-settings" element={<CycleSettings />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/change-password" element={<ChangePassword />} />
-              <Route path="/profile-security" element={<ProfileSecurity />} />
-              <Route path="/app-settings" element={<AppSettings />} />
-              <Route path="/backup-restore" element={<BackupRestore />} />
-              <Route path="/ci-cd-configuration" element={<CICDConfiguration />} />
-              
-              {/* IT Admin */}
-              <Route path="/system-health" element={<SystemHealth />} />
-              
-              {/* Audit Logs */}
-              <Route path="/audit-logs" element={<AuditLogs />} />
-              
-              {/* HR Officer Routes */}
-              <Route path="/hr/documents" element={<Documents />} />
-              <Route path="/hr/users" element={<UserManagement />} />
-              
-              {/* Director Routes */}
-              <Route path="/director/appraisals" element={<AppraisalOversight />} />
-              <Route path="/director/appraisals/:id" element={<AppraisalDetailDirector />} />
-              
-              {/* Manager Routes */}
-              <Route path="/employee-goals/create" element={<EmployeeGoalForm />} />
-              <Route path="/manager/mid-year-review" element={<ManagerMidYearReview />} />
-              <Route path="/manager/final-review" element={<ManagerFinalReview />} />
-              
-              {/* Employee Routes */}
-              <Route path="/my-goals" element={<MyGoals />} />
-              <Route path="/my-goals/propose" element={<ProposeGoal />} />
-              <Route path="/my/mid-year-review" element={<EmployeeMidYearReview />} />
-              <Route path="/my/final-review" element={<EmployeeFinalReview />} />
-              
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
+        <UIStateProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Index />} />
+                <Route path="/help" element={<Help />} />
+                
+                {/* Appraisals */}
+                <Route path="/my-appraisals" element={<MyAppraisals />} />
+                <Route path="/appraisal/:id" element={<AppraisalDetail />} />
+                <Route path="/pending-forms" element={<PendingForms />} />
+                <Route path="/flagged-items" element={<FlaggedItems />} />
+                <Route path="/mid-year-reviews" element={<MidYearReviews />} />
+                <Route path="/final-assessments" element={<FinalAssessments />} />
+                
+                {/* User Management */}
+                <Route path="/organization" element={<Organization />} />
+                <Route path="/employee/:id" element={<EmployeeDetail />} />
+                <Route path="/appraiser-assignments" element={<AppraiserAssignment />} />
+                <Route path="/user-list" element={<UserList />} />
+                <Route path="/role-assignment" element={<RoleAssignment />} />
+                <Route path="/access-logs" element={<AccessLogs />} />
+                
+                {/* Goals */}
+                <Route path="/goals" element={<Goals />} />
+                <Route path="/division-goals" element={<DivisionGoals />} />
+                <Route path="/employee-goals" element={<EmployeeGoals />} />
+                <Route path="/department-goals/:id" element={<DepartmentGoalDetail />} />
+                <Route path="/department-goals/create" element={<DepartmentGoalForm />} />
+                <Route path="/department-goals/edit/:id" element={<DepartmentGoalForm />} />
+                <Route path="/employee-goals/:id" element={<EmployeeGoalDetail />} />
+                <Route path="/hr-goals-dashboard" element={<HRGoalsDashboard />} />
+                
+                {/* Reports and Analytics */}
+                <Route path="/reports" element={<Reports />} />
+                <Route path="/goals-analytics" element={<GoalsAnalytics />} />
+                <Route path="/mid-year-reports" element={<MidYearReports />} />
+                <Route path="/final-assessment-reports" element={<FinalAssessmentReports />} />
+                <Route path="/system-usage-reports" element={<SystemUsageReports />} />
+                <Route path="/error-performance-metrics" element={<ErrorPerformanceMetrics />} />
+                
+                {/* Settings */}
+                <Route path="/cycle-settings" element={<CycleSettings />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/change-password" element={<ChangePassword />} />
+                <Route path="/profile-security" element={<ProfileSecurity />} />
+                <Route path="/app-settings" element={<AppSettings />} />
+                <Route path="/backup-restore" element={<BackupRestore />} />
+                <Route path="/ci-cd-configuration" element={<CICDConfiguration />} />
+                
+                {/* IT Admin */}
+                <Route path="/system-health" element={<SystemHealth />} />
+                
+                {/* Audit Logs */}
+                <Route path="/audit-logs" element={<AuditLogs />} />
+                
+                {/* HR Officer Routes */}
+                <Route path="/hr/documents" element={<Documents />} />
+                <Route path="/hr/users" element={<UserManagement />} />
+                
+                {/* Director Routes */}
+                <Route path="/director/appraisals" element={<AppraisalOversight />} />
+                <Route path="/director/appraisals/:id" element={<AppraisalDetailDirector />} />
+                
+                {/* Manager Routes */}
+                <Route path="/employee-goals/create" element={<EmployeeGoalForm />} />
+                <Route path="/manager/mid-year-review" element={<ManagerMidYearReview />} />
+                <Route path="/manager/final-review" element={<ManagerFinalReview />} />
+                
+                {/* Employee Routes */}
+                <Route path="/my-goals" element={<MyGoals />} />
+                <Route path="/my-goals/propose" element={<ProposeGoal />} />
+                <Route path="/my/mid-year-review" element={<EmployeeMidYearReview />} />
+                <Route path="/my/final-review" element={<EmployeeFinalReview />} />
+                
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </UIStateProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

@@ -1,0 +1,53 @@
+
+[
+  {
+    "id": "1",
+    "title": "Complete Project X Documentation",
+    "description": "Finalize all technical documentation for Project X",
+    "status": "In Progress",
+    "progress": 60,
+    "dueDate": "2024-06-30",
+    "department": "IT",
+    "employeeId": "101"
+  },
+  {
+    "id": "2",
+    "title": "Improve Customer Response Time",
+    "description": "Reduce average customer response time from 24 hours to 4 hours",
+    "status": "Not Started",
+    "progress": 0,
+    "dueDate": "2024-07-15",
+    "department": "Customer Service",
+    "employeeId": "102"
+  },
+  {
+    "id": "3",
+    "title": "Learn New Framework",
+    "description": "Complete online course and build a sample application",
+    "status": "Completed",
+    "progress": 100,
+    "dueDate": "2024-05-31",
+    "department": "IT",
+    "employeeId": "101"
+  },
+  {
+    "id": "4",
+    "title": "Optimize Database Performance",
+    "description": "Improve query times by at least 30%",
+    "status": "In Progress",
+    "progress": 75,
+    "dueDate": "2024-06-15",
+    "department": "IT",
+    "employeeId": "103"
+  },
+  {
+    "id": "5",
+    "title": "Create Sales Training Program",
+    "description": "Develop comprehensive onboarding materials for new sales staff",
+    "status": "In Progress",
+    "progress": 40,
+    "dueDate": "2024-08-01",
+    "department": "Sales",
+    "employeeId": "104"
+  }
+]

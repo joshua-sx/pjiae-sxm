@@ -12,68 +12,66 @@ import {
   SelectTrigger, 
   SelectValue 
 } from "@/components/ui/select";
-
-// Mock data
-const mockMyAppraisals = [
-  {
-    id: "1",
-    title: "Goal Setting 2023",
-    status: "completed" as const,
-    cycle: "Q1 2023",
-    dueDate: "2023-01-31",
-  },
-  {
-    id: "2",
-    title: "Mid-Year Review 2023",
-    status: "completed" as const,
-    cycle: "Q2 2023",
-    dueDate: "2023-06-30",
-  },
-  {
-    id: "3",
-    title: "Year-End Evaluation 2023",
-    status: "pending" as const,
-    cycle: "Q4 2023",
-    dueDate: "2023-11-30",
-  },
-];
-
-const mockTeamAppraisals = [
-  {
-    id: "4",
-    title: "Goal Setting",
-    status: "flagged" as const,
-    cycle: "Q1 2023",
-    dueDate: "2023-01-31",
-    employeeName: "John Smith",
-  },
-  {
-    id: "5",
-    title: "Mid-Year Review",
-    status: "completed" as const,
-    cycle: "Q2 2023",
-    dueDate: "2023-06-30",
-    employeeName: "Sarah Johnson",
-  },
-  {
-    id: "6",
-    title: "Year-End Evaluation",
-    status: "approved" as const,
-    cycle: "Q4 2023",
-    dueDate: "2023-11-30",
-    employeeName: "Michael Brown",
-  },
-  {
-    id: "7",
-    title: "Year-End Evaluation",
-    status: "appealed" as const,
-    cycle: "Q4 2023",
-    dueDate: "2023-11-30",
-    employeeName: "David Wilson",
-  },
-];
+import { useAppraisalsQuery } from "@/hooks/useAppraisalsQuery";
+import { useUIState } from "@/contexts/UIStateContext";
+import { useState } from "react";
+import { LoadingState } from "@/components/ui/loading-state";
+import { ErrorAlert } from "@/components/ui/error-alert";
+import { useAuth } from "@/contexts/AuthContext";
 
 const MyAppraisals = () => {
+  const { searchQuery, setSearchQuery, statusFilter, setStatusFilter } = useUIState();
+  const [currentTab, setCurrentTab] = useState("my");
+  const { role } = useAuth();
+  const isManager = role === "Manager" || role === "Director";
+
+  const { data: appraisals, isLoading, isError, error, refetch } = useAppraisalsQuery();
+
+  if (isLoading) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h1>Appraisals</h1>
+          </div>
+          <LoadingState count={3} variant="card" />
+        </div>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout>
+        <div className="space-y-6">
+          <h1>Appraisals</h1>
+          <ErrorAlert 
+            title="Failed to load appraisals" 
+            description="Unable to retrieve appraisal data at this time." 
+            error={error}
+            onRetry={refetch}
+          />
+        </div>
+      </MainLayout>
+    );
+  }
+
+  const myAppraisals = appraisals?.filter(a => a.employeeId === "101"); // In a real app, use current user ID
+  const teamAppraisals = appraisals?.filter(a => a.employeeId !== "101"); // Simple filter for demo purposes
+
+  const filteredMyAppraisals = myAppraisals?.filter(appraisal => {
+    const matchesSearch = appraisal.title.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || appraisal.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const filteredTeamAppraisals = teamAppraisals?.filter(appraisal => {
+    const matchesSearch = appraisal.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                          appraisal.employeeName.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || appraisal.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
   return (
     <MainLayout>
       <div className="space-y-6">
@@ -85,9 +83,14 @@ const MyAppraisals = () => {
               <Input
                 placeholder="Search appraisals..."
                 className="pl-8"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Select defaultValue="all">
+            <Select 
+              value={statusFilter}
+              onValueChange={setStatusFilter}
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="Filter by status" />
               </SelectTrigger>
@@ -97,47 +100,67 @@ const MyAppraisals = () => {
                 <SelectItem value="approved">Approved</SelectItem>
                 <SelectItem value="flagged">Flagged</SelectItem>
                 <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="appealed">Appealed</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
 
-        <Tabs defaultValue="my" className="w-full">
+        <Tabs 
+          defaultValue="my" 
+          value={currentTab}
+          onValueChange={setCurrentTab}
+          className="w-full"
+        >
           <TabsList>
             <TabsTrigger value="my">My Appraisals</TabsTrigger>
-            <TabsTrigger value="team">Team Appraisals</TabsTrigger>
+            {isManager && <TabsTrigger value="team">Team Appraisals</TabsTrigger>}
           </TabsList>
           
           <TabsContent value="my" className="mt-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockMyAppraisals.map((appraisal) => (
-                <AppraisalCard
-                  key={appraisal.id}
-                  id={appraisal.id}
-                  title={appraisal.title}
-                  status={appraisal.status}
-                  cycle={appraisal.cycle}
-                  dueDate={appraisal.dueDate}
-                />
-              ))}
+              {filteredMyAppraisals && filteredMyAppraisals.length > 0 ? (
+                filteredMyAppraisals.map((appraisal) => (
+                  <AppraisalCard
+                    key={appraisal.id}
+                    id={appraisal.id}
+                    title={appraisal.title}
+                    status={appraisal.status}
+                    cycle={appraisal.cycle}
+                    dueDate={appraisal.dueDate}
+                  />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-10">
+                  <p className="text-muted-foreground">No appraisals found matching your filters.</p>
+                </div>
+              )}
             </div>
           </TabsContent>
           
-          <TabsContent value="team" className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockTeamAppraisals.map((appraisal) => (
-                <AppraisalCard
-                  key={appraisal.id}
-                  id={appraisal.id}
-                  title={appraisal.title}
-                  status={appraisal.status}
-                  cycle={appraisal.cycle}
-                  dueDate={appraisal.dueDate}
-                  employeeName={appraisal.employeeName}
-                />
-              ))}
-            </div>
-          </TabsContent>
+          {isManager && (
+            <TabsContent value="team" className="mt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredTeamAppraisals && filteredTeamAppraisals.length > 0 ? (
+                  filteredTeamAppraisals.map((appraisal) => (
+                    <AppraisalCard
+                      key={appraisal.id}
+                      id={appraisal.id}
+                      title={appraisal.title}
+                      status={appraisal.status}
+                      cycle={appraisal.cycle}
+                      dueDate={appraisal.dueDate}
+                      employeeName={appraisal.employeeName}
+                    />
+                  ))
+                ) : (
+                  <div className="col-span-full text-center py-10">
+                    <p className="text-muted-foreground">No team appraisals found matching your filters.</p>
+                  </div>
+                )}
+              </div>
+            </TabsContent>
+          )}
         </Tabs>
       </div>
     </MainLayout>
