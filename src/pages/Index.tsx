@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layouts/MainLayout";
 import DashboardStats from "@/components/dashboard/DashboardStats";
@@ -8,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/common/PageHeader";
 import { Bell, ChevronRight, Flag, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import StatusBadge from "@/components/appraisal/StatusBadge";
 
 // Mock data - would come from API in real app
 const mockStats = {
