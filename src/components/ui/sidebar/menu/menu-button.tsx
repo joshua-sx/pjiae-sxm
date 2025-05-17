@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -66,6 +67,8 @@ export const SidebarMenuButton = React.forwardRef<
           "group-data-[collapsible=icon]:justify-center",
           // This will hide text spans when sidebar is collapsed
           "[&>span]:group-data-[state=collapsed]:hidden",
+          // This will hide chevron icons when sidebar is collapsed
+          "[&>[data-chevron]]:group-data-[state=collapsed]:hidden",
           className
         )}
         {...props}

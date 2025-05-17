@@ -28,7 +28,7 @@ export function AppraisalsMenuSection({ isActive }: AppraisalsMenuSectionProps) 
           <SidebarMenuButton tooltip="Appraisals">
             <ClipboardCheck />
             <span>Appraisals</span>
-            <ChevronDown className="ml-auto h-4 w-4 shrink-0 group-hover/collapsible:text-foreground/80 transition-transform group-[&[data-state=open]/collapsible]:rotate-180" />
+            <ChevronDown data-chevron="true" className="ml-auto h-4 w-4 shrink-0 group-hover/collapsible:text-foreground/80 transition-transform group-[&[data-state=open]/collapsible]:rotate-180" />
           </SidebarMenuButton>
         </CollapsibleTrigger>
         <CollapsibleContent>
