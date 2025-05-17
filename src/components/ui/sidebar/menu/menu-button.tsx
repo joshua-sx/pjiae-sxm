@@ -65,14 +65,20 @@ export const SidebarMenuButton = React.forwardRef<
         className={cn(
           sidebarMenuButtonVariants({ variant, size }), 
           "group-data-[collapsible=icon]:justify-center",
-          // This will center the icon in collapsed mode
+          // Enhanced centering for collapsed state
           "group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0",
+          // Ensure SVG icon is precisely centered
+          "group-data-[state=collapsed]:[&>svg]:mx-auto",
+          // Make sure there's no horizontal offsets affecting centering
+          "group-data-[state=collapsed]:[&>svg]:w-4 group-data-[state=collapsed]:[&>svg]:h-4",
+          // Remove any margins when collapsed
+          "group-data-[state=collapsed]:[&>svg]:m-0",
+          // Force precise centering with flex layout in collapsed state
+          "group-data-[state=collapsed]:flex group-data-[state=collapsed]:items-center group-data-[state=collapsed]:justify-center",
           // This will hide text spans when sidebar is collapsed
           "[&>span]:group-data-[state=collapsed]:hidden",
           // This will hide chevron icons when sidebar is collapsed
           "[&>[data-chevron]]:group-data-[state=collapsed]:hidden",
-          // This ensures the icon stays centered with proper width in collapsed state
-          "group-data-[state=collapsed]:[&>svg:first-child]:mx-auto",
           className
         )}
         {...props}
