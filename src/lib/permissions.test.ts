@@ -1,5 +1,5 @@
 
-import { UserRole, rolePermissions, hasPermission } from './permissions';
+import { UserRole, rolePermissions, hasPermission } from './permissions/index';
 
 describe('Permissions Module', () => {
   describe('Role Permissions', () => {

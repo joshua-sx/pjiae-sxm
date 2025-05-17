@@ -1,55 +1,6 @@
-export enum UserRole {
-  HR_OFFICER = 'HR Officer',
-  DIRECTOR = 'Director',
-  SUPERVISOR = 'Supervisor',
-  EMPLOYEE = 'Employee',
-  IT_ADMIN = 'IT Admin',
-}
 
-export type Capability =
-  // User Management
-  | 'canManageUsers'
-  | 'canAssignRoles'
-  | 'canViewEmployeeDirectory'
-  
-  // Organization Structure
-  | 'canManageDepartments'
-  | 'canManageDivisions'
-  | 'canViewDivisionStructure'
-  | 'canViewDepartmentStructure'
-  
-  // Appraisal Cycles
-  | 'canManageCycles'
-  | 'canViewCycles'
-  
-  // Goals
-  | 'canCreateGoal'
-  | 'canApproveGoal'
-  | 'canFlagGoals'
-  | 'canEditTeamGoals'
-  | 'canProposeGoal'
-  | 'canManageDivisionGoals'
-  | 'canViewDivisionGoals'
-  
-  // Appraisals
-  | 'canSubmitSelfReview'
-  | 'canModifyFinalAssessments'
-  | 'canModifyMidYearReviews'
-  | 'canOverseeAppraisals'
-  | 'canAssignAppraisers'
-  
-  // Reports & Analytics
-  | 'canViewReports'
-  | 'canAccessHRDashboard'
-  | 'canViewPendingForms'
-  | 'canViewFlaggedItems'
-  
-  // System & Audit
-  | 'canAccessAuditLogs'
-  | 'canUploadDocs'
-  | 'canAccessSystemHealth'
-  | 'canManageBackups'
-  | 'canManageSystemSettings';
+import { UserRole } from './roles';
+import { Capability } from './capabilities';
 
 export const rolePermissions: Record<UserRole, Capability[]> = {
   [UserRole.IT_ADMIN]: [
@@ -192,28 +143,9 @@ export const rolePermissions: Record<UserRole, Capability[]> = {
     // Appraisal Cycles
     'canViewCycles',
     
-    // Goals
-    'canProposeGoal',
-    
     // Appraisals
     'canSubmitSelfReview',
     'canModifyFinalAssessments',
     'canModifyMidYearReviews'
   ],
 };
-
-export function hasPermission(
-  role: UserRole,
-  capability: Capability
-): boolean {
-  return rolePermissions[role]?.includes(capability) ?? false;
-}
-
-// Convert string role to enum (for backward compatibility)
-export function getRoleEnum(roleString: string): UserRole {
-  const role = Object.values(UserRole).find(r => r === roleString);
-  if (!role) {
-    throw new Error(`Invalid role: ${roleString}`);
-  }
-  return role;
-}

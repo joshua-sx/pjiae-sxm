@@ -3,7 +3,7 @@ import { useState, useMemo, useCallback, useEffect } from 'react';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
-import { UserRole } from '@/lib/permissions';
+import { UserRole } from '@/lib/permissions/index';
 import { useDepartmentGoalsQuery } from '@/hooks/useDepartmentGoalsQuery';
 import { useDivisionGoals } from '@/hooks/useDivisionGoals';
 
