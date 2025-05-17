@@ -28,16 +28,16 @@ export function SidebarRoleSwitcher() {
   // If sidebar is collapsed, show a more compact version
   if (state === "collapsed" && !isMobile) {
     return (
-      <div className="w-full flex justify-center py-4">
+      <div className="w-full flex justify-center py-2">
         <span className="font-bold text-xl text-pjiae-blue">P</span>
       </div>
     )
   }
 
   return (
-    <div className="px-2 py-4 w-full">
+    <div className="w-full">
       <DropdownMenu>
-        <DropdownMenuTrigger className="w-full flex flex-col items-start focus:outline-none">
+        <DropdownMenuTrigger className="w-full flex flex-col items-start focus:outline-none focus:ring-0">
           <div className="font-bold text-lg text-pjiae-blue">PJIAE</div>
           <div className="flex items-center text-sm text-gray-600">
             <span>Role: </span>
@@ -56,7 +56,7 @@ export function SidebarRoleSwitcher() {
             Select Role
           </DropdownMenuLabel>
           
-          {allRoles.map((roleOption, idx) => (
+          {allRoles.map((roleOption) => (
             <DropdownMenuItem
               key={roleOption}
               onClick={() => setRole(roleOption)}
