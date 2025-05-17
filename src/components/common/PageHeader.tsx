@@ -11,6 +11,12 @@ interface PageHeaderProps {
   children?: ReactNode; // for filters, breadcrumbs, etc.
 }
 
+/**
+ * PageHeader - Standardized page heading component
+ * 
+ * Used at the top of pages to provide consistent heading structure
+ * with optional subtitle, action buttons, and additional content
+ */
 export function PageHeader({ 
   title, 
   subtitle, 
@@ -22,7 +28,7 @@ export function PageHeader({
     <div className={cn("mb-6", className)}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <H1 className="text-primary">{title}</H1>
+          <H1>{title}</H1>
           {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
         </div>
         {actions && <div className="flex space-x-2">{actions}</div>}

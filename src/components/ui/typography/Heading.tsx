@@ -7,6 +7,10 @@ interface HeadingProps {
   className?: string;
 }
 
+/**
+ * H1 - Main page heading
+ * Responsive size scaling: 1.5rem → 2rem → 2.5rem
+ */
 export function H1({ children, className }: HeadingProps) {
   return (
     <h1
@@ -22,6 +26,10 @@ export function H1({ children, className }: HeadingProps) {
   );
 }
 
+/**
+ * H2 - Section heading
+ * Responsive size scaling: 1.25rem → 1.5rem → 1.75rem
+ */
 export function H2({ children, className }: HeadingProps) {
   return (
     <h2
@@ -37,6 +45,10 @@ export function H2({ children, className }: HeadingProps) {
   );
 }
 
+/**
+ * H3 - Subsection heading
+ * Responsive size scaling: 1.125rem → 1.25rem → 1.5rem
+ */
 export function H3({ children, className }: HeadingProps) {
   return (
     <h3

@@ -28,6 +28,44 @@ export default {
 			}
 		},
 		extend: {
+			/* === SPACING SCALE === */
+			spacing: {
+				'0.5': '0.125rem',  /* 2px */
+				'1': '0.25rem',     /* 4px */
+				'1.5': '0.375rem',  /* 6px */
+				'2': '0.5rem',      /* 8px */
+				'2.5': '0.625rem',  /* 10px */
+				'3': '0.75rem',     /* 12px */
+				'3.5': '0.875rem',  /* 14px */
+				'4': '1rem',        /* 16px */
+				'5': '1.25rem',     /* 20px */
+				'6': '1.5rem',      /* 24px */
+				'7': '1.75rem',     /* 28px */
+				'8': '2rem',        /* 32px */
+				'9': '2.25rem',     /* 36px */
+				'10': '2.5rem',     /* 40px */
+				'11': '2.75rem',    /* 44px */
+				'12': '3rem',       /* 48px */
+				'14': '3.5rem',     /* 56px */
+				'16': '4rem',       /* 64px */
+				'20': '5rem',       /* 80px */
+				'24': '6rem',       /* 96px */
+				'28': '7rem',       /* 112px */
+				'32': '8rem',       /* 128px */
+				'36': '9rem',       /* 144px */
+				'40': '10rem',      /* 160px */
+				'44': '11rem',      /* 176px */
+				'48': '12rem',      /* 192px */
+				'52': '13rem',      /* 208px */
+				'56': '14rem',      /* 224px */
+				'60': '15rem',      /* 240px */
+				'64': '16rem',      /* 256px */
+				'72': '18rem',      /* 288px */
+				'80': '20rem',      /* 320px */
+				'96': '24rem',      /* 384px */
+			},
+			
+			/* === TYPOGRAPHY === */
 			fontSize: {
 				// Base heading sizes (desktop default)
 				'h1': ['2.5rem', { lineHeight: '3rem' }],
@@ -41,12 +79,22 @@ export default {
 				'h3-sm': ['1.125rem', { lineHeight: '1.5rem' }],
 				'h3-md': ['1.25rem', { lineHeight: '1.75rem' }],
 			},
+			
+			/* === COLOR PALETTE === */
 			colors: {
 				// Primary brand colors
-				primary: '#0A66C2',      // Brand blue (formerly pjiae.blue)
+				primary: 'var(--color-primary, #0A66C2)',
 				'primary-foreground': '#FFFFFF',
-				'heading': 'var(--color-primary, #0A66C2)',  // Reference to primary
-				'subheading': '#374151',
+				'primary-light': 'var(--color-primary-light, #34A9FF)',
+				'primary-dark': 'var(--color-primary-dark, #094D92)',
+				
+				// UI semantic colors
+				heading: 'var(--color-primary, #0A66C2)',
+				subheading: '#374151',
+				success: 'var(--color-success, #4CAF50)',
+				warning: 'var(--color-warning, #FF9800)',
+				danger: 'var(--color-danger, #F44336)',
+				info: 'var(--color-info, #34A9FF)',
 				
 				// System UI colors
 				border: 'hsl(var(--border))',
@@ -90,19 +138,23 @@ export default {
 				},
 				// PJIAE Colors - Consolidated
 				pjiae: {
-					lightblue: '#34A9FF',
-					lightgray: '#F2F7FB',
-					darkblue: '#094D92',
-					warning: '#FF9800',
-					success: '#4CAF50',
-					danger: '#F44336',
+					lightblue: 'var(--color-primary-light, #34A9FF)',
+					lightgray: 'var(--color-gray-light, #F2F7FB)',
+					darkblue: 'var(--color-primary-dark, #094D92)',
+					warning: 'var(--color-warning, #FF9800)',
+					success: 'var(--color-success, #4CAF50)',
+					danger: 'var(--color-danger, #F44336)',
 				}
 			},
+			
+			/* === BORDER RADIUS === */
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			
+			/* === ANIMATIONS === */
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
