@@ -47,6 +47,7 @@ const FlagDialog = ({
         <div className="py-4">
           <EnhancedTextarea
             id="flag-reason"
+            label="Flag Reason"
             placeholder="Enter your reason here..."
             value={flagReason}
             onChange={(e) => setFlagReason(e.target.value)}

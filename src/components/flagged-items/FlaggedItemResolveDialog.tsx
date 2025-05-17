@@ -41,6 +41,7 @@ export const FlaggedItemResolveDialog = ({
         <div className="py-4">
           <EnhancedTextarea
             id="resolution-note"
+            label="Resolution Details"
             placeholder="Enter resolution details..."
             value={resolutionNote}
             onChange={(e) => setResolutionNote(e.target.value)}

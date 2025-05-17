@@ -38,6 +38,7 @@ const RejectDialog = ({
         <div className="py-4">
           <EnhancedTextarea
             id="reject-comment"
+            label="Revision Reason"
             placeholder="Enter your comments here..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
