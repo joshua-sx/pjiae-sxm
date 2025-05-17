@@ -2,7 +2,7 @@
 import { Bell, Menu } from 'lucide-react';
 import { useState } from 'react';
 import { LAYOUT_CONSTANTS } from '@/lib/utils';
-import { useSidebar } from '@/components/ui/sidebar';
+import { useSidebar, SidebarTrigger } from '@/components/ui/sidebar';
 
 const TopBar = () => {
   const [notificationCount] = useState(3);
@@ -21,6 +21,9 @@ const TopBar = () => {
         </button>
         
         <h1 className="text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
+        
+        {/* Add sidebar trigger next to title */}
+        <SidebarTrigger className="hidden md:flex text-gray-500 hover:text-gray-700" />
       </div>
       
       {/* Right side - Notifications only */}
