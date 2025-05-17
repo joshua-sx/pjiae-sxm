@@ -1,4 +1,3 @@
-
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -64,21 +63,21 @@ export const SidebarMenuButton = React.forwardRef<
         data-active={isActive}
         className={cn(
           sidebarMenuButtonVariants({ variant, size }), 
-          "group-data-[collapsible=icon]:justify-center",
-          // Enhanced centering for collapsed state
-          "group-data-[state=collapsed]:justify-center group-data-[state=collapsed]:px-0",
-          // Ensure SVG icon is precisely centered
-          "group-data-[state=collapsed]:[&>svg]:mx-auto",
-          // Make sure there's no horizontal offsets affecting centering
-          "group-data-[state=collapsed]:[&>svg]:w-4 group-data-[state=collapsed]:[&>svg]:h-4",
-          // Remove any margins when collapsed
-          "group-data-[state=collapsed]:[&>svg]:m-0",
-          // Force precise centering with flex layout in collapsed state
+          // Perfect centering for collapsed state
           "group-data-[state=collapsed]:flex group-data-[state=collapsed]:items-center group-data-[state=collapsed]:justify-center",
-          // This will hide text spans when sidebar is collapsed
+          "group-data-[state=collapsed]:px-0",
+          
+          // Precise SVG icon handling in collapsed state
+          "group-data-[state=collapsed]:[&>svg]:w-4 group-data-[state=collapsed]:[&>svg]:h-4",
+          "group-data-[state=collapsed]:[&>svg]:m-0",
+          "group-data-[state=collapsed]:[&>svg]:mx-auto",
+          
+          // Hide text and chevrons in collapsed state
           "[&>span]:group-data-[state=collapsed]:hidden",
-          // This will hide chevron icons when sidebar is collapsed
           "[&>[data-chevron]]:group-data-[state=collapsed]:hidden",
+          
+          // Additional centered container styling
+          "group-data-[collapsible=icon]:justify-center",
           className
         )}
         {...props}

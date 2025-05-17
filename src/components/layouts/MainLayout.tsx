@@ -8,9 +8,11 @@ import { LAYOUT_CONSTANTS } from '@/lib/utils';
 
 interface MainLayoutProps {
   children: ReactNode;
+  fullWidth?: boolean;
+  className?: string;
 }
 
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps) => {
   return (
     <SidebarProvider defaultOpen={true}>
       <div className="min-h-screen flex w-full">
@@ -20,6 +22,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           <main className={cn(
             "flex-1 overflow-auto",
             `pt-8 px-6 pb-6 mt-[${LAYOUT_CONSTANTS.HEADER_HEIGHT_PX}px]`,
+            !fullWidth && "max-w-screen-2xl mx-auto",
+            className
           )}>
             {children}
           </main>

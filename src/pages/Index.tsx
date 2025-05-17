@@ -5,8 +5,7 @@ import DashboardStats from "@/components/dashboard/DashboardStats";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import AppraisalCard from "@/components/appraisal/AppraisalCard";
-import StatusBadge from "@/components/appraisal/StatusBadge";
+import { PageHeader } from "@/components/common/PageHeader";
 import { Bell, ChevronRight, Flag, AlertCircle } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
@@ -83,13 +82,15 @@ const Index = () => {
   return (
     <MainLayout>
       <div className="space-y-6 pt-4">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
-          <h1>Dashboard</h1>
-          <Button onClick={() => navigate("/my-appraisals")} className="w-full sm:w-auto">
-            View All Appraisals
-            <ChevronRight size={16} className="ml-1" />
-          </Button>
-        </div>
+        <PageHeader 
+          title="Dashboard"
+          actions={
+            <Button onClick={() => navigate("/my-appraisals")} className="w-full sm:w-auto">
+              View All Appraisals
+              <ChevronRight size={16} className="ml-1" />
+            </Button>
+          }
+        />
 
         <Alert className="bg-pjiae-lightblue/10 border-pjiae-lightblue">
           <Bell className="h-4 w-4 text-pjiae-blue" />
