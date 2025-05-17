@@ -161,4 +161,9 @@
   .input-error {
     @apply border-destructive focus-visible:ring-destructive;
   }
+  
+  /* Page layout utilities */
+  .page-wrapper {
+    @apply space-y-6 w-full;
+  }
 }

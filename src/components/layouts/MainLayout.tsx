@@ -16,6 +16,10 @@ interface MainLayoutProps {
  * 
  * Provides consistent page structure with sidebar, topbar,
  * and main content area with standardized spacing
+ * 
+ * @param children - Page content
+ * @param fullWidth - If true, content will expand to full width of container (no max-width)
+ * @param className - Optional additional classes
  */
 const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps) => {
   return (
@@ -26,7 +30,8 @@ const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps)
           <TopBar />
           <main className={cn(
             "flex-1 overflow-auto",
-            "pt-8 px-6 pb-6", /* Standardized content spacing */
+            // Offset content so it sits below the fixed TopBar (height = var(--header-height))
+            "pt-[var(--header-height)] px-6 pb-6", 
             !fullWidth && "max-w-screen-2xl mx-auto",
             className
           )}>
