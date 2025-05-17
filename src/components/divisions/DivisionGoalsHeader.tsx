@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { H1 } from '@/components/ui/typography/Heading';
 
 interface DivisionGoalsHeaderProps {
   isReadOnly: boolean;
@@ -8,7 +9,7 @@ interface DivisionGoalsHeaderProps {
 const DivisionGoalsHeader = ({ isReadOnly }: DivisionGoalsHeaderProps) => {
   return (
     <div>
-      <h1 className="text-3xl font-bold">Division Goals</h1>
+      <H1>Division Goals</H1>
       <p className="text-muted-foreground mt-2">
         {isReadOnly 
           ? 'View division-level goals and their progress' 

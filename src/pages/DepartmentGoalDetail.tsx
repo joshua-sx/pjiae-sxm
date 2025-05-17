@@ -12,6 +12,7 @@ import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
 import SmartCriteriaDisplay from '@/components/goals/SmartCriteriaDisplay';
 import CommentsList from '@/components/goals/CommentsList';
 import CommentForm from '@/components/goals/CommentForm';
+import { H1, H2 } from '@/components/ui/typography/Heading';
 
 const DepartmentGoalDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -82,7 +83,7 @@ const DepartmentGoalDetail = () => {
           
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-2xl font-bold">{goal.title}</h1>
+              <H1>{goal.title}</H1>
               <div className="flex items-center gap-3 mt-1">
                 <GoalStatusBadge status={goal.status} />
                 <span className="text-sm text-muted-foreground">
@@ -136,7 +137,7 @@ const DepartmentGoalDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           <div className="lg:col-span-2">
             <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-3">Description</h2>
+              <H2 className="mb-3">Description</H2>
               <p className="text-gray-700">{goal.description}</p>
             </div>
             
@@ -153,7 +154,7 @@ const DepartmentGoalDetail = () => {
             {goal.assignedEmployeeGoals && goal.assignedEmployeeGoals.length > 0 && (
               <div className="mt-6">
                 <div className="bg-white rounded-lg shadow-sm p-6">
-                  <h2 className="text-xl font-semibold mb-3">Linked Employee Goals</h2>
+                  <H2 className="mb-3">Linked Employee Goals</H2>
                   <p className="text-sm text-muted-foreground">
                     {goal.assignedEmployeeGoals.length} employee goal(s) linked to this department goal.
                   </p>

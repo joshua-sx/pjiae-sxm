@@ -113,7 +113,8 @@
 }
 
 @layer base {
-  * {
+  /* Modified to only apply border-border to elements that need borders */
+  input, select, textarea, button, table, th, td, fieldset, hr {
     @apply border-border;
   }
 
@@ -129,41 +130,6 @@
 }
 
 @layer components {
-  /* === STATUS INDICATORS === */
-  .status-badge {
-    @apply px-2 py-1 rounded-full text-xs font-medium;
-  }
-  
-  .status-badge-pending {
-    @apply bg-yellow-100 text-yellow-800;
-  }
-  
-  .status-badge-approved {
-    @apply bg-green-100 text-green-800;
-  }
-  
-  .status-badge-flagged {
-    @apply bg-red-100 text-red-800;
-  }
-  
-  .status-badge-completed {
-    @apply bg-blue-100 text-blue-800;
-  }
-
-  /* === PROGRESS INDICATORS === */
-  .progress-step {
-    @apply flex items-center justify-center w-8 h-8 rounded-full;
-  }
-
-  .progress-step-completed {
-    @apply bg-primary text-white;
-  }
-
-  .progress-step-current {
-    @apply bg-pjiae-lightblue text-white;
-  }
-
-  .progress-step-upcoming {
-    @apply bg-gray-200 text-gray-500;
-  }
+  /* Removed utility classes in favor of Badge component */
 }
+
