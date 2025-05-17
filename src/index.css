@@ -54,6 +54,9 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142 71% 45%;
+    --success-foreground: 210 40% 98%;
+
     /* Form Controls */
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
@@ -96,6 +99,9 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142 71% 30%;
+    --success-foreground: 210 40% 98%;
+
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
@@ -130,6 +136,28 @@
 }
 
 @layer components {
-  /* Removed utility classes in favor of Badge component */
+  /* Form validation styles */
+  .form-group {
+    @apply space-y-2;
+  }
+  
+  .form-label {
+    @apply block text-sm font-medium;
+  }
+  
+  .form-hint {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  .form-error {
+    @apply text-sm text-destructive font-medium;
+  }
+  
+  .input-success {
+    @apply border-success focus-visible:ring-success;
+  }
+  
+  .input-error {
+    @apply border-destructive focus-visible:ring-destructive;
+  }
 }
-

@@ -91,7 +91,8 @@ export default {
 				// UI semantic colors
 				heading: 'var(--color-primary, #0A66C2)',
 				subheading: '#374151',
-				success: 'var(--color-success, #4CAF50)',
+				success: 'hsl(var(--success))',
+				'success-foreground': 'hsl(var(--success-foreground))',
 				warning: 'var(--color-warning, #FF9800)',
 				danger: 'var(--color-danger, #F44336)',
 				info: 'var(--color-info, #34A9FF)',

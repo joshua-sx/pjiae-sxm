@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
+import { EnhancedTextarea } from "@/components/ui/enhanced-textarea";
 import { Button } from "@/components/ui/button";
 
 interface RejectDialogProps {
@@ -28,7 +28,7 @@ const RejectDialog = ({
 }: RejectDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Request Revision</DialogTitle>
           <DialogDescription>
@@ -36,14 +36,15 @@ const RejectDialog = ({
           </DialogDescription>
         </DialogHeader>
         <div className="py-4">
-          <Textarea
+          <EnhancedTextarea
+            id="reject-comment"
             placeholder="Enter your comments here..."
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             className="min-h-[100px]"
           />
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button onClick={onSubmit}>Submit</Button>
         </DialogFooter>

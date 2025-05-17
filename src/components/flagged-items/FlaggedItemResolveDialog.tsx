@@ -8,7 +8,7 @@ import {
   DialogFooter
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { EnhancedTextarea } from "@/components/ui/enhanced-textarea";
 import { CheckCircle } from "lucide-react";
 
 interface FlaggedItemResolveDialogProps {
@@ -28,28 +28,32 @@ export const FlaggedItemResolveDialog = ({
 }: FlaggedItemResolveDialogProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Resolve Flagged Item</DialogTitle>
-          <DialogDescription>
-            Please provide details about how this issue was resolved.
-          </DialogDescription>
+      <DialogContent className="max-w-md">
+        <DialogHeader className="flex flex-row items-center gap-2">
+          <CheckCircle className="h-5 w-5 text-success" />
+          <div>
+            <DialogTitle>Resolve Flagged Item</DialogTitle>
+            <DialogDescription>
+              Please provide details about how this issue was resolved.
+            </DialogDescription>
+          </div>
         </DialogHeader>
         <div className="py-4">
-          <Textarea
+          <EnhancedTextarea
+            id="resolution-note"
             placeholder="Enter resolution details..."
             value={resolutionNote}
             onChange={(e) => setResolutionNote(e.target.value)}
             className="min-h-[100px]"
           />
         </div>
-        <DialogFooter>
+        <DialogFooter className="gap-2">
           <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
           <Button 
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-success hover:bg-success/90"
             onClick={onResolveSubmit}
           >
-            <CheckCircle size={16} className="mr-1" />
+            <CheckCircle size={16} className="mr-2" />
             Confirm Resolution
           </Button>
         </DialogFooter>
