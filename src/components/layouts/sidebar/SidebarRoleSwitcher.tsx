@@ -1,7 +1,7 @@
 
-import * as React from "react";
-import { ChevronDown, ChevronsUpDown } from "lucide-react";
-import { useAuth, UserRole } from "@/contexts/AuthContext";
+import * as React from "react"
+import { ChevronDown, ChevronsUpDown } from "lucide-react"
+import { useAuth, UserRole } from "@/contexts/AuthContext"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,12 +9,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { useSidebar } from "@/components/ui/sidebar";
+} from "@/components/ui/dropdown-menu"
+import { useSidebar } from "@/components/ui/sidebar"
 
 export function SidebarRoleSwitcher() {
-  const { isMobile, state } = useSidebar();
-  const { role, setRole } = useAuth();
+  const { isMobile, state } = useSidebar()
+  const { role, setRole } = useAuth()
 
   // Define available roles for the dropdown
   const allRoles = [
@@ -23,7 +23,7 @@ export function SidebarRoleSwitcher() {
     UserRole.DIRECTOR,
     UserRole.HR_OFFICER,
     UserRole.IT_ADMIN,
-  ];
+  ]
 
   // If sidebar is collapsed, show a more compact version
   if (state === "collapsed" && !isMobile) {
@@ -31,7 +31,7 @@ export function SidebarRoleSwitcher() {
       <div className="w-full flex justify-center">
         <span className="font-bold text-xl text-pjiae-blue">P</span>
       </div>
-    );
+    )
   }
 
   return (
@@ -68,5 +68,5 @@ export function SidebarRoleSwitcher() {
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
-  );
+  )
 }
