@@ -22,7 +22,7 @@ export function PageHeader({
     <div className={cn("mb-6", className)}>
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <H1>{title}</H1>
+          <H1 className="text-3xl font-semibold text-[#1EAEDB]">{title}</H1>
           {subtitle && <p className="text-base text-muted-foreground mt-1">{subtitle}</p>}
         </div>
         {actions && <div className="flex space-x-2">{actions}</div>}

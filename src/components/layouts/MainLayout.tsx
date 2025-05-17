@@ -20,7 +20,7 @@ const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps)
           <TopBar />
           <main className={cn(
             "flex-1 overflow-auto",
-            "pt-[var(--header-height)] px-6 pb-6",
+            "pt-8 px-6 pb-6",
             !fullWidth && "max-w-screen-2xl mx-auto",
             className
           )}>

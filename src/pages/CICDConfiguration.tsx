@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,17 +5,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const CICDConfiguration = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">CI/CD Configuration</h1>
-          <p className="text-muted-foreground mt-2">
-            Manage continuous integration and deployment settings
-          </p>
-        </div>
+        <PageHeader
+          title="CI/CD Configuration"
+          subtitle="Manage continuous integration and deployment settings"
+        />
 
         {/* Pipeline Configuration */}
         <Card>
