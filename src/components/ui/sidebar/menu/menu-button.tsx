@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -19,9 +20,9 @@ const sidebarMenuButtonVariants = cva(
           "bg-background shadow-[0_0_0_1px_hsl(var(--sidebar-border))] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-[0_0_0_1px_hsl(var(--sidebar-accent))]",
       },
       size: {
-        default: "h-8 text-sm",
+        default: "h-12 w-12 text-sm",
         sm: "h-7 text-xs",
-        lg: "h-12 text-sm group-data-[collapsible=icon]:!p-0",
+        lg: "h-12 w-12 text-sm group-data-[collapsible=icon]:!p-0",
       },
     },
     defaultVariants: {
@@ -66,6 +67,9 @@ export const SidebarMenuButton = React.forwardRef<
           // Perfect centering for collapsed state
           "group-data-[state=collapsed]:flex group-data-[state=collapsed]:items-center group-data-[state=collapsed]:justify-center",
           "group-data-[state=collapsed]:px-0",
+          
+          // Updated for consistent icon centering in all states
+          "flex items-center justify-center",
           
           // Precise SVG icon handling in collapsed state
           "group-data-[state=collapsed]:[&>svg]:w-4 group-data-[state=collapsed]:[&>svg]:h-4",
