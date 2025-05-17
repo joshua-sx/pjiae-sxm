@@ -16,7 +16,7 @@ export function H1({ children, className }: HeadingProps) {
     <h1
       className={cn(
         "text-h1-sm md:text-h1-md lg:text-h1",
-        "font-semibold text-heading",
+        "font-bold text-heading",
         "m-0",
         className
       )}

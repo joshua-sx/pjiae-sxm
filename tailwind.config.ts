@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -83,30 +82,41 @@ export default {
 			/* === COLOR PALETTE === */
 			colors: {
 				// Primary brand colors
-				primary: 'var(--color-primary, #0A66C2)',
+				primary: '#434F83', // PJIAE Blue
 				'primary-foreground': '#FFFFFF',
-				'primary-light': 'var(--color-primary-light, #34A9FF)',
-				'primary-dark': 'var(--color-primary-dark, #094D92)',
+				secondary: '#00ACB3', // PJIAE Teal
+				'secondary-foreground': '#FFFFFF',
 				
 				// UI semantic colors
-				heading: 'var(--color-primary, #0A66C2)',
+				heading: '#434F83', // Same as primary for consistency
 				subheading: '#374151',
-				success: 'hsl(var(--success))',
-				'success-foreground': 'hsl(var(--success-foreground))',
-				warning: 'var(--color-warning, #FF9800)',
-				danger: 'var(--color-danger, #F44336)',
-				info: 'var(--color-info, #34A9FF)',
+				success: '#4BB543',
+				'success-foreground': '#FFFFFF',
+				warning: '#FFC107',
+				error: '#F44336',
+				
+				// Neutral color scale
+				neutral: {
+					50: '#F9FAFB',
+					100: '#F3F4F6',
+					200: '#E5E7EB',
+					300: '#D1D5DB',
+					400: '#9CA3AF',
+					500: '#6B7280',
+					600: '#4B5563',
+					700: '#374151',
+					800: '#1F2937',
+					900: '#111827',
+				},
 				
 				// System UI colors
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
-				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
-				},
+				background: '#F6F7F9', // Anti-flash White
+				foreground: '#1F2937',
+				
+				// Keep existing system color definitions for compatibility
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
@@ -127,6 +137,7 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				// Keeping sidebar settings for backward compatibility
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background, 0 0% 100%))',
 					foreground: 'hsl(var(--sidebar-foreground, 240 10% 3.9%))',
