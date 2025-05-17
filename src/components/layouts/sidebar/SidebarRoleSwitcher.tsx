@@ -28,14 +28,14 @@ export function SidebarRoleSwitcher() {
   // If sidebar is collapsed, show a more compact version
   if (state === "collapsed" && !isMobile) {
     return (
-      <div className="w-full flex justify-center">
+      <div className="w-full flex justify-center py-4">
         <span className="font-bold text-xl text-pjiae-blue">P</span>
       </div>
     )
   }
 
   return (
-    <div className="px-2">
+    <div className="px-2 py-4 w-full">
       <DropdownMenu>
         <DropdownMenuTrigger className="w-full flex flex-col items-start focus:outline-none">
           <div className="font-bold text-lg text-pjiae-blue">PJIAE</div>
