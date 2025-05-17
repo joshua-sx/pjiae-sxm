@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import TopBar from './TopBar';
 import AppSidebar from './AppSidebar';
-import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 
 interface MainLayoutProps {
@@ -24,20 +24,27 @@ interface MainLayoutProps {
 const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps) => {
   return (
     <SidebarProvider defaultOpen={true}>
-      <div className="min-h-screen flex w-full">
+      {/* Grid layout: sidebar column + main content column */}
+      <div className="min-h-screen grid grid-cols-[var(--sidebar-width)_1fr]">
+        {/* Sidebar takes first column */}
         <AppSidebar />
-        <SidebarInset className="bg-pjiae-lightgray">
+        
+        {/* Main content area takes second column */}
+        <div className="flex flex-col bg-pjiae-lightgray">
+          {/* TopBar spans full width of second column */}
           <TopBar />
+          
+          {/* Scrollable content area */}
           <main className={cn(
             "flex-1 overflow-auto",
-            // Offset content so it sits below the fixed TopBar (height = var(--header-height))
+            // Offset content so it sits below the fixed TopBar
             "pt-[var(--header-height)] px-6 pb-6", 
             !fullWidth && "max-w-screen-2xl mx-auto",
             className
           )}>
             {children}
           </main>
-        </SidebarInset>
+        </div>
       </div>
     </SidebarProvider>
   );
