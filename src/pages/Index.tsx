@@ -82,7 +82,7 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 pt-4">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
           <h1>Dashboard</h1>
           <Button onClick={() => navigate("/my-appraisals")} className="w-full sm:w-auto">
