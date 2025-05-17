@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 // Standard layout constants for consistent spacing
 export const LAYOUT_CONSTANTS = {
   HEADER_HEIGHT: "h-16",
-  HEADER_HEIGHT_PX: 64,
+  HEADER_HEIGHT_PX: 64, // Keep in sync with --header-height CSS variable (64px)
   CONTENT_PADDING: {
     X: {
       DEFAULT: "px-6",

@@ -4,7 +4,6 @@ import TopBar from './TopBar';
 import AppSidebar from './AppSidebar';
 import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
-import { LAYOUT_CONSTANTS } from '@/lib/utils';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -21,7 +20,7 @@ const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps)
           <TopBar />
           <main className={cn(
             "flex-1 overflow-auto",
-            `pt-8 px-6 pb-6 mt-[${LAYOUT_CONSTANTS.HEADER_HEIGHT_PX}px]`,
+            "pt-[var(--header-height)] px-6 pb-6",
             !fullWidth && "max-w-screen-2xl mx-auto",
             className
           )}>

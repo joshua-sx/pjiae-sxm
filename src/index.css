@@ -1,10 +1,11 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
+    --header-height: 64px; /* Matches LAYOUT_CONSTANTS.HEADER_HEIGHT_PX */
+    
     --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
 
