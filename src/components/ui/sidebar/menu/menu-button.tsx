@@ -54,7 +54,8 @@ export const SidebarMenuButton = React.forwardRef<
   ) => {
     const Comp = asChild ? Slot : "button"
     const { isMobile, state } = useSidebar()
-
+    
+    // Create the button element with the proper styling
     const button = (
       <Comp
         ref={ref}
@@ -66,16 +67,19 @@ export const SidebarMenuButton = React.forwardRef<
       />
     )
 
+    // If there's no tooltip, just return the button
     if (!tooltip) {
       return button
     }
 
+    // Convert string tooltip to object configuration
     if (typeof tooltip === "string") {
       tooltip = {
         children: tooltip,
       }
     }
 
+    // Return the button wrapped in a tooltip
     return (
       <Tooltip>
         <TooltipTrigger asChild>{button}</TooltipTrigger>
