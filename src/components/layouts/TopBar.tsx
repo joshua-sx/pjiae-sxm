@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { LAYOUT_CONSTANTS } from '@/lib/utils';
-import { useSidebar } from '@/components/ui/sidebar';
+import { useSidebar, SidebarTrigger } from '@/components/ui/sidebar';
 
 const TopBar = () => {
   const [notificationCount] = useState(3);
@@ -34,6 +34,12 @@ const TopBar = () => {
         >
           <Menu size={24} />
         </button>
+        
+        {/* Add sidebar trigger button - only visible on desktop */}
+        <div className="hidden md:flex items-center">
+          <SidebarTrigger className="text-gray-500 hover:text-gray-700 mr-2" />
+        </div>
+        
         <h1 className="hidden md:block text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
       </div>
       
