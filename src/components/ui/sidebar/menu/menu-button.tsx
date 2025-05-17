@@ -65,6 +65,8 @@ export const SidebarMenuButton = React.forwardRef<
         className={cn(
           sidebarMenuButtonVariants({ variant, size }), 
           "group-data-[collapsible=icon]:justify-center",
+          // This will hide text spans when sidebar is collapsed
+          "[&>span]:group-data-[collapsible=icon][data-state=collapsed]:hidden",
           className
         )}
         {...props}
