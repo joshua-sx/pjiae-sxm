@@ -7,6 +7,7 @@ import { PerformanceTrendsTab } from '@/components/reports/PerformanceTrendsTab'
 import { DepartmentAnalysisTab } from '@/components/reports/DepartmentAnalysisTab';
 import { BonusProjectionsTab } from '@/components/reports/BonusProjectionsTab';
 import { ReportControls } from '@/components/reports/ReportControls';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const Reports = () => {
   const [timeframe, setTimeframe] = useState('yearly');
@@ -14,16 +15,19 @@ const Reports = () => {
   
   return (
     <MainLayout>
-      <div className="container mx-auto max-w-6xl px-4 py-6 space-y-8">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <h1 className="text-3xl font-bold text-pjiae-blue m-0">Performance Analytics & Reporting</h1>
-          <ReportControls 
-            timeframe={timeframe} 
-            setTimeframe={setTimeframe} 
-            department={department} 
-            setDepartment={setDepartment} 
-          />
-        </div>
+      <div className="page-wrapper">
+        <PageHeader
+          title="Performance Analytics & Reporting"
+          subtitle="Comprehensive analysis of organizational performance metrics"
+          actions={
+            <ReportControls 
+              timeframe={timeframe} 
+              setTimeframe={setTimeframe} 
+              department={department} 
+              setDepartment={setDepartment} 
+            />
+          }
+        />
 
         <SummaryCards />
 

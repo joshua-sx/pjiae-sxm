@@ -10,7 +10,7 @@ const FinalAssessments = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="page-wrapper">
         <PageHeader
           title={role === 'Employee' ? 'My Final Assessment' : 'Final Assessments'}
           subtitle={role === 'Employee' 

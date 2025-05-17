@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/common/PageHeader';
 
 // Form schema
 const formSchema = z.object({
@@ -67,11 +68,11 @@ const ManagerFinalReview = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Final Year Assessment</h1>
-          <p className="text-muted-foreground mt-2">Complete your year-end self-assessment</p>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader
+          title="Final Year Assessment"
+          subtitle="Complete your year-end self-assessment"
+        />
         
         <Card>
           <CardHeader>
