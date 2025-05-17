@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { mockDepartmentGoals } from '@/data/mockGoals';
 import MainLayout from '@/components/layouts/MainLayout';
 import GoalStatusBadge from '@/components/goals/GoalStatusBadge';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const HRGoalsDashboard = () => {
   const navigate = useNavigate();
@@ -57,10 +57,10 @@ const HRGoalsDashboard = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold">HR Goals Dashboard</h1>
-          <p className="text-muted-foreground">Review and manage all department and employee goals</p>
-        </div>
+        <PageHeader
+          title="HR Goals Dashboard"
+          subtitle="Review and manage all department and employee goals"
+        />
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <Card>

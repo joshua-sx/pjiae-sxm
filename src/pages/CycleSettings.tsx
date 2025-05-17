@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { AppraisalCycle } from "@/types/cycle";
 import { mockCycles } from "@/data/mockCycles";
+import { PageHeader } from '@/components/common/PageHeader';
 
 const CycleSettings = () => {
   const { toast } = useToast();
@@ -62,14 +63,16 @@ const CycleSettings = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1 className="text-2xl font-bold">Cycle Settings</h1>
-          <CycleSelector 
-            cycles={cycles} 
-            selectedCycleId={selectedCycleId} 
-            onCycleChange={handleCycleChange} 
-          />
-        </div>
+        <PageHeader
+          title="Cycle Settings"
+          actions={
+            <CycleSelector 
+              cycles={cycles} 
+              selectedCycleId={selectedCycleId} 
+              onCycleChange={handleCycleChange} 
+            />
+          }
+        />
 
         <div className="space-y-4">
           <PhaseTable 

@@ -1,20 +1,18 @@
-
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Download, Upload, Calendar } from 'lucide-react';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const BackupRestore = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Backup & Restore</h1>
-          <p className="text-muted-foreground mt-2">
-            Manage system backups and restore functionality
-          </p>
-        </div>
+        <PageHeader
+          title="Backup & Restore"
+          subtitle="Manage system backups and restore functionality"
+        />
 
         {/* Backup Section */}
         <Card>

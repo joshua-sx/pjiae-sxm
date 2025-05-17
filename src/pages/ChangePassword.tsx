@@ -1,21 +1,19 @@
-
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const ChangePassword = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Change Password</h1>
-          <p className="text-muted-foreground mt-2">
-            Update your account password
-          </p>
-        </div>
+        <PageHeader
+          title="Change Password"
+          subtitle="Update your account password"
+        />
 
         {/* Change Password Form */}
         <Card>
