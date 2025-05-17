@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { useGoalsQuery } from '@/hooks/useGoalsQuery';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorAlert } from '@/components/ui/error-alert';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const MyGoals = () => {
   const { hasPermission } = useAuth();
@@ -31,13 +32,11 @@ const MyGoals = () => {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">My Goals</h1>
-              <p className="text-muted-foreground mt-2">Track and manage your personal goals</p>
-            </div>
-          </div>
+        <div className="page-wrapper">
+          <PageHeader
+            title="My Goals"
+            subtitle="Track and manage your personal goals"
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <LoadingState count={3} variant="card" />
           </div>
@@ -49,13 +48,11 @@ const MyGoals = () => {
   if (isError) {
     return (
       <MainLayout>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">My Goals</h1>
-              <p className="text-muted-foreground mt-2">Track and manage your personal goals</p>
-            </div>
-          </div>
+        <div className="page-wrapper">
+          <PageHeader
+            title="My Goals"
+            subtitle="Track and manage your personal goals"
+          />
           <ErrorAlert 
             title="Failed to load goals" 
             description="Unable to retrieve your goals at this time." 
@@ -69,14 +66,11 @@ const MyGoals = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">My Goals</h1>
-            <p className="text-muted-foreground mt-2">Track and manage your personal goals</p>
-          </div>
-          
-          {canProposeGoal && (
+      <div className="page-wrapper">
+        <PageHeader
+          title="My Goals"
+          subtitle="Track and manage your personal goals"
+          actions={canProposeGoal && (
             <Button asChild>
               <Link to="/my-goals/propose">
                 <Plus className="mr-2 h-4 w-4" />
@@ -84,7 +78,7 @@ const MyGoals = () => {
               </Link>
             </Button>
           )}
-        </div>
+        />
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {goals && goals.map((goal) => (

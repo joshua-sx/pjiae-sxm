@@ -6,36 +6,30 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
 import { Plus } from 'lucide-react';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const EmployeeGoals = () => {
   const { role, hasPermission } = useAuth();
   const isEmployee = role === UserRole.EMPLOYEE;
-  const isReadOnly = role === UserRole.IT_ADMIN;
+  const canCreate = hasPermission('canCreateGoal');
   
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">
-              {isEmployee ? 'My Goals' : 'Employee Goals'}
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              {isEmployee 
-                ? 'Review and track your personal performance goals' 
-                : 'Manage and track employee-level performance goals'}
-            </p>
-          </div>
-          
-          {hasPermission('canCreateGoal') && (
-            <Button asChild>
+      <div className="page-wrapper">
+        <PageHeader
+          title={isEmployee ? 'My Goals' : 'Employee Goals'}
+          subtitle={isEmployee 
+            ? 'Review and track your personal performance goals' 
+            : 'Manage and track employee-level performance goals'}
+          actions={canCreate && (
+            <Button asChild size="sm">
               <Link to="/employee-goals/create">
-                <Plus className="mr-2 h-4 w-4" />
-                Create New Goal
+                <Plus className="mr-1 h-4 w-4" />
+                Create Goal
               </Link>
             </Button>
           )}
-        </div>
+        />
 
         {/* Placeholder content - would be replaced with actual goals components */}
         <Card>
