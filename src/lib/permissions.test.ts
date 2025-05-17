@@ -11,14 +11,20 @@ describe('Permissions Module', () => {
       expect(hasPermission(UserRole.HR_OFFICER, 'canAssignRoles')).toBe(true);
     });
 
-    it('Employee should NOT have management capabilities', () => {
+    it('HR Officer should NOT be able to create or propose goals', () => {
+      expect(hasPermission(UserRole.HR_OFFICER, 'canCreateGoal')).toBe(false);
+      expect(hasPermission(UserRole.HR_OFFICER, 'canProposeGoal')).toBe(false);
+    });
+
+    it('Employee should NOT have management capabilities or goal creation capabilities', () => {
       expect(hasPermission(UserRole.EMPLOYEE, 'canManageUsers')).toBe(false);
       expect(hasPermission(UserRole.EMPLOYEE, 'canApproveGoal')).toBe(false);
       expect(hasPermission(UserRole.EMPLOYEE, 'canAccessAuditLogs')).toBe(false);
+      expect(hasPermission(UserRole.EMPLOYEE, 'canCreateGoal')).toBe(false);
+      expect(hasPermission(UserRole.EMPLOYEE, 'canProposeGoal')).toBe(false);
     });
 
-    it('Employee should be able to propose goals and submit self reviews', () => {
-      expect(hasPermission(UserRole.EMPLOYEE, 'canProposeGoal')).toBe(true);
+    it('Employee should be able to submit self reviews', () => {
       expect(hasPermission(UserRole.EMPLOYEE, 'canSubmitSelfReview')).toBe(true);
     });
 
@@ -37,6 +43,7 @@ describe('Permissions Module', () => {
       expect(hasPermission(UserRole.DIRECTOR, 'canApproveGoal')).toBe(true);
       expect(hasPermission(UserRole.DIRECTOR, 'canViewReports')).toBe(true);
       expect(hasPermission(UserRole.DIRECTOR, 'canOverseeAppraisals')).toBe(true);
+      expect(hasPermission(UserRole.DIRECTOR, 'canCreateGoal')).toBe(true);
     });
   });
 

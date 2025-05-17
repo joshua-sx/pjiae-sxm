@@ -112,12 +112,10 @@ export const rolePermissions: Record<UserRole, Capability[]> = {
     'canManageCycles',
     'canViewCycles',
     
-    // Goals
-    'canCreateGoal',
+    // Goals - removed canCreateGoal and canProposeGoal
     'canApproveGoal',
     'canFlagGoals',
     'canEditTeamGoals',
-    'canProposeGoal',
     'canManageDivisionGoals',
     
     // Appraisals
