@@ -68,7 +68,7 @@ const EmployeeGoalDetail = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto py-6">
+      <div className="space-y-6">
         <div className="mb-6">
           <Button 
             variant="ghost" 

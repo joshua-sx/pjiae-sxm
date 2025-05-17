@@ -33,7 +33,7 @@ const Goals = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto py-6">
+      <div className="space-y-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Goals</h1>
           {hasPermission('canCreateGoal') && (

@@ -104,7 +104,7 @@ const DepartmentGoalForm = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto py-6">
+      <div className="space-y-6">
         <Button 
           variant="ghost" 
           size="sm" 
