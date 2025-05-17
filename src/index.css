@@ -6,6 +6,7 @@
 @layer base {
   :root {
     --header-height: 64px; /* Matches LAYOUT_CONSTANTS.HEADER_HEIGHT_PX */
+    --color-primary: #0A66C2;
     
     --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
@@ -129,7 +130,7 @@
   }
 
   .progress-step-completed {
-    @apply bg-pjiae-blue text-white;
+    @apply bg-primary text-white;
   }
 
   .progress-step-current {
