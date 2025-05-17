@@ -19,7 +19,20 @@ export default {
 			}
 		},
 		extend: {
+			fontSize: {
+				'h1-sm': ['1.5rem', { lineHeight: '2rem' }],   // mobile
+				'h1-md': ['2rem',   { lineHeight: '2.5rem' }], // tablet
+				'h1-lg': ['2.5rem', { lineHeight: '3rem' }],   // desktop
+				'h2-sm': ['1.25rem',{ lineHeight: '1.75rem' }],
+				'h2-md': ['1.5rem', { lineHeight: '2rem' }],
+				'h2-lg': ['1.75rem', { lineHeight: '2.25rem' }],
+				'h3-sm': ['1.125rem', { lineHeight: '1.5rem' }],
+				'h3-md': ['1.25rem', { lineHeight: '1.75rem' }],
+				'h3-lg': ['1.5rem', { lineHeight: '2rem' }],
+			},
 			colors: {
+				'heading': '#0A66C2',      // Using the PJIAE blue color
+				'subheading': '#374151',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',

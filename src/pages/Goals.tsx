@@ -8,6 +8,7 @@ import { PlusCircle } from "lucide-react";
 import { useGoals } from '@/hooks/useGoals';
 import GoalsTable from '@/components/goals/GoalsTable';
 import GoalsFilterBar from '@/components/goals/GoalsFilterBar';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const Goals = () => {
   const navigate = useNavigate();
@@ -34,15 +35,15 @@ const Goals = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Goals</h1>
-          {hasPermission('canCreateGoal') && (
+        <PageHeader
+          title="Goals"
+          actions={hasPermission('canCreateGoal') && (
             <Button onClick={handleCreateGoal}>
               <PlusCircle className="mr-2 h-4 w-4" />
               Create New Goal
             </Button>
           )}
-        </div>
+        />
         
         <GoalsFilterBar
           searchQuery={searchQuery}

@@ -5,6 +5,7 @@ import PendingAppraisalFilters from '@/components/appraisal/PendingAppraisalFilt
 import PendingAppraisalTable from '@/components/appraisal/PendingAppraisalTable';
 import AppraisalReviewDialog from '@/components/appraisal/AppraisalReviewDialog';
 import { usePendingAppraisals } from '@/hooks/usePendingAppraisals';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const PendingForms = () => {
   const {
@@ -29,10 +30,11 @@ const PendingForms = () => {
 
   return (
     <MainLayout>
-      <div className="container mx-auto py-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Pending Appraisals</h1>
-        </div>
+      <div className="space-y-6">
+        <PageHeader 
+          title="Pending Appraisals"
+          subtitle="A list of pending appraisals requiring action."
+        />
         
         <PendingAppraisalFilters
           searchQuery={searchQuery}

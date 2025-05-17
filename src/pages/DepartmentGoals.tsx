@@ -15,6 +15,7 @@ import GoalCard from '@/components/goals/GoalCard';
 import { useAuth } from '@/contexts/AuthContext';
 import { mockDepartmentGoals } from '@/data/mockGoals';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const DepartmentGoals = () => {
   const navigate = useNavigate();
@@ -42,17 +43,17 @@ const DepartmentGoals = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">Department Goals</h1>
-          {canCreateGoals && (
+        <PageHeader
+          title="Department Goals"
+          actions={canCreateGoals && (
             <Button onClick={handleCreateGoal}>
               <PlusCircle className="mr-2 h-4 w-4" />
               Create New Goal
             </Button>
           )}
-        </div>
+        />
         
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input

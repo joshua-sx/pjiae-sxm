@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -96,16 +97,9 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  h1 {
-    @apply text-3xl font-bold text-pjiae-blue mb-4;
-  }
-
-  h2 {
-    @apply text-2xl font-semibold text-pjiae-blue mb-3;
-  }
-
-  h3 {
-    @apply text-xl font-medium text-pjiae-darkblue mb-2;
+  /* Remove default h1-h3 styles since we'll use our typography components */
+  h1, h2, h3 {
+    @apply m-0 p-0 font-normal;
   }
 }
 

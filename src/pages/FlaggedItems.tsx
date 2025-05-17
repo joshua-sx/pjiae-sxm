@@ -7,6 +7,7 @@ import { FlaggedItemDetailDialog } from "@/components/flagged-items/FlaggedItemD
 import { FlaggedItemResolveDialog } from "@/components/flagged-items/FlaggedItemResolveDialog";
 import { FlaggedItemStatusBadge } from "@/components/flagged-items/FlaggedItemStatusBadge";
 import { useFlaggedItemsState } from "@/hooks/useFlaggedItemsState";
+import { PageHeader } from "@/components/common/PageHeader";
 
 const FlaggedItems = () => {
   const {
@@ -38,12 +39,15 @@ const FlaggedItems = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Flag className="h-5 w-5 text-red-600" />
-            <h1 className="mb-0">Flagged Items</h1>
-          </div>
-        </div>
+        <PageHeader
+          title="Flagged Items"
+          subtitle="Review all flagged goals and appraisals in one place"
+          actions={
+            <div className="flex items-center gap-2">
+              <Flag className="h-5 w-5 text-red-600" />
+            </div>
+          }
+        />
         
         <FlaggedItemsFilters
           searchTerm={searchTerm}
