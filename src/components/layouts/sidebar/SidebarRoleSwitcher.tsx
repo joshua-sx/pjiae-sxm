@@ -11,7 +11,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useSidebar } from "@/components/ui/sidebar"
-import { Tooltip } from "@/components/ui/tooltip"
+import { 
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger 
+} from "@/components/ui/tooltip"
 
 export function SidebarRoleSwitcher() {
   const { isMobile, state } = useSidebar()
@@ -29,15 +34,24 @@ export function SidebarRoleSwitcher() {
   // If sidebar is collapsed, show a more compact version
   if (state === "collapsed" && !isMobile) {
     return (
-      <Tooltip content={`Current Role: ${role}`}>
-        <div className="w-full flex justify-center py-3 cursor-pointer hover:bg-gray-100 rounded-md" 
-             aria-label="Switch role" 
-             role="button"
-             tabIndex={0}
-             onClick={() => document.getElementById("role-trigger")?.click()}>
-          <User size={20} className="text-pjiae-blue" />
-        </div>
-      </Tooltip>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div 
+              className="w-full flex justify-center py-3 cursor-pointer hover:bg-gray-100 rounded-md" 
+              aria-label="Switch role" 
+              role="button"
+              tabIndex={0}
+              onClick={() => document.getElementById("role-trigger")?.click()}
+            >
+              <User size={20} className="text-pjiae-blue" />
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            Current Role: {role}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     )
   }
 
@@ -86,3 +100,4 @@ export function SidebarRoleSwitcher() {
     </div>
   )
 }
+
