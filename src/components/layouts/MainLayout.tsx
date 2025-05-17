@@ -19,7 +19,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           <TopBar />
           <main className={cn(
             "flex-1 overflow-auto",
-            `pt-6 px-6 pb-6 mt-[${LAYOUT_CONSTANTS.HEADER_HEIGHT_PX}px]`,
+            `pt-8 px-6 pb-6 mt-[${LAYOUT_CONSTANTS.HEADER_HEIGHT_PX}px]`,
           )}>
             {children}
           </main>

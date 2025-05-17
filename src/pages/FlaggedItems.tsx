@@ -41,7 +41,7 @@ const FlaggedItems = () => {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-center gap-2">
             <Flag className="h-5 w-5 text-red-600" />
-            <h1>Flagged Items</h1>
+            <h1 className="mb-0">Flagged Items</h1>
           </div>
         </div>
         
