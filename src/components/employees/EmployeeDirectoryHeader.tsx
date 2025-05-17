@@ -9,7 +9,7 @@ export default function EmployeeDirectoryHeader() {
   const { hasPermission } = useAuth();
   
   return (
-    <div className="flex justify-between items-center mb-6">
+    <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between mb-6 gap-4">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Employee Directory</h1>
         <p className="text-muted-foreground mt-1">

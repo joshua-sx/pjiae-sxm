@@ -26,7 +26,7 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <div className={cn("mb-6", className)}>
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="flex flex-col items-start md:flex-row md:items-center md:justify-between gap-4">
         <div>
           <H1>{title}</H1>
           {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
