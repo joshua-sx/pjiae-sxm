@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
+
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
@@ -133,25 +134,30 @@ export const useDivisionGoalsState = () => {
     }
   }, [departmentGoals, isHROrIT, isDirector]);
 
-  // Filter goals based on selected filters
+  // Filter goals based on selected filters without calling setGoals directly
   const filteredGoals = useMemo(() => {
     if (!roleFilteredGoals) return [];
     
     // Apply filters first
-    const filtered = roleFilteredGoals.filter(goal => {
+    return roleFilteredGoals.filter(goal => {
       const matchesDivision = divisionFilter === 'all' || goal.department === divisionFilter;
       // Extract the year from createdAt
       const goalYear = new Date(goal.createdAt).getFullYear().toString();
       const matchesYear = yearFilter === 'all' || goalYear === yearFilter;
       return matchesDivision && matchesYear;
     });
-    
+  }, [roleFilteredGoals, divisionFilter, yearFilter]);
+  
+  // Use useEffect to update the goals in useDivisionGoals hook when filteredGoals changes
+  useEffect(() => {
     // Update the sorted goals state
-    setGoals(filtered);
-    
-    // Return the sorted filtered goals
+    setGoals(filteredGoals);
+  }, [filteredGoals, setGoals]);
+
+  // Use another useMemo to get the sorted goals
+  const sortedGoals = useMemo(() => {
     return getSortedGoals();
-  }, [roleFilteredGoals, divisionFilter, yearFilter, getSortedGoals, setGoals]);
+  }, [getSortedGoals]);
   
   // If the user is a director, auto-select their division
   const directorDivision = useMemo(() => {
@@ -174,7 +180,7 @@ export const useDivisionGoalsState = () => {
     isError,
     error,
     refetch,
-    filteredGoals,
+    filteredGoals: sortedGoals, // Return the sorted goals instead
     selectedGoal,
     setSelectedGoal,
     isFlagDialogOpen,
