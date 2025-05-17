@@ -2,7 +2,7 @@
 import { ReactNode } from 'react';
 import TopBar from './TopBar';
 import AppSidebar from './AppSidebar';
-import { SidebarProvider } from '@/components/ui/sidebar';
+import { SidebarProvider, SidebarInset } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
 import { LAYOUT_CONSTANTS } from '@/lib/utils';
 
@@ -12,10 +12,10 @@ interface MainLayoutProps {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <SidebarProvider>
-      <div className="min-h-screen bg-pjiae-lightgray flex w-full">
+    <SidebarProvider defaultOpen={true}>
+      <div className="min-h-screen flex w-full">
         <AppSidebar />
-        <div className="flex-1 flex flex-col">
+        <SidebarInset className="bg-pjiae-lightgray">
           <TopBar />
           <main className={cn(
             "flex-1 overflow-auto",
@@ -23,7 +23,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           )}>
             {children}
           </main>
-        </div>
+        </SidebarInset>
       </div>
     </SidebarProvider>
   );

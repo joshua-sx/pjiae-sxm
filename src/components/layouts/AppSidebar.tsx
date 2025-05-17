@@ -4,6 +4,7 @@ import {
   SidebarContent as SidebarContentWrapper,
   SidebarFooter as SidebarFooterWrapper,
   SidebarHeader as SidebarHeaderWrapper,
+  SidebarRail,
 } from '@/components/ui/sidebar';
 
 import { SidebarHeader } from './sidebar/SidebarHeader';
@@ -24,6 +25,8 @@ export function AppSidebar() {
       <SidebarFooterWrapper>
         <SidebarFooter />
       </SidebarFooterWrapper>
+      
+      <SidebarRail />
     </Sidebar>
   );
 }
