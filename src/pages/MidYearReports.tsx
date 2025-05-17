@@ -2,17 +2,16 @@
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const MidYearReports = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Mid-Year Reports</h1>
-          <p className="text-muted-foreground mt-2">
-            Analytical reports on mid-year review performance
-          </p>
-        </div>
+        <PageHeader
+          title="Mid-Year Reports"
+          subtitle="Analytical reports on mid-year review performance"
+        />
 
         {/* Placeholder content - would be replaced with actual reports */}
         <Card>

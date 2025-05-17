@@ -3,6 +3,7 @@ import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const GoalsAnalytics = () => {
   const { role } = useAuth();
@@ -11,14 +12,12 @@ const GoalsAnalytics = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Goals Analytics</h1>
-          <p className="text-muted-foreground mt-2">
-            {isDirector 
-              ? 'Analytics for division-level goals and performance' 
-              : 'Comprehensive analytics on goals across the organization'}
-          </p>
-        </div>
+        <PageHeader
+          title="Goals Analytics"
+          subtitle={isDirector 
+            ? 'Analytics for division-level goals and performance' 
+            : 'Comprehensive analytics on goals across the organization'}
+        />
 
         {/* Placeholder content - would be replaced with actual analytics */}
         <Card>

@@ -3,6 +3,7 @@ import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const FinalAssessments = () => {
   const { role } = useAuth();
@@ -10,16 +11,12 @@ const FinalAssessments = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">
-            {role === 'Employee' ? 'My Final Assessment' : 'Final Assessments'}
-          </h1>
-          <p className="text-muted-foreground mt-2">
-            {role === 'Employee' 
-              ? 'View your year-end performance assessment' 
-              : 'Manage and track year-end performance assessments'}
-          </p>
-        </div>
+        <PageHeader
+          title={role === 'Employee' ? 'My Final Assessment' : 'Final Assessments'}
+          subtitle={role === 'Employee' 
+            ? 'View your year-end performance assessment' 
+            : 'Manage and track year-end performance assessments'}
+        />
 
         {/* Placeholder content - would be replaced with actual assessment components */}
         <Card>

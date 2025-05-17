@@ -2,15 +2,16 @@
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const RoleAssignment = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Role Assignment</h1>
-          <p className="text-muted-foreground mt-2">Manage user roles and permissions</p>
-        </div>
+        <PageHeader
+          title="Role Assignment"
+          subtitle="Manage user roles and permissions"
+        />
 
         {/* Placeholder content - would be replaced with actual role assignment interface */}
         <Card>

@@ -5,22 +5,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Download } from 'lucide-react';
+import { PageHeader } from '@/components/common/PageHeader';
 
 const AuditLogs = () => {
   return (
     <MainLayout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Audit Logs</h1>
-            <p className="text-muted-foreground mt-2">View and analyze system audit records</p>
-          </div>
-          
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export Logs
-          </Button>
-        </div>
+        <PageHeader
+          title="Audit Logs"
+          subtitle="View and analyze system audit records"
+          actions={
+            <Button variant="outline">
+              <Download className="mr-2 h-4 w-4" />
+              Export Logs
+            </Button>
+          }
+        />
         
         <div className="flex items-center space-x-2">
           <div className="relative flex-1">
