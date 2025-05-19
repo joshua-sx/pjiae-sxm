@@ -11,7 +11,7 @@ export const formSchema = z.object({
 
 export type FormValues = z.infer<typeof formSchema>;
 
-// Subgoal type definition
+// Subgoal type definition with support for hierarchical structure
 export type Subgoal = {
   id: string;
   name: string;
@@ -26,6 +26,20 @@ export type Subgoal = {
     targetDate?: Date;
     expression?: string;
   };
+};
+
+// New Goal type for the hierarchical structure
+export type Goal = {
+  id: string;
+  title: string;
+  description?: string;
+  start: Date;
+  end: Date;
+  children: Goal[];
+  collapsed?: boolean;
+  rollUp?: boolean;
+  owner?: string;
+  subgoals?: Subgoal[];
 };
 
 // Mock direct reports with more employees
@@ -51,3 +65,4 @@ export const directReports = [
   { id: '19', name: 'Thomas Martinez' },
   { id: '20', name: 'Nancy Robinson' }
 ];
+

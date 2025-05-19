@@ -11,14 +11,16 @@ import { useForm } from 'react-hook-form';
 import { GoalMetadataSection } from '@/components/goals/employee-form/GoalMetadataSection';
 import { SubgoalsSection } from '@/components/goals/employee-form/SubgoalsSection';
 import { SubgoalCreationSection } from '@/components/goals/employee-form/SubgoalCreationSection';
+import { SubgoalHierarchySection } from '@/components/goals/employee-form/SubgoalHierarchySection';
 import { FormulaSection } from '@/components/goals/employee-form/FormulaSection';
 import { FormActions } from '@/components/goals/employee-form/FormActions';
-import { formSchema, type FormValues, type Subgoal, directReports } from '@/components/goals/employee-form/types';
+import { formSchema, type FormValues, type Subgoal, type Goal, directReports } from '@/components/goals/employee-form/types';
 
 const EmployeeGoalForm = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [subgoals, setSubgoals] = useState<Subgoal[]>([]);
+  const [goals, setGoals] = useState<Goal[]>([]);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -35,6 +37,7 @@ const EmployeeGoalForm = () => {
     const payload = {
       ...values,
       subgoals, // This can now be empty if no subgoals are defined
+      goals, // Include the hierarchical goals structure
     };
     
     // Log the full payload for development/testing
@@ -71,6 +74,59 @@ const EmployeeGoalForm = () => {
     setSubgoals(newSubgoals);
     console.log('Measurements updated:', newSubgoals);
   };
+
+  // Create a default goal
+  const defaultGoal = (): Goal => ({
+    id: `goal-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    title: 'New Goal',
+    description: '',
+    start: new Date(),
+    end: new Date(new Date().setMonth(new Date().getMonth() + 6)),
+    children: [],
+    rollUp: true
+  });
+
+  // Add a top-level goal
+  const handleAddTopLevelGoal = () => {
+    setGoals(prevGoals => [...prevGoals, defaultGoal()]);
+  };
+
+  // Update a goal in the hierarchy
+  const handleUpdateGoal = (updatedGoal: Goal) => {
+    const updateGoalInTree = (goalsList: Goal[], goalToUpdate: Goal): Goal[] => {
+      return goalsList.map(goal => {
+        if (goal.id === goalToUpdate.id) {
+          return goalToUpdate;
+        }
+        if (goal.children && goal.children.length > 0) {
+          return {
+            ...goal,
+            children: updateGoalInTree(goal.children, goalToUpdate)
+          };
+        }
+        return goal;
+      });
+    };
+
+    setGoals(prevGoals => updateGoalInTree(prevGoals, updatedGoal));
+  };
+
+  // Delete a goal from the hierarchy
+  const handleDeleteGoal = (goalId: string) => {
+    const deleteGoalFromTree = (goalsList: Goal[], idToDelete: string): Goal[] => {
+      return goalsList.filter(goal => {
+        if (goal.id === idToDelete) {
+          return false;
+        }
+        if (goal.children && goal.children.length > 0) {
+          goal.children = deleteGoalFromTree(goal.children, idToDelete);
+        }
+        return true;
+      });
+    };
+
+    setGoals(prevGoals => deleteGoalFromTree(prevGoals, goalId));
+  };
   
   return (
     <MainLayout>
@@ -85,6 +141,14 @@ const EmployeeGoalForm = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <GoalMetadataSection control={form.control} directReports={directReports} />
+            
+            {/* Sub-goal Hierarchy Section */}
+            <SubgoalHierarchySection 
+              goals={goals} 
+              onAddSubgoal={handleAddTopLevelGoal}
+              onUpdateGoal={handleUpdateGoal}
+              onDeleteGoal={handleDeleteGoal}
+            />
             
             <SubgoalCreationSection onAddSubgoal={handleAddSubgoal} />
             
