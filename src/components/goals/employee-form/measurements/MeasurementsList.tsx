@@ -34,7 +34,8 @@ export const MeasurementsList: React.FC<MeasurementsListProps> = ({
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      // Use type assertion to resolve the incompatibility between versions
+      coordinateGetter: sortableKeyboardCoordinates as any,
     })
   );
 
