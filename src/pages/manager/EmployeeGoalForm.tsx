@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 // Import refactored components
 import { GoalMetadataSection } from '@/components/goals/employee-form/GoalMetadataSection';
 import { SubgoalsSection } from '@/components/goals/employee-form/SubgoalsSection';
-import { SubgoalCreationSection } from '@/components/goals/employee-form/SubgoalCreationSection';
 import { FormulaSection } from '@/components/goals/employee-form/FormulaSection';
 import { FormActions } from '@/components/goals/employee-form/FormActions';
 import { formSchema, type FormValues, type Subgoal, directReports } from '@/components/goals/employee-form/types';
@@ -84,16 +83,12 @@ const EmployeeGoalForm = () => {
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <GoalMetadataSection control={form.control} directReports={directReports} />
-            
-            <SubgoalCreationSection onAddSubgoal={handleAddSubgoal} />
-            
-            {subgoals.length > 0 && (
-              <SubgoalsSection
-                subgoals={subgoals}
-                onSubgoalsChange={handleSubgoalsChange}
-              />
-            )}
+            <GoalMetadataSection 
+              control={form.control} 
+              directReports={directReports}
+              subgoals={subgoals}
+              onAddSubgoal={handleAddSubgoal} 
+            />
             
             {subgoals.length > 0 && (
               <FormulaSection 
