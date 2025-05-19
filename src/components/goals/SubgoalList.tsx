@@ -6,6 +6,21 @@ import { type Subgoal } from '@/components/goals/employee-form/types';
 import { SubgoalItem } from './subgoal/SubgoalItem';
 import { EmptyState } from './subgoal/EmptyState';
 import { useSubgoalManager } from '@/hooks/useSubgoalManager';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
 interface SubgoalListProps {
   subgoals: Subgoal[];
@@ -19,22 +34,53 @@ export const SubgoalList: React.FC<SubgoalListProps> = ({ subgoals, onChange }) 
     handleRemoveSubgoal,
     moveSubgoal
   } = useSubgoalManager(subgoals, onChange);
+
+  // Configure sensors for drag and drop
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Handle drag end event
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    
+    if (over && active.id !== over.id) {
+      const oldIndex = subgoals.findIndex((subgoal) => subgoal.id === active.id);
+      const newIndex = subgoals.findIndex((subgoal) => subgoal.id === over.id);
+      
+      moveSubgoal(oldIndex, newIndex);
+    }
+  };
   
   return (
     <div className="space-y-6">
       {subgoals.length === 0 ? (
         <EmptyState onAddSubgoal={handleAddSubgoal} />
       ) : (
-        <div className="space-y-6">
-          {subgoals.map((subgoal, index) => (
-            <SubgoalItem
-              key={subgoal.id}
-              subgoal={subgoal}
-              onUpdate={handleUpdateSubgoal}
-              onRemove={handleRemoveSubgoal}
-            />
-          ))}
-        </div>
+        <DndContext 
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={subgoals.map(subgoal => subgoal.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-6">
+              {subgoals.map((subgoal) => (
+                <SubgoalItem
+                  key={subgoal.id}
+                  subgoal={subgoal}
+                  onUpdate={handleUpdateSubgoal}
+                  onRemove={handleRemoveSubgoal}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       )}
       
       {subgoals.length > 0 && (

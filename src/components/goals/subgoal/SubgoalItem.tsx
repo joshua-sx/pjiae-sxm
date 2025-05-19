@@ -7,8 +7,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Trash2, GripVertical } from 'lucide-react';
 import { type Subgoal } from '@/components/goals/employee-form/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
 import { SubgoalConfigPanel } from './SubgoalConfigPanel';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface SubgoalItemProps {
   subgoal: Subgoal;
@@ -21,11 +22,32 @@ export const SubgoalItem: React.FC<SubgoalItemProps> = ({
   onUpdate, 
   onRemove 
 }) => {
+  // Set up sortable functionality
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: subgoal.id });
+
+  // Apply styles from dnd-kit
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
-    <Card className="relative">
+    <Card className="relative" ref={setNodeRef} style={style}>
       <CardContent className="pt-6">
         <div className="flex items-center gap-2 mb-4">
-          <div className="cursor-move hover:bg-gray-100 p-2 rounded-md">
+          <div 
+            className="cursor-move hover:bg-gray-100 p-2 rounded-md"
+            {...attributes}
+            {...listeners}
+          >
             <GripVertical className="h-4 w-4 text-gray-400" />
           </div>
           <Input
