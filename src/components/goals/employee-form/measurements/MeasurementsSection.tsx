@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button';
 import { Plus } from 'lucide-react';
 import { type Subgoal } from '../types';
 import { cn } from '@/lib/utils';
-import { MeasurementDrawer } from './MeasurementDrawer';
 import { MeasurementsList } from './MeasurementsList';
 import { useSubgoalManager } from '@/hooks/useSubgoalManager';
+import { InlineMeasurementForm } from './InlineMeasurementForm';
 
 interface MeasurementsSectionProps {
   subgoals: Subgoal[];
@@ -19,7 +19,7 @@ export const MeasurementsSection: React.FC<MeasurementsSectionProps> = ({
   onAddSubgoal,
   onSubgoalsChange
 }) => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingSubgoal, setEditingSubgoal] = useState<Subgoal | null>(null);
   
   const { handleRemoveSubgoal, moveSubgoal } = useSubgoalManager(subgoals, onSubgoalsChange);
@@ -29,28 +29,35 @@ export const MeasurementsSection: React.FC<MeasurementsSectionProps> = ({
   const remainingWeight = 100 - totalWeight;
   const isWeightValid = totalWeight <= 100;
 
-  const openDrawerForNewMeasurement = () => {
+  const openFormForNewMeasurement = () => {
     setEditingSubgoal(null);
-    setIsDrawerOpen(true);
+    setIsFormVisible(true);
   };
 
-  const openDrawerForEditMeasurement = (subgoal: Subgoal) => {
+  const openFormForEditMeasurement = (subgoal: Subgoal) => {
     setEditingSubgoal(subgoal);
-    setIsDrawerOpen(true);
+    setIsFormVisible(true);
+  };
+
+  const handleCancelForm = () => {
+    setIsFormVisible(false);
+    setEditingSubgoal(null);
   };
 
   return (
     <div className="px-6 mb-4">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-lg font-semibold">Measurements</h3>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={openDrawerForNewMeasurement}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Measurement
-        </Button>
+        {!isFormVisible && (
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={openFormForNewMeasurement}
+          >
+            <Plus className="mr-2 h-4 w-4" />
+            Add Measurement
+          </Button>
+        )}
       </div>
       
       {/* Weight progress indicator */}
@@ -81,22 +88,23 @@ export const MeasurementsSection: React.FC<MeasurementsSectionProps> = ({
         )}
       </div>
       
+      {/* Inline measurement form */}
+      {isFormVisible && (
+        <InlineMeasurementForm
+          subgoal={editingSubgoal}
+          onAddSubgoal={onAddSubgoal}
+          onUpdateSubgoals={onSubgoalsChange}
+          existingSubgoals={subgoals}
+          remainingWeight={remainingWeight}
+          onCancel={handleCancelForm}
+        />
+      )}
+      
       <MeasurementsList 
         subgoals={subgoals} 
-        onEditSubgoal={openDrawerForEditMeasurement}
+        onEditSubgoal={openFormForEditMeasurement}
         onRemoveSubgoal={handleRemoveSubgoal}
         onMoveSubgoal={moveSubgoal}
-      />
-
-      {/* Measurement drawer */}
-      <MeasurementDrawer
-        isOpen={isDrawerOpen}
-        onOpenChange={setIsDrawerOpen}
-        subgoal={editingSubgoal}
-        onAddSubgoal={onAddSubgoal}
-        onUpdateSubgoals={onSubgoalsChange}
-        existingSubgoals={subgoals}
-        remainingWeight={remainingWeight}
       />
     </div>
   );
