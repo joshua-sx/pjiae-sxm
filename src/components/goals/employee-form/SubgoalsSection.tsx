@@ -13,7 +13,7 @@ export const SubgoalsSection: React.FC<SubgoalsSectionProps> = ({ subgoals, onSu
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Subgoals & Measurements</CardTitle>
+        <CardTitle>Measurements</CardTitle>
       </CardHeader>
       <CardContent>
         <SubgoalList 

@@ -30,10 +30,10 @@ const EmployeeGoalForm = () => {
   });
   
   const onSubmit = (values: FormValues) => {
-    // Combine form values with subgoals
+    // Combine form values with subgoals (which are now optional)
     const payload = {
       ...values,
-      subgoals,
+      subgoals, // This can now be empty if no subgoals are defined
     };
     
     // Log the full payload for development/testing
@@ -50,7 +50,7 @@ const EmployeeGoalForm = () => {
 
   const handleSubgoalsChange = (newSubgoals: Subgoal[]) => {
     setSubgoals(newSubgoals);
-    console.log('Subgoals updated:', newSubgoals);
+    console.log('Measurements updated:', newSubgoals);
   };
   
   return (
@@ -72,10 +72,12 @@ const EmployeeGoalForm = () => {
               onSubgoalsChange={handleSubgoalsChange}
             />
             
-            <FormulaSection 
-              control={form.control}
-              subgoals={subgoals}
-            />
+            {subgoals.length > 0 && (
+              <FormulaSection 
+                control={form.control}
+                subgoals={subgoals}
+              />
+            )}
             
             <FormActions />
           </form>

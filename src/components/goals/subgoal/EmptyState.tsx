@@ -10,7 +10,7 @@ interface EmptyStateProps {
 export const EmptyState: React.FC<EmptyStateProps> = ({ onAddSubgoal }) => {
   return (
     <div className="text-center py-8 bg-gray-50 rounded-md border border-dashed border-gray-300">
-      <p className="text-muted-foreground mb-4">No subgoals or measurements defined yet</p>
+      <p className="text-muted-foreground mb-4">No measurements defined yet</p>
       <Button onClick={onAddSubgoal} variant="outline">
         <Plus className="mr-2 h-4 w-4" />
         Add First Measurement

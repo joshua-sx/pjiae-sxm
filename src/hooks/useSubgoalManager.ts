@@ -27,7 +27,7 @@ export const useSubgoalManager = (
     };
     
     onChange([...subgoals, newSubgoal]);
-    console.log('Subgoal added:', newSubgoal);
+    console.log('Measurement added:', newSubgoal);
   }, [subgoals, onChange, generateId]);
   
   // Update a subgoal
@@ -51,23 +51,23 @@ export const useSubgoalManager = (
     });
     
     onChange(updatedSubgoals);
-    console.log(`Subgoal ${id} updated:`, { field, value });
+    console.log(`Measurement ${id} updated:`, { field, value });
   }, [subgoals, onChange]);
   
   // Remove a subgoal
   const handleRemoveSubgoal = useCallback((id: string) => {
     const updatedSubgoals = subgoals.filter(subgoal => subgoal.id !== id);
     onChange(updatedSubgoals);
-    console.log('Subgoal removed:', id);
+    console.log('Measurement removed:', id);
   }, [subgoals, onChange]);
   
-  // Reorder subgoals (simplified version without drag-and-drop)
+  // Reorder subgoals
   const moveSubgoal = useCallback((fromIndex: number, toIndex: number) => {
     const updatedSubgoals = [...subgoals];
     const [movedSubgoal] = updatedSubgoals.splice(fromIndex, 1);
     updatedSubgoals.splice(toIndex, 0, movedSubgoal);
     onChange(updatedSubgoals);
-    console.log(`Subgoal moved from index ${fromIndex} to ${toIndex}`);
+    console.log(`Measurement moved from index ${fromIndex} to ${toIndex}`);
   }, [subgoals, onChange]);
 
   return {
