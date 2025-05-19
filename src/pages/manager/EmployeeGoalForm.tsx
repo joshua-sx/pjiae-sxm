@@ -39,9 +39,22 @@ const EmployeeGoalForm = () => {
     // Log the full payload for development/testing
     console.log('Goal submission payload:', payload);
     
+    // Update toast message to reflect the number of employees assigned
+    const assigneeCount = values.assigneeIds.length;
+    const assigneeNames = values.assigneeIds.map(id => 
+      directReports.find(employee => employee.id === id)?.name || id
+    );
+    
+    let assigneeText = `${assigneeCount} employee(s)`;
+    if (assigneeCount === 1) {
+      assigneeText = assigneeNames[0];
+    } else if (assigneeCount <= 3) {
+      assigneeText = assigneeNames.join(', ');
+    }
+    
     toast({
       title: 'Goal created',
-      description: `The employee goal has been assigned to ${values.assigneeIds.length} employee(s).`,
+      description: `The employee goal has been assigned to ${assigneeText}.`,
       variant: 'success',
     });
     

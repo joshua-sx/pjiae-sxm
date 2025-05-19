@@ -28,7 +28,7 @@ export type Subgoal = {
   };
 };
 
-// Mock direct reports
+// Mock direct reports with more employees
 export const directReports = [
   { id: '1', name: 'John Smith' },
   { id: '2', name: 'Jane Doe' },
@@ -40,4 +40,14 @@ export const directReports = [
   { id: '8', name: 'Jennifer Taylor' },
   { id: '9', name: 'David Martinez' },
   { id: '10', name: 'Lisa Rodriguez' },
+  { id: '11', name: 'William Anderson' },
+  { id: '12', name: 'Patricia Thomas' },
+  { id: '13', name: 'James Jackson' },
+  { id: '14', name: 'Barbara White' },
+  { id: '15', name: 'Richard Harris' },
+  { id: '16', name: 'Susan Martin' },
+  { id: '17', name: 'Joseph Thompson' },
+  { id: '18', name: 'Jessica Garcia' },
+  { id: '19', name: 'Thomas Martinez' },
+  { id: '20', name: 'Nancy Robinson' }
 ];
