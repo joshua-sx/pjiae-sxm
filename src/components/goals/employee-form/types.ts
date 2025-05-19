@@ -28,11 +28,12 @@ export type Subgoal = {
     endDate?: Date;
     expression?: string;
     mode?: 'deadline' | 'range';
-    operator?: '≥' | '≤' | '=';
+    operator?: '≥' | '≤' | '=' | 'range';
     target?: number;
     optionA?: string;
     optionB?: string;
     positiveIs?: 'A' | 'B';
+    amount?: number;
   };
 };
 

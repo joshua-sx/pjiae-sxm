@@ -112,7 +112,13 @@ const SortableMeasurementItem = ({ subgoal, onEdit, onDelete, id }: {
       case 'percentage':
         return `${subgoal.config.min}% - ${subgoal.config.max}%`;
       case 'currency':
-        return `${subgoal.unit} ${subgoal.config.min} - ${subgoal.config.max}`;
+        if (subgoal.config.operator === 'range') {
+          return `${subgoal.unit} ${subgoal.config.min} - ${subgoal.config.max}`;
+        } else {
+          const operator = subgoal.config.operator || '≥';
+          const amount = subgoal.config.amount || subgoal.config.target || 0;
+          return `${operator} ${subgoal.unit} ${amount}`;
+        }
       case 'number':
         return `${subgoal.config.min} - ${subgoal.config.max} ${subgoal.unit}`;
       case 'date':
@@ -222,8 +228,9 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
   const [dateMode, setDateMode] = useState<'deadline' | 'range'>('deadline');
   const [startDate, setStartDate] = useState<Date | undefined>();
   const [endDate, setEndDate] = useState<Date | undefined>();
-  const [operator, setOperator] = useState<'≥' | '≤' | '='>('>');
+  const [operator, setOperator] = useState<'≥' | '≤' | '=' | 'range'>('≥');
   const [targetPercentage, setTargetPercentage] = useState('100');
+  const [amountValue, setAmountValue] = useState('0');
 
   const { handleRemoveSubgoal, moveSubgoal } = useSubgoalManager(subgoals, onSubgoalsChange);
 
@@ -274,6 +281,15 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
       
       if (subgoal.type === 'currency') {
         setCurrencyCode(subgoal.unit || '$');
+        setOperator(subgoal.config.operator || '≥');
+        
+        if (subgoal.config.operator === 'range') {
+          setMinValue(subgoal.config.min?.toString() || '1');
+          setMaxValue(subgoal.config.max?.toString() || '5');
+        } else {
+          setAmountValue(subgoal.config.amount?.toString() || 
+                        subgoal.config.target?.toString() || '0');
+        }
       }
     }
     
@@ -333,6 +349,7 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
     setEndDate(undefined);
     setOperator('≥');
     setTargetPercentage('100');
+    setAmountValue('0');
   };
 
   const isFormValid = () => {
@@ -344,8 +361,13 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
     // Check type-specific validations
     switch(measurementType) {
       case 'number':
-      case 'currency':
         return !isNaN(parseFloat(minValue)) && !isNaN(parseFloat(maxValue));
+      case 'currency':
+        if (operator === 'range') {
+          return !isNaN(parseFloat(minValue)) && !isNaN(parseFloat(maxValue));
+        } else {
+          return !isNaN(parseFloat(amountValue));
+        }
       case 'percentage':
         return !isNaN(parseFloat(targetPercentage));
       case 'binary':
@@ -375,11 +397,20 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
         };
         break;
       case 'currency':
-        config = {
-          min: parseFloat(minValue) || 1,
-          max: parseFloat(maxValue) || 5
-        };
         unit = currencyCode;
+        
+        if (operator === 'range') {
+          config = {
+            operator: operator,
+            min: parseFloat(minValue) || 1,
+            max: parseFloat(maxValue) || 5
+          };
+        } else {
+          config = {
+            operator: operator,
+            amount: parseFloat(amountValue) || 0
+          };
+        }
         break;
       case 'percentage':
         config = {
@@ -482,7 +513,7 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
       
       case 'currency':
         return (
-          <div className="grid grid-cols-2 gap-4 border-t pt-4">
+          <div className="grid gap-4 border-t pt-4">
             <div>
               <Label htmlFor="currency-code">Currency</Label>
               <Select value={currencyCode} onValueChange={setCurrencyCode}>
@@ -508,27 +539,43 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
                   <SelectItem value="≥">≥ (Greater than or equal)</SelectItem>
                   <SelectItem value="≤">≤ (Less than or equal)</SelectItem>
                   <SelectItem value="=">=</SelectItem>
+                  <SelectItem value="range">Range</SelectItem>
                 </SelectContent>
               </Select>
             </div>
-            <div>
-              <Label htmlFor="min-value">Minimum Value</Label>
-              <Input
-                id="min-value"
-                type="number"
-                value={minValue}
-                onChange={(e) => setMinValue(e.target.value)}
-              />
-            </div>
-            <div>
-              <Label htmlFor="max-value">Maximum Value</Label>
-              <Input
-                id="max-value"
-                type="number"
-                value={maxValue}
-                onChange={(e) => setMaxValue(e.target.value)}
-              />
-            </div>
+            
+            {operator === 'range' ? (
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="min-value">Minimum Value</Label>
+                  <Input
+                    id="min-value"
+                    type="number"
+                    value={minValue}
+                    onChange={(e) => setMinValue(e.target.value)}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="max-value">Maximum Value</Label>
+                  <Input
+                    id="max-value"
+                    type="number"
+                    value={maxValue}
+                    onChange={(e) => setMaxValue(e.target.value)}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div>
+                <Label htmlFor="amount-value">Amount</Label>
+                <Input
+                  id="amount-value"
+                  type="number"
+                  value={amountValue}
+                  onChange={(e) => setAmountValue(e.target.value)}
+                />
+              </div>
+            )}
           </div>
         );
       
