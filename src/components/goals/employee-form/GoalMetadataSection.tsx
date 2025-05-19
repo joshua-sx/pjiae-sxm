@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   FormField, 
   FormItem, 
@@ -10,16 +10,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { type Control } from 'react-hook-form';
 import { type FormValues } from './types';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface GoalMetadataSectionProps {
   control: Control<FormValues>;
@@ -74,30 +69,58 @@ export const GoalMetadataSection: React.FC<GoalMetadataSectionProps> = ({
           
           <FormField
             control={control}
-            name="assigneeId"
+            name="assigneeIds"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Assignee</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  value={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select assignee" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {directReports.map((employee) => (
-                      <SelectItem key={employee.id} value={employee.id}>
-                        {employee.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <FormLabel>Assignees</FormLabel>
                 <FormDescription>
-                  The employee responsible for achieving this goal
+                  Select one or more employees responsible for achieving this goal
                 </FormDescription>
+                <div className="border rounded-md p-2">
+                  <FormItem className="flex items-center space-x-2 p-2 mb-2 border-b">
+                    <Checkbox 
+                      id="select-all" 
+                      checked={directReports.length > 0 && field.value.length === directReports.length}
+                      onCheckedChange={(checked) => {
+                        if (checked) {
+                          // Select all
+                          field.onChange(directReports.map(employee => employee.id));
+                        } else {
+                          // Deselect all
+                          field.onChange([]);
+                        }
+                      }}
+                    />
+                    <label htmlFor="select-all" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                      Select All Employees
+                    </label>
+                  </FormItem>
+                  <ScrollArea className="h-52">
+                    <div className="space-y-2 p-2">
+                      {directReports.map((employee) => (
+                        <FormItem
+                          key={employee.id}
+                          className="flex items-center space-x-2"
+                        >
+                          <Checkbox 
+                            id={`employee-${employee.id}`}
+                            checked={field.value.includes(employee.id)}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                field.onChange([...field.value, employee.id]);
+                              } else {
+                                field.onChange(field.value.filter(id => id !== employee.id));
+                              }
+                            }}
+                          />
+                          <label htmlFor={`employee-${employee.id}`} className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            {employee.name}
+                          </label>
+                        </FormItem>
+                      ))}
+                    </div>
+                  </ScrollArea>
+                </div>
                 <FormMessage />
               </FormItem>
             )}

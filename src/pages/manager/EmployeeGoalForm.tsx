@@ -24,7 +24,7 @@ const EmployeeGoalForm = () => {
     defaultValues: {
       title: '',
       description: '',
-      assigneeId: '',
+      assigneeIds: [],
       formulaExpression: '',
     },
   });
@@ -41,7 +41,7 @@ const EmployeeGoalForm = () => {
     
     toast({
       title: 'Goal created',
-      description: 'The employee goal has been created successfully.',
+      description: `The employee goal has been assigned to ${values.assigneeIds.length} employee(s).`,
       variant: 'success',
     });
     

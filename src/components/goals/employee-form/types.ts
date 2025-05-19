@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const formSchema = z.object({
   title: z.string().min(5, 'Goal title must be at least 5 characters'),
   description: z.string().optional(),
-  assigneeId: z.string().min(1, 'Please select an assignee'),
+  assigneeIds: z.array(z.string()).min(1, 'Please select at least one assignee'),
   formulaExpression: z.string().min(5, 'Please provide a formula for final scoring'),
 });
 
@@ -33,4 +33,11 @@ export const directReports = [
   { id: '1', name: 'John Smith' },
   { id: '2', name: 'Jane Doe' },
   { id: '3', name: 'Mark Johnson' },
+  { id: '4', name: 'Sarah Williams' },
+  { id: '5', name: 'Michael Brown' },
+  { id: '6', name: 'Emily Davis' },
+  { id: '7', name: 'Robert Wilson' },
+  { id: '8', name: 'Jennifer Taylor' },
+  { id: '9', name: 'David Martinez' },
+  { id: '10', name: 'Lisa Rodriguez' },
 ];
