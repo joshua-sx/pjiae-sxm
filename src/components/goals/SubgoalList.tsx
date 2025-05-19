@@ -60,34 +60,34 @@ export const SubgoalList: React.FC<SubgoalListProps> = ({ subgoals, onChange }) 
       {subgoals.length === 0 ? (
         <EmptyState onAddSubgoal={handleAddSubgoal} />
       ) : (
-        <DndContext 
-          sensors={sensors}
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={subgoals.map(subgoal => subgoal.id)}
-            strategy={verticalListSortingStrategy}
+        <>
+          <DndContext 
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
           >
-            <div className="space-y-6">
-              {subgoals.map((subgoal) => (
-                <SubgoalItem
-                  key={subgoal.id}
-                  subgoal={subgoal}
-                  onUpdate={handleUpdateSubgoal}
-                  onRemove={handleRemoveSubgoal}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
-      )}
-      
-      {subgoals.length > 0 && (
-        <Button onClick={handleAddSubgoal} variant="outline" className="w-full">
-          <Plus className="mr-2 h-4 w-4" />
-          Add Another Measurement
-        </Button>
+            <SortableContext
+              items={subgoals.map(subgoal => subgoal.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              <div className="space-y-6">
+                {subgoals.map((subgoal) => (
+                  <SubgoalItem
+                    key={subgoal.id}
+                    subgoal={subgoal}
+                    onUpdate={handleUpdateSubgoal}
+                    onRemove={handleRemoveSubgoal}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+          
+          <Button onClick={handleAddSubgoal} variant="default" className="w-full">
+            <Plus className="mr-2 h-4 w-4" />
+            Add Another Measurement
+          </Button>
+        </>
       )}
     </div>
   );
