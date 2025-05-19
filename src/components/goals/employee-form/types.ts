@@ -24,7 +24,15 @@ export type Subgoal = {
     trueScore?: number;
     falseScore?: number;
     targetDate?: Date;
+    startDate?: Date;
+    endDate?: Date;
     expression?: string;
+    mode?: 'deadline' | 'range';
+    operator?: '≥' | '≤' | '=';
+    target?: number;
+    optionA?: string;
+    optionB?: string;
+    positiveIs?: 'A' | 'B';
   };
 };
 
