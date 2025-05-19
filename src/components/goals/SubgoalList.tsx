@@ -39,7 +39,7 @@ export const SubgoalList: React.FC<SubgoalListProps> = ({ subgoals, onChange }) 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
+      coordinateGetter: sortableKeyboardCoordinates as any, // Adding type assertion to avoid TypeScript errors
     })
   );
 
