@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardFooter } from '@/components/ui/card';
 import { type Subgoal } from '../types';
-import { Calendar as CalendarIcon, DollarSign, Hash, Percent, ToggleRight } from 'lucide-react';
-import { X } from 'lucide-react';
 import { MeasurementTypeFields } from './MeasurementTypeFields';
+import {
+  MeasurementFormHeader,
+  MeasurementBasicFields,
+  MeasurementFormActions,
+  validateMeasurementForm
+} from './inline-form';
 
 interface InlineMeasurementFormProps {
   subgoal: Subgoal | null;
@@ -32,6 +32,8 @@ export const InlineMeasurementForm: React.FC<InlineMeasurementFormProps> = ({
   const [measurementType, setMeasurementType] = useState<Subgoal['type']>('number');
   const [measurementUnit, setMeasurementUnit] = useState('');
   const [measurementWeight, setMeasurementWeight] = useState('1');
+  
+  // Type-specific form states
   const [minValue, setMinValue] = useState('1');
   const [maxValue, setMaxValue] = useState('5');
   const [trueScore, setTrueScore] = useState('5');
@@ -140,35 +142,6 @@ export const InlineMeasurementForm: React.FC<InlineMeasurementFormProps> = ({
     setAmountValue('0');
   };
 
-  const isFormValid = () => {
-    if (!measurementName.trim()) return false;
-    
-    const weight = parseFloat(measurementWeight);
-    if (isNaN(weight) || weight <= 0 || weight > 100) return false;
-    
-    // Check type-specific validations
-    switch(measurementType) {
-      case 'number':
-        return !isNaN(parseFloat(minValue)) && !isNaN(parseFloat(maxValue));
-      case 'currency':
-        if (operator === 'range') {
-          return !isNaN(parseFloat(minValue)) && !isNaN(parseFloat(maxValue));
-        } else {
-          return !isNaN(parseFloat(amountValue));
-        }
-      case 'percentage':
-        return !isNaN(parseFloat(targetPercentage));
-      case 'binary':
-        return !!optionA.trim() && !!optionB.trim();
-      case 'date':
-        return dateMode === 'deadline' ? !!targetDate : (!!startDate && !!endDate);
-      case 'custom':
-        return !!expression.trim();
-      default:
-        return true;
-    }
-  };
-
   const handleSaveMeasurement = () => {
     if (!isFormValid()) return;
     
@@ -262,117 +235,43 @@ export const InlineMeasurementForm: React.FC<InlineMeasurementFormProps> = ({
     onCancel();
   };
 
-  // Render type icon with tooltip descriptions
-  const renderTypeIcon = (type: Subgoal['type']) => {
-    switch (type) {
-      case 'binary':
-        return <ToggleRight className="h-4 w-4 text-green-500" />;
-      case 'percentage':
-        return <Percent className="h-4 w-4 text-purple-500" />;
-      case 'currency':
-        return <DollarSign className="h-4 w-4 text-amber-500" />;
-      case 'number':
-        return <Hash className="h-4 w-4 text-slate-500" />;  
-      case 'date':
-        return <CalendarIcon className="h-4 w-4 text-blue-500" />;
-      case 'custom':
-        return <Hash className="h-4 w-4 text-slate-500" />;
-      default:
-        return null;
-    }
+  const isFormValid = () => {
+    return validateMeasurementForm({
+      measurementName,
+      measurementWeight,
+      measurementType,
+      minValue,
+      maxValue,
+      amountValue,
+      targetPercentage,
+      optionA,
+      optionB,
+      targetDate,
+      startDate,
+      endDate,
+      dateMode,
+      expression
+    });
   };
 
   return (
     <Card className="mb-6">
       <CardHeader className="pb-2">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-lg">
-            {subgoal ? 'Edit Measurement' : 'Add Measurement'}
-          </CardTitle>
-          <Button variant="ghost" size="icon" onClick={onCancel}>
-            <X className="h-4 w-4" />
-          </Button>
-        </div>
+        <MeasurementFormHeader 
+          title={subgoal ? 'Edit Measurement' : 'Add Measurement'}
+          onCancel={onCancel}
+        />
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          <div>
-            <Label htmlFor="measurement-name">Measurement Name</Label>
-            <Input 
-              id="measurement-name" 
-              placeholder="e.g., Customer Satisfaction Score"
-              value={measurementName}
-              onChange={(e) => setMeasurementName(e.target.value)}
-            />
-          </div>
-          
-          <div>
-            <Label htmlFor="measurement-type">Measurement Type</Label>
-            <Select 
-              value={measurementType} 
-              onValueChange={(value) => setMeasurementType(value as Subgoal['type'])}
-            >
-              <SelectTrigger id="measurement-type">
-                <SelectValue placeholder="Select type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="number" className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <Hash className="h-4 w-4 text-slate-500" />
-                    <span>Number</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="currency" className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <DollarSign className="h-4 w-4 text-amber-500" />
-                    <span>Currency</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="percentage" className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <Percent className="h-4 w-4 text-purple-500" />
-                    <span>Percentage</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="binary" className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <ToggleRight className="h-4 w-4 text-green-500" />
-                    <span>Binary (Pass/Fail)</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="date" className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <CalendarIcon className="h-4 w-4 text-blue-500" />
-                    <span>Date</span>
-                  </div>
-                </SelectItem>
-                <SelectItem value="custom" className="flex items-center gap-2">
-                  <div className="flex items-center gap-2">
-                    <Hash className="h-4 w-4 text-slate-500" />
-                    <span>Custom Formula</span>
-                  </div>
-                </SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-sm text-muted-foreground mt-1">
-              Select the type of measurement that best fits your goal
-            </p>
-          </div>
-          
-          <div>
-            <Label htmlFor="measurement-weight">Weight (%)</Label>
-            <Input
-              id="measurement-weight"
-              type="number"
-              min="1"
-              max="100"
-              value={measurementWeight}
-              onChange={(e) => setMeasurementWeight(e.target.value)}
-            />
-            <p className="text-sm text-muted-foreground mt-1">
-              The weight of this measurement in the overall goal (all weights must sum to 100%)
-            </p>
-          </div>
+          <MeasurementBasicFields 
+            measurementName={measurementName}
+            setMeasurementName={setMeasurementName}
+            measurementType={measurementType}
+            setMeasurementType={setMeasurementType}
+            measurementWeight={measurementWeight}
+            setMeasurementWeight={setMeasurementWeight}
+          />
           
           {/* Type-specific configurations */}
           <MeasurementTypeFields 
@@ -414,11 +313,13 @@ export const InlineMeasurementForm: React.FC<InlineMeasurementFormProps> = ({
           />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end gap-2 border-t pt-4">
-        <Button variant="outline" onClick={onCancel}>Cancel</Button>
-        <Button onClick={handleSaveMeasurement} disabled={!isFormValid()}>
-          {subgoal ? 'Update' : 'Add'} Measurement
-        </Button>
+      <CardFooter>
+        <MeasurementFormActions 
+          isValid={isFormValid()}
+          isEditing={!!subgoal}
+          onCancel={onCancel}
+          onSave={handleSaveMeasurement}
+        />
       </CardFooter>
     </Card>
   );
