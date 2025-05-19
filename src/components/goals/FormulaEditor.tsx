@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Textarea } from '@/components/ui/textarea';
-import { type Subgoal } from '@/pages/manager/EmployeeGoalForm';
+import { type Subgoal } from '@/components/goals/employee-form/types';
 import { Card, CardContent } from '@/components/ui/card';
 
 interface FormulaEditorProps {
