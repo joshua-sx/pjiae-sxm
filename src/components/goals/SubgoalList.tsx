@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Plus, Trash2, GripVertical } from 'lucide-react';
-import { type Subgoal } from '@/pages/manager/EmployeeGoalForm';
+import { type Subgoal } from '@/components/goals/employee-form/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 
@@ -47,7 +47,7 @@ export const SubgoalList: React.FC<SubgoalListProps> = ({ subgoals, onChange }) 
           return {
             ...subgoal,
             [parent]: {
-              ...subgoal[parent as keyof Subgoal],
+              ...subgoal[parent as keyof typeof subgoal],
               [child]: value
             }
           };
@@ -124,7 +124,7 @@ export const SubgoalList: React.FC<SubgoalListProps> = ({ subgoals, onChange }) 
                 id={`${subgoal.id}-false-score`}
                 type="number"
                 value={subgoal.config.falseScore || 1}
-                onChange={(e) => handleUpdateSubgoal(subgoal.id, 'config.false-score', parseFloat(e.target.value))}
+                onChange={(e) => handleUpdateSubgoal(subgoal.id, 'config.falseScore', parseFloat(e.target.value))}
               />
             </div>
           </div>
