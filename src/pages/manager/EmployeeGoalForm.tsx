@@ -9,7 +9,6 @@ import { useForm } from 'react-hook-form';
 
 // Import refactored components
 import { GoalMetadataSection } from '@/components/goals/employee-form/GoalMetadataSection';
-import { SubgoalsSection } from '@/components/goals/employee-form/SubgoalsSection';
 import { FormulaSection } from '@/components/goals/employee-form/FormulaSection';
 import { FormActions } from '@/components/goals/employee-form/FormActions';
 import { formSchema, type FormValues, type Subgoal, directReports } from '@/components/goals/employee-form/types';
@@ -87,7 +86,8 @@ const EmployeeGoalForm = () => {
               control={form.control} 
               directReports={directReports}
               subgoals={subgoals}
-              onAddSubgoal={handleAddSubgoal} 
+              onAddSubgoal={handleAddSubgoal}
+              onSubgoalsChange={handleSubgoalsChange} 
             />
             
             {subgoals.length > 0 && (
