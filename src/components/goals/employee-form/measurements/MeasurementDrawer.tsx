@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { type Subgoal } from '../types';
-import { Calendar as CalendarIcon, Hash, Percent, ToggleRight } from 'lucide-react';
+import { Calendar as CalendarIcon, DollarSign, Hash, Percent, ToggleRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { MeasurementTypeFields } from './MeasurementTypeFields';
@@ -278,7 +277,7 @@ export const MeasurementDrawer: React.FC<MeasurementDrawerProps> = ({
       case 'percentage':
         return <Percent className="h-4 w-4 text-purple-500" />;
       case 'currency':
-        return <Hash className="h-4 w-4 text-amber-500" />;
+        return <DollarSign className="h-4 w-4 text-amber-500" />;
       case 'number':
         return <Hash className="h-4 w-4 text-slate-500" />;  
       case 'date':
@@ -327,7 +326,7 @@ export const MeasurementDrawer: React.FC<MeasurementDrawerProps> = ({
                   </SelectItem>
                   <SelectItem value="currency" className="flex items-center gap-2">
                     <div className="flex items-center gap-2">
-                      <Hash className="h-4 w-4 text-amber-500" />
+                      <DollarSign className="h-4 w-4 text-amber-500" />
                       <span>Currency</span>
                     </div>
                   </SelectItem>

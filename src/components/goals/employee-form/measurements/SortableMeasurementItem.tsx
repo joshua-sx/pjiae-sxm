@@ -1,8 +1,7 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { type Subgoal } from '../types';
-import { Edit, Trash2, GripVertical, ChevronDown, ChevronUp, ToggleRight, Percent, Hash, Calendar } from 'lucide-react';
+import { Edit, Trash2, GripVertical, ChevronDown, ChevronUp, ToggleRight, Percent, Hash, Calendar, DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -35,7 +34,7 @@ export const SortableMeasurementItem: React.FC<SortableMeasurementItemProps> = (
       case 'percentage':
         return <Percent className="h-4 w-4 text-purple-500" />;
       case 'currency':
-        return <Hash className="h-4 w-4 text-amber-500" />;
+        return <DollarSign className="h-4 w-4 text-amber-500" />;
       case 'date':
         return <Calendar className="h-4 w-4 text-blue-500" />;
       case 'custom':
