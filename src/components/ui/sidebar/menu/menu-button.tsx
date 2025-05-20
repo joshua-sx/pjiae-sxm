@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/tooltip"
 
 const sidebarMenuButtonVariants = cva(
-  "peer/menu-button flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-7 group-data-[collapsible=icon]:!p-1.5 [&>svg]:size-4 [&>span:last-child]:truncate",
+  "peer/menu-button flex w-full items-center justify-start gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-none ring-sidebar-ring transition-[width,height,padding] hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 active:bg-sidebar-accent active:text-sidebar-accent-foreground disabled:pointer-events-none disabled:opacity-50 group-has-[[data-sidebar=menu-action]]/menu-item:pr-8 aria-disabled:pointer-events-none aria-disabled:opacity-50 data-[active=true]:bg-sidebar-accent data-[active=true]:font-medium data-[active=true]:text-sidebar-accent-foreground data-[state=open]:hover:bg-sidebar-accent data-[state=open]:hover:text-sidebar-accent-foreground group-data-[collapsible=icon]:!size-8 group-data-[collapsible=icon]:!p-2 [&>svg]:size-4 [&>svg]:shrink-0 [&>span:last-child]:truncate",
   {
     variants: {
       variant: {
@@ -65,34 +65,26 @@ export const SidebarMenuButton = React.forwardRef<
         className={cn(
           sidebarMenuButtonVariants({ variant, size }), 
           
-          // Perfect centering for collapsed state
-          "group-data-[state=collapsed]:flex group-data-[state=collapsed]:items-center group-data-[state=collapsed]:justify-center",
+          // When collapsed, center the button perfectly using grid layout
+          "group-data-[state=collapsed]:grid group-data-[state=collapsed]:place-items-center",
           "group-data-[state=collapsed]:px-0",
           
-          // Precise SVG icon handling in collapsed state
+          // Precise icon handling in collapsed state
           "group-data-[state=collapsed]:[&>svg]:size-4",
           "group-data-[state=collapsed]:[&>svg]:m-0",
-          "group-data-[state=collapsed]:[&>svg]:mx-auto",
           
-          // Hide text and chevrons in collapsed state
+          // Hide all text and chevrons in collapsed state
           "group-data-[state=collapsed]:[&>span]:hidden",
           "group-data-[state=collapsed]:[&>[data-chevron]]:hidden",
-          
-          // Ensure all chevron icons are properly hidden when collapsed
           "group-data-[state=collapsed]:[&>.lucide-chevron-down]:hidden",
           "group-data-[state=collapsed]:[&>.lucide-chevron-right]:hidden",
           "group-data-[state=collapsed]:[&>.lucide-chevron-left]:hidden",
           "group-data-[state=collapsed]:[&>.lucide-chevron-up]:hidden",
           
-          // Make sure there's no margin on icons when collapsed that would throw off centering
+          // Ensure no padding or margins affect the centering
           "group-data-[state=collapsed]:[&>svg]:!mr-0",
+          "has-[[data-chevron]]:group-data-[state=collapsed]:p-0",
           
-          // Fix positioning for buttons specifically used as menu triggers
-          "has-[[data-chevron]]:group-data-[state=collapsed]:pr-0",
-          "has-[[data-chevron]]:group-data-[state=collapsed]:pl-0",
-          
-          // Additional centered container styling
-          "group-data-[collapsible=icon]:justify-center",
           className
         )}
         {...props}
