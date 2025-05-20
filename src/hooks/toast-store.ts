@@ -14,7 +14,7 @@ export type Toast = {
 
 // Constants
 export const TOAST_LIMIT = 5;
-export const TOAST_REMOVE_DELAY = 3000; // Changed from 1000000 to 3000ms (3 seconds)
+export const TOAST_REMOVE_DELAY = 10000; // Changed to 10 seconds (10000ms)
 
 // Action types
 export const ActionTypes = {
@@ -126,8 +126,10 @@ export function dispatch(action: Action) {
 }
 
 export function addToRemoveQueue(toastId: string) {
+  // Clear existing timeout for this toast if it exists
   if (toastTimeouts.has(toastId)) {
-    return;
+    clearTimeout(toastTimeouts.get(toastId));
+    toastTimeouts.delete(toastId);
   }
 
   const timeout = setTimeout(() => {

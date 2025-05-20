@@ -22,7 +22,9 @@ export function toast({ ...props }: ToastProps) {
       toast: { ...props, id },
     });
   
-  const dismiss = () => dispatch({ type: ActionTypes.DISMISS_TOAST, toastId: id });
+  const dismiss = () => {
+    dispatch({ type: ActionTypes.DISMISS_TOAST, toastId: id });
+  };
 
   dispatch({
     type: ActionTypes.ADD_TOAST,
