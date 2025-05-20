@@ -1,5 +1,5 @@
 
-import { DepartmentGoal, EmployeeGoal, GoalStatus } from '@/types/goals';
+import { GoalStatus } from '@/types/goals';
 import { UnifiedGoal } from '@/types/unifiedGoals';
 import { mockDepartmentGoals, mockEmployeeGoals } from '@/data/mockGoals';
 
@@ -19,9 +19,9 @@ export function createUnifiedGoals(): UnifiedGoal[] {
     employeeName: '', // Empty for department goals
   }));
 
-  // Get a mapping of department IDs to department names
+  // Map department goal IDs to their department names for quick lookup
   const departmentMap = mockDepartmentGoals.reduce((acc, dept) => {
-    acc[dept.departmentId] = dept.departmentName;
+    acc[dept.id] = dept.departmentName;
     return acc;
   }, {} as Record<string, string>);
 
@@ -29,14 +29,11 @@ export function createUnifiedGoals(): UnifiedGoal[] {
     // Find the linked department goal to get the department name
     // If no link exists or department not found, use "Individual" as default
     let departmentName = "Individual";
-    
+
     if (goal.linkedDepartmentGoalId) {
-      // Find the department goal this employee goal is linked to
-      const linkedDeptGoal = mockDepartmentGoals.find(
-        deptGoal => deptGoal.id === goal.linkedDepartmentGoalId
-      );
-      if (linkedDeptGoal) {
-        departmentName = linkedDeptGoal.departmentName;
+      const linkedName = departmentMap[goal.linkedDepartmentGoalId];
+      if (linkedName) {
+        departmentName = linkedName;
       }
     }
     
