@@ -9,7 +9,7 @@ import { Search, UserPlus } from 'lucide-react';
 import { useUsersQuery } from '@/hooks/useUsersQuery';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorAlert } from '@/components/ui/error-alert';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/styled-table";
 
 const UserList = () => {

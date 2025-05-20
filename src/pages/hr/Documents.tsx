@@ -5,7 +5,7 @@ import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/styled-table";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
 import { Search, Upload, Download, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useDocumentsQuery } from '@/hooks/useDocumentsQuery';
