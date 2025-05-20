@@ -56,7 +56,7 @@ export const useFileUpload = (): FileUploadHook => {
         description: `Found ${data.length} employee records with ${fields.length} fields.`,
       });
       
-      return data;
+      return; // Return void to match the Promise<void> type
     } catch (error) {
       toast({
         title: "Error Processing File",
