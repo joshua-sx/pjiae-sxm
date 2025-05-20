@@ -2,52 +2,85 @@
 import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileUploader } from '@/components/imports/FileUploader';
-import { FileSpreadsheet } from 'lucide-react';
+import { ImportSourceSelector } from '@/components/imports/ImportSourceSelector';
+import { ApiImportForm } from '@/components/imports/steps/ApiImportForm';
+import { ApiConfig, ImportSource } from '@/hooks/useEmployeeImport';
 
 interface UploadStepProps {
+  importSource: ImportSource;
+  onSourceSelect: (source: ImportSource) => void;
+  
+  // File upload props
   onFileUpload: (file: File) => Promise<void>;
+  
+  // API import props
+  apiConfig?: ApiConfig;
+  isConnecting?: boolean;
+  isConnected?: boolean;
+  onApiConfigChange?: (config: Partial<ApiConfig>) => void;
+  onTestConnection?: () => Promise<void>;
+  onFetchApiData?: () => Promise<void>;
 }
 
-export const UploadStep = ({ onFileUpload }: UploadStepProps) => {
-  return (
-    <div className="max-w-2xl mx-auto mt-8">
+export const UploadStep = ({ 
+  importSource, 
+  onSourceSelect,
+  onFileUpload,
+  apiConfig,
+  isConnecting,
+  isConnected,
+  onApiConfigChange,
+  onTestConnection,
+  onFetchApiData
+}: UploadStepProps) => {
+  
+  // If no import source is selected, show the selection screen
+  if (!importSource) {
+    return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-center">Import Employee Data</CardTitle>
-          <CardDescription className="text-center">
-            Upload a file containing employee records to import
+          <CardTitle>Import Employees</CardTitle>
+          <CardDescription>
+            Choose a method to import employee data
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <FileUploader onFileUpload={onFileUpload} />
-          <div className="mt-8 space-y-4">
-            <h3 className="text-lg font-medium">Accepted File Formats:</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardContent className="pt-6 text-center">
-                  <FileSpreadsheet className="w-12 h-12 mx-auto text-blue-500" />
-                  <h4 className="font-medium mt-2">CSV</h4>
-                  <p className="text-sm text-muted-foreground">Comma Separated Values</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="pt-6 text-center">
-                  <FileSpreadsheet className="w-12 h-12 mx-auto text-green-500" />
-                  <h4 className="font-medium mt-2">JSON</h4>
-                  <p className="text-sm text-muted-foreground">JavaScript Object Notation</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="pt-6 text-center">
-                  <FileSpreadsheet className="w-12 h-12 mx-auto text-orange-500" />
-                  <h4 className="font-medium mt-2">XML</h4>
-                  <p className="text-sm text-muted-foreground">Extensible Markup Language</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <ImportSourceSelector onSourceSelect={onSourceSelect} />
         </CardContent>
       </Card>
-    </div>
-  );
+    );
+  }
+  
+  // If file upload is selected
+  if (importSource === 'file') {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Import from File</CardTitle>
+          <CardDescription>
+            Upload a CSV, JSON, or XML file containing employee data
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <FileUploader onFileSelect={onFileUpload} />
+        </CardContent>
+      </Card>
+    );
+  }
+  
+  // If API import is selected
+  if (importSource === 'api' && apiConfig && onApiConfigChange && onTestConnection && onFetchApiData) {
+    return (
+      <ApiImportForm
+        apiConfig={apiConfig}
+        isLoading={isConnecting || false}
+        isConnected={isConnected || false}
+        onConfigChange={onApiConfigChange}
+        onTestConnection={onTestConnection}
+        onFetchData={onFetchApiData}
+      />
+    );
+  }
+  
+  return null;
 };

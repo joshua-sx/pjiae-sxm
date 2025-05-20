@@ -16,12 +16,26 @@ const EmployeeImport = () => {
   const navigate = useNavigate();
   const {
     currentStep,
+    importSource,
     parsedData,
     detectedFields,
     mappedFields,
     validationErrors,
     importResults,
+    
+    // File upload
     handleFileUpload,
+    
+    // API import
+    apiConfig,
+    isConnecting,
+    isConnected,
+    updateApiConfig,
+    testApiConnection,
+    fetchApiData,
+    
+    // Common methods
+    setImportSource,
     handleFieldMappingChange,
     handleMappingMethodChange,
     handleMappingComplete,
@@ -32,7 +46,19 @@ const EmployeeImport = () => {
   const renderStepContent = () => {
     switch(currentStep) {
       case 'upload':
-        return <UploadStep onFileUpload={handleFileUpload} />;
+        return (
+          <UploadStep 
+            importSource={importSource}
+            onSourceSelect={setImportSource}
+            onFileUpload={handleFileUpload}
+            apiConfig={apiConfig}
+            isConnecting={isConnecting}
+            isConnected={isConnected}
+            onApiConfigChange={updateApiConfig}
+            onTestConnection={testApiConnection}
+            onFetchApiData={fetchApiData}
+          />
+        );
       
       case 'mapping':
         return (
@@ -74,7 +100,7 @@ const EmployeeImport = () => {
       <div className="space-y-6">
         <PageHeader
           title="Import Employees"
-          subtitle="Bulk import employee records from external files"
+          subtitle="Bulk import employee records from external files or APIs"
           actions={
             currentStep !== 'upload' && (
               <Button variant="outline" onClick={handleStartOver}>
