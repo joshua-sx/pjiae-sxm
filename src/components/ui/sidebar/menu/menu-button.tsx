@@ -1,3 +1,4 @@
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -63,18 +64,32 @@ export const SidebarMenuButton = React.forwardRef<
         data-active={isActive}
         className={cn(
           sidebarMenuButtonVariants({ variant, size }), 
+          
           // Perfect centering for collapsed state
           "group-data-[state=collapsed]:flex group-data-[state=collapsed]:items-center group-data-[state=collapsed]:justify-center",
           "group-data-[state=collapsed]:px-0",
           
           // Precise SVG icon handling in collapsed state
-          "group-data-[state=collapsed]:[&>svg]:w-4 group-data-[state=collapsed]:[&>svg]:h-4",
+          "group-data-[state=collapsed]:[&>svg]:size-4",
           "group-data-[state=collapsed]:[&>svg]:m-0",
           "group-data-[state=collapsed]:[&>svg]:mx-auto",
           
           // Hide text and chevrons in collapsed state
-          "[&>span]:group-data-[state=collapsed]:hidden",
-          "[&>[data-chevron]]:group-data-[state=collapsed]:hidden",
+          "group-data-[state=collapsed]:[&>span]:hidden",
+          "group-data-[state=collapsed]:[&>[data-chevron]]:hidden",
+          
+          // Ensure all chevron icons are properly hidden when collapsed
+          "group-data-[state=collapsed]:[&>.lucide-chevron-down]:hidden",
+          "group-data-[state=collapsed]:[&>.lucide-chevron-right]:hidden",
+          "group-data-[state=collapsed]:[&>.lucide-chevron-left]:hidden",
+          "group-data-[state=collapsed]:[&>.lucide-chevron-up]:hidden",
+          
+          // Make sure there's no margin on icons when collapsed that would throw off centering
+          "group-data-[state=collapsed]:[&>svg]:!mr-0",
+          
+          // Fix positioning for buttons specifically used as menu triggers
+          "has-[[data-chevron]]:group-data-[state=collapsed]:pr-0",
+          "has-[[data-chevron]]:group-data-[state=collapsed]:pl-0",
           
           // Additional centered container styling
           "group-data-[collapsible=icon]:justify-center",

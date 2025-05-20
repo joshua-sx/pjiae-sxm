@@ -22,8 +22,8 @@ const TopBar = () => {
         
         <h1 className="text-xl font-semibold text-gray-800 m-0">Digital Appraisal System</h1>
         
-        {/* Add sidebar trigger next to title */}
-        <SidebarTrigger className="hidden md:flex text-gray-500 hover:text-gray-700" />
+        {/* Add sidebar trigger next to title with better centering */}
+        <SidebarTrigger className="hidden md:flex text-gray-500 hover:text-gray-700 justify-center items-center" />
       </div>
       
       {/* Right side - Notifications only */}
