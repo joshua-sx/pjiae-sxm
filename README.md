@@ -30,6 +30,9 @@ git clone <YOUR_GIT_URL>
 cd <YOUR_PROJECT_NAME>
 
 # Step 3: Install the necessary dependencies.
+# If you have a prebuilt `node_modules.tar.gz` archive, copy it to the project
+# root before running the setup script. The script will extract the archive
+# instead of downloading packages from the internet, allowing offline setup.
 ./setup.sh
 
 # Step 4: Lint the code
