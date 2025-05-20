@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Users } from 'lucide-react';
+import { Users, Upload, UserCog } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
@@ -18,7 +18,17 @@ export function UserManagementMenuSection({ isActive }: UserManagementMenuSectio
   return (
     <>
       {hasPermission('canManageUsers') && (
-        <UserManagementMenuItem isActive={isActive} />
+        <>
+          <UserManagementMenuItem isActive={isActive} />
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild isActive={isActive('/hr/employee-import')} tooltip="Import Employees">
+              <Link to="/hr/employee-import">
+                <Upload />
+                <span>Import Employees</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </>
       )}
       <SidebarMenuItem>
         <SidebarMenuButton asChild isActive={isActive('/employees')} tooltip="Employee Directory">
