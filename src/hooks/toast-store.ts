@@ -1,3 +1,4 @@
+
 import * as React from "react";
 
 export type ToastVariant = "default" | "destructive" | "success";
@@ -14,7 +15,7 @@ export type Toast = {
 
 // Constants
 export const TOAST_LIMIT = 5;
-export const TOAST_REMOVE_DELAY = 10000; // Changed to 10 seconds (10000ms)
+export const TOAST_REMOVE_DELAY = 10000; // 10 seconds (10000ms)
 
 // Action types
 export const ActionTypes = {

@@ -32,7 +32,10 @@ export function toast({ ...props }: ToastProps) {
       ...props,
       open: true,
       onOpenChange: (open: boolean) => {
-        if (!open) dismiss();
+        if (!open) {
+          dismiss();
+        }
+        props.onOpenChange?.(open);
       },
     },
   });
@@ -60,7 +63,13 @@ export function useToast() {
   return {
     ...state,
     toast,
-    dismiss: (toastId?: string) => dispatch({ type: ActionTypes.DISMISS_TOAST, toastId }),
+    dismiss: (toastId?: string) => {
+      if (toastId) {
+        dispatch({ type: ActionTypes.DISMISS_TOAST, toastId });
+      } else {
+        dispatch({ type: ActionTypes.DISMISS_TOAST });
+      }
+    },
   };
 }
 
