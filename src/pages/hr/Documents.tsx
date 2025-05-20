@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/styled-table";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Search, Upload, Download, FileText } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -43,13 +44,8 @@ const Documents = () => {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Documents</h1>
-              <p className="text-muted-foreground mt-2">Manage HR and appraisal documents</p>
-            </div>
-          </div>
+        <div className="page-wrapper">
+          <PageHeader title="Documents" subtitle="Manage HR and appraisal documents" />
           <LoadingState count={6} variant="table" />
         </div>
       </MainLayout>
@@ -59,13 +55,8 @@ const Documents = () => {
   if (isError) {
     return (
       <MainLayout>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Documents</h1>
-              <p className="text-muted-foreground mt-2">Manage HR and appraisal documents</p>
-            </div>
-          </div>
+        <div className="page-wrapper">
+          <PageHeader title="Documents" subtitle="Manage HR and appraisal documents" />
           <ErrorAlert 
             title="Failed to load documents" 
             description="Unable to retrieve document data at this time." 
@@ -79,18 +70,8 @@ const Documents = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Documents</h1>
-            <p className="text-muted-foreground mt-2">Manage HR and appraisal documents</p>
-          </div>
-          
-          <Button>
-            <Upload className="mr-2 h-4 w-4" />
-            Upload Document
-          </Button>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader title="Documents" subtitle="Manage HR and appraisal documents" actions={<Button><Upload className="mr-2 h-4 w-4" />Upload Document</Button>} />
         
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">

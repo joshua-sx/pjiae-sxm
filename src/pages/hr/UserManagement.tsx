@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Plus, Edit, Trash } from 'lucide-react';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from '@/components/ui/button';
 import { 
   Table,
@@ -10,7 +11,7 @@ import {
   TableRow,
   TableBody,
   TableCell
-} from '@/components/ui/table';
+} from "@/components/ui/styled-table";
 import { useToast } from '@/hooks/use-toast';
 import {
   Dialog,
@@ -209,14 +210,8 @@ const UserManagement = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">User Management</h1>
-          <Button onClick={handleAddUser}>
-            <Plus className="mr-2 h-4 w-4" />
-            Add User
-          </Button>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader title="User Management" actions={<Button onClick={handleAddUser}><Plus className="mr-2 h-4 w-4" />Add User</Button>} />
         
         {/* Users table */}
         <div className="rounded-md border">

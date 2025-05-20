@@ -1,17 +1,15 @@
 
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { HelpCircle, FileText, Mail, MessageSquare } from 'lucide-react';
 
 const Help = () => {
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Help & Support</h1>
-          <p className="text-muted-foreground mt-2">Find answers to your questions and get assistance</p>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader title="Help & Support" subtitle="Find answers to your questions and get assistance" />
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <Card>

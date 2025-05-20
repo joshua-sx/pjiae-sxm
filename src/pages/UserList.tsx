@@ -1,6 +1,7 @@
 
 import React, { useState, useCallback } from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -9,7 +10,7 @@ import { useUsersQuery } from '@/hooks/useUsersQuery';
 import { LoadingState } from '@/components/ui/loading-state';
 import { ErrorAlert } from '@/components/ui/error-alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/styled-table";
 
 const UserList = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -28,13 +29,8 @@ const UserList = () => {
   if (isLoading) {
     return (
       <MainLayout>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">User List</h1>
-              <p className="text-muted-foreground mt-2">Manage and view all system users</p>
-            </div>
-          </div>
+        <div className="page-wrapper">
+          <PageHeader title="User List" subtitle="Manage and view all system users" />
           <LoadingState count={10} variant="table" />
         </div>
       </MainLayout>
@@ -44,13 +40,8 @@ const UserList = () => {
   if (isError) {
     return (
       <MainLayout>
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">User List</h1>
-              <p className="text-muted-foreground mt-2">Manage and view all system users</p>
-            </div>
-          </div>
+        <div className="page-wrapper">
+          <PageHeader title="User List" subtitle="Manage and view all system users" />
           <ErrorAlert 
             title="Failed to load users" 
             description="Unable to retrieve user data at this time." 
@@ -64,17 +55,9 @@ const UserList = () => {
 
   return (
     <MainLayout>
-      <div className="space-y-6">
+      <div className="page-wrapper">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">User List</h1>
-            <p className="text-muted-foreground mt-2">Manage and view all system users</p>
-          </div>
-          
-          <Button>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Add New User
-          </Button>
+          <PageHeader title="User List" subtitle="Manage and view all system users" actions={<Button><UserPlus className="mr-2 h-4 w-4" />Add New User</Button>} />
         </div>
         
         <div className="flex items-center space-x-2">
