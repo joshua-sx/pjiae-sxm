@@ -65,6 +65,7 @@ import AuditLogs from "./pages/AuditLogs";
 // HR Officer pages
 import Documents from "./pages/hr/Documents";
 import UserManagement from "./pages/hr/UserManagement";
+import EmployeeImport from "./pages/hr/EmployeeImport"; // Import the EmployeeImport component
 
 // Director pages
 import AppraisalOversight from "./pages/director/AppraisalOversight";
@@ -159,6 +160,7 @@ const App = () => {
                 {/* HR Officer Routes */}
                 <Route path="/hr/documents" element={<Documents />} />
                 <Route path="/hr/users" element={<UserManagement />} />
+                <Route path="/hr/employee-import" element={<EmployeeImport />} /> {/* Add the route for employee import */}
                 
                 {/* Director Routes */}
                 <Route path="/director/appraisals" element={<AppraisalOversight />} />
