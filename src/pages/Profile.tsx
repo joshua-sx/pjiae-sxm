@@ -1,6 +1,7 @@
 
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,13 +13,8 @@ const Profile = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">My Profile</h1>
-          <p className="text-muted-foreground mt-2">
-            View and update your personal information
-          </p>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader title="My Profile" subtitle="View and update your personal information" />
 
         {/* Profile Details */}
         <Card>

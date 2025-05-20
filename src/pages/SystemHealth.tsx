@@ -1,19 +1,15 @@
 
 import React from 'react';
 import MainLayout from '@/components/layouts/MainLayout';
+import { PageHeader } from "@/components/common/PageHeader";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
 const SystemHealth = () => {
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">System Health</h1>
-          <p className="text-muted-foreground mt-2">
-            Monitor and manage system performance and health metrics
-          </p>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader title="System Health" subtitle="Monitor and manage system performance and health metrics" />
 
         {/* System Health Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

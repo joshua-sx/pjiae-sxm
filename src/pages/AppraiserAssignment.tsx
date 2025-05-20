@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import MainLayout from "@/components/layouts/MainLayout";
+import { PageHeader } from "@/components/common/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -17,7 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/styled-table";
 import { Badge } from "@/components/ui/badge";
 import { Search, AlertCircle, Save, Check, X } from "lucide-react";
 import { Employee, employees as initialEmployees, getAvailableAppraisers } from "@/data/mockEmployees";
@@ -104,19 +105,21 @@ const AppraiserAssignment = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <h1>Appraiser Assignments</h1>
-          <div className="relative w-full md:w-80">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-            <Input
-              placeholder="Search employees..."
-              className="pl-8"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-        </div>
+      <div className="page-wrapper">
+        <PageHeader
+          title="Appraiser Assignments"
+          actions={(
+            <div className="relative w-full md:w-80">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+              <Input
+                placeholder="Search employees..."
+                className="pl-8"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+          )}
+        />
         
         <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-center md:justify-between">
           <div className="flex flex-col space-y-4 md:space-y-0 md:flex-row md:space-x-4">
