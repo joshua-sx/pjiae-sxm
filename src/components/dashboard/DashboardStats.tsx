@@ -14,7 +14,7 @@ interface StatCardProps {
 
 const StatCard = ({ title, value, description, icon, trend }: StatCardProps) => {
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         <div className="h-4 w-4 text-pjiae-blue">{icon}</div>
@@ -50,7 +50,7 @@ interface DashboardStatsProps {
 
 const DashboardStats = ({ stats }: DashboardStatsProps) => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
         title="Pending Appraisals"
         value={stats.pendingAppraisals}

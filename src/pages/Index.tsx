@@ -103,8 +103,8 @@ const Index = () => {
 
         <DashboardStats stats={mockStats} />
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mt-6">
-          <div className="col-span-full md:col-span-1 lg:col-span-2">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-6">
+          <div className="col-span-1 md:col-span-1 lg:col-span-2">
             <Card className="h-full">
               <CardHeader>
                 <CardTitle>Your Tasks</CardTitle>
@@ -141,7 +141,7 @@ const Index = () => {
               </CardContent>
             </Card>
           </div>
-          <div className="col-span-full md:col-span-1 lg:col-span-2">
+          <div className="col-span-1 md:col-span-1 lg:col-span-2">
             <Card className="h-full">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-center">

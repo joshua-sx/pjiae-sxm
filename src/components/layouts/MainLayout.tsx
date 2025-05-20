@@ -4,6 +4,7 @@ import TopBar from './TopBar';
 import AppSidebar from './AppSidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { cn } from '@/lib/utils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -22,6 +23,8 @@ interface MainLayoutProps {
  * @param className - Optional additional classes
  */
 const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps) => {
+  const isMobile = useIsMobile();
+  
   return (
     <SidebarProvider defaultOpen={true}>
       {/* Grid layout: sidebar column + main content column */}
@@ -39,19 +42,15 @@ const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps)
             "flex-1 overflow-auto",
             // Offset content so it sits below the fixed TopBar
             "pt-[var(--header-height)]", 
-            // Center content on mobile with symmetric horizontal padding
+            // Consistent padding on all screen sizes
             "px-4 md:px-6 pb-6",
-            // Center alignment for mobile layouts
-            "flex flex-col items-center md:items-start",
+            // Align content based on screen size
+            !isMobile && "flex flex-col items-start",
             !fullWidth && "max-w-screen-2xl mx-auto w-full",
             className
           )}>
-            {/* Content container with responsive width */}
-            <div className={cn(
-              "w-full md:w-auto",
-              // On mobile, add max-width to prevent content from stretching too wide
-              "max-w-[540px] md:max-w-none mx-auto md:mx-0"
-            )}>
+            {/* Content container */}
+            <div className="w-full">
               {children}
             </div>
           </main>
