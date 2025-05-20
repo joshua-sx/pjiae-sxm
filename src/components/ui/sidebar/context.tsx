@@ -1,4 +1,6 @@
 import * as React from "react"
+import { cn } from "@/lib/utils"
+import { TooltipProvider } from "@/components/ui/tooltip"
 import { useIsMobile } from "@/hooks/use-mobile"
 
 // Constants moved from the original file
@@ -138,7 +140,3 @@ export const SidebarProvider = React.forwardRef<
   }
 )
 SidebarProvider.displayName = "SidebarProvider"
-
-// Import this here to avoid circular dependencies
-import { cn } from "@/lib/utils"
-import { TooltipProvider } from "@/components/ui/tooltip"
