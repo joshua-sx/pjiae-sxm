@@ -3,23 +3,29 @@ import { useQuery } from '@tanstack/react-query';
 import goalsData from '../mocks/goals.json';
 import { toast } from '@/hooks/use-toast';
 
-export function useGoalsQuery(options = {}) {
+async function defaultQueryFn() {
+  // Simulate network delay
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return goalsData;
+}
+
+export function useGoalsQuery(options: Record<string, any> = {}) {
+  const queryFn = options.queryFn ?? defaultQueryFn;
+
   return useQuery({
     queryKey: ['goals'],
     queryFn: async () => {
       try {
-        // Simulate network delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        return goalsData;
-      } catch (error) {
+        return await queryFn();
+      } catch (e) {
         toast({
-          title: "Error",
+          title: 'Error',
           description: 'Failed to fetch goals data',
-          variant: "destructive"
+          variant: 'destructive'
         });
-        throw new Error('Failed to fetch goals data');
+        throw e;
       }
     },
-    ...options
+    ...options,
   });
 }
