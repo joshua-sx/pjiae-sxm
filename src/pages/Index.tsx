@@ -1,3 +1,4 @@
+
 import { useNavigate } from "react-router-dom";
 import MainLayout from "@/components/layouts/MainLayout";
 import DashboardStats from "@/components/dashboard/DashboardStats";
@@ -81,7 +82,7 @@ const Index = () => {
   
   return (
     <MainLayout>
-      <div className="space-y-6 pt-4">
+      <div className="space-y-6 pt-4 w-full">
         <PageHeader 
           title="Dashboard"
           actions={

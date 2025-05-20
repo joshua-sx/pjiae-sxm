@@ -38,11 +38,22 @@ const MainLayout = ({ children, fullWidth = false, className }: MainLayoutProps)
           <main className={cn(
             "flex-1 overflow-auto",
             // Offset content so it sits below the fixed TopBar
-            "pt-[var(--header-height)] px-6 pb-6", 
-            !fullWidth && "max-w-screen-2xl mx-auto",
+            "pt-[var(--header-height)]", 
+            // Center content on mobile with symmetric horizontal padding
+            "px-4 md:px-6 pb-6",
+            // Center alignment for mobile layouts
+            "flex flex-col items-center md:items-start",
+            !fullWidth && "max-w-screen-2xl mx-auto w-full",
             className
           )}>
-            {children}
+            {/* Content container with responsive width */}
+            <div className={cn(
+              "w-full md:w-auto",
+              // On mobile, add max-width to prevent content from stretching too wide
+              "max-w-[540px] md:max-w-none mx-auto md:mx-0"
+            )}>
+              {children}
+            </div>
           </main>
         </div>
       </div>
