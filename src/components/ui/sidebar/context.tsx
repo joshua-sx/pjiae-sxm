@@ -1,5 +1,7 @@
 import * as React from "react"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 // Constants moved from the original file
 export const SIDEBAR_COOKIE_NAME = "sidebar:state"
@@ -138,7 +140,3 @@ export const SidebarProvider = React.forwardRef<
   }
 )
 SidebarProvider.displayName = "SidebarProvider"
-
-// Import this here to avoid circular dependencies
-import { cn } from "@/lib/utils"
-import { TooltipProvider } from "@/components/ui/tooltip"
