@@ -1,21 +1,13 @@
 
-import { useState } from 'react';
-import { useToast } from '@/hooks/use-toast';
-import { parseCsv, parseJson, parseXml } from '@/utils/fileParser';
+import { useFileUpload } from './imports/useFileUpload';
+import { useFieldMapping } from './imports/useFieldMapping';
+import { useImportResults } from './imports/useImportResults';
+import { useImportWorkflow, ImportStep } from './imports/useImportWorkflow';
+import { useEffect } from 'react';
 
-export type ImportStep = 'upload' | 'mapping' | 'preview' | 'summary';
-
-export interface ValidationError {
-  field: string;
-  errors: string[];
-}
-
-export interface ImportResults {
-  total: number;
-  successful: number;
-  failed: number;
-  errors: Array<{row: number, error: string}>;
-}
+export type { ImportStep } from './imports/useImportWorkflow';
+export type { ValidationError } from './imports/useFieldMapping';
+export type { ImportResults } from './imports/useImportResults';
 
 export interface EmployeeImportHook {
   currentStep: ImportStep;
@@ -40,176 +32,55 @@ export interface EmployeeImportHook {
 }
 
 export const useEmployeeImport = (): EmployeeImportHook => {
-  const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<ImportStep>('upload');
-  const [fileType, setFileType] = useState<'json' | 'xml' | 'csv' | null>(null);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [parsedData, setParsedData] = useState<any[]>([]);
-  const [detectedFields, setDetectedFields] = useState<string[]>([]);
-  const [mappedFields, setMappedFields] = useState<Record<string, string>>({});
-  const [mappingMethod, setMappingMethod] = useState<'manual' | 'auto'>('auto');
-  const [manualFields, setManualFields] = useState<Array<{name: string, type: string}>>([]);
-  const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
-  const [importResults, setImportResults] = useState<ImportResults | null>(null);
+  const fileUpload = useFileUpload();
+  const fieldMapping = useFieldMapping();
+  const importResults = useImportResults();
+  const workflow = useImportWorkflow(fileUpload, fieldMapping, importResults);
   
+  // Handle file upload and set initial mappings
   const handleFileUpload = async (file: File) => {
-    setUploadedFile(file);
-    
     try {
-      let data: any[] = [];
-      
-      // Determine file type from extension
-      const extension = file.name.split('.').pop()?.toLowerCase();
-      if (extension === 'json') {
-        setFileType('json');
-        data = await parseJson(file);
-      } else if (extension === 'xml') {
-        setFileType('xml');
-        data = await parseXml(file);
-      } else if (extension === 'csv') {
-        setFileType('csv');
-        data = await parseCsv(file);
-      } else {
-        throw new Error('Unsupported file format. Please use JSON, XML, or CSV.');
-      }
-      
-      if (!data.length) {
-        throw new Error('No data found in the file.');
-      }
-      
-      setParsedData(data);
-      
-      // Detect fields from the data
-      const fields = Object.keys(data[0]);
-      setDetectedFields(fields);
-      
-      // Auto-generate field mappings
-      const initialMappings: Record<string, string> = {};
-      fields.forEach(field => {
-        initialMappings[field] = field;
-      });
-      setMappedFields(initialMappings);
-      
-      setCurrentStep('mapping');
-      
-      toast({
-        title: "File Uploaded Successfully",
-        description: `Found ${data.length} employee records with ${fields.length} fields.`,
-      });
-      
+      await fileUpload.handleFileUpload(file);
+      // Auto-generate field mappings after successful upload
+      fieldMapping.setInitialMappings(fileUpload.detectedFields);
+      workflow.setCurrentStep('mapping');
     } catch (error) {
-      toast({
-        title: "Error Processing File",
-        description: error instanceof Error ? error.message : "Failed to process the file.",
-        variant: "destructive",
-      });
+      // Error is already handled in the useFileUpload hook
     }
   };
   
-  const handleFieldMappingChange = (originalField: string, mappedField: string) => {
-    setMappedFields({
-      ...mappedFields,
-      [originalField]: mappedField,
-    });
-  };
-  
-  const handleAddManualField = (field: {name: string, type: string}) => {
-    setManualFields([...manualFields, field]);
-  };
-  
-  const handleRemoveManualField = (index: number) => {
-    const updatedFields = [...manualFields];
-    updatedFields.splice(index, 1);
-    setManualFields(updatedFields);
-  };
-  
-  const handleMappingMethodChange = (method: 'manual' | 'auto') => {
-    setMappingMethod(method);
-  };
-  
-  const handleMappingComplete = () => {
-    // Simple validation
-    const errors: Record<string, string[]> = {};
-    
-    parsedData.forEach((row, index) => {
-      Object.entries(mappedFields).forEach(([originalField, mappedField]) => {
-        if (mappedField && !row[originalField]) {
-          if (!errors[mappedField]) {
-            errors[mappedField] = [];
-          }
-          errors[mappedField].push(`Missing value in row ${index + 1}`);
-        }
-      });
-    });
-    
-    setValidationErrors(errors);
-    
-    if (Object.keys(errors).length === 0) {
-      setCurrentStep('preview');
-    } else {
-      toast({
-        title: "Validation Issues Detected",
-        description: "Please review the validation errors before proceeding.",
-        variant: "destructive",
-      });
-    }
-  };
-  
-  const handleConfirmImport = () => {
-    // In a real app, this would send the mapped data to the server
-    // For now, simulate a successful import with some failures
-    const results = {
-      total: parsedData.length,
-      successful: parsedData.length - Math.floor(parsedData.length * 0.1),
-      failed: Math.floor(parsedData.length * 0.1),
-      errors: Array.from({length: Math.floor(parsedData.length * 0.1)}, (_, i) => ({
-        row: Math.floor(Math.random() * parsedData.length) + 1,
-        error: "Validation failed for required field"
-      }))
-    };
-    
-    setImportResults(results);
-    setCurrentStep('summary');
-    
-    toast({
-      title: "Import Completed",
-      description: `Successfully imported ${results.successful} of ${results.total} employees.`,
-      variant: results.failed > 0 ? "destructive" : "default",
-    });
-  };
-  
+  // Reset all states when starting over
   const handleStartOver = () => {
-    setCurrentStep('upload');
-    setFileType(null);
-    setUploadedFile(null);
-    setParsedData([]);
-    setDetectedFields([]);
-    setMappedFields({});
-    setMappingMethod('auto');
-    setManualFields([]);
-    setValidationErrors({});
-    setImportResults(null);
+    workflow.handleStartOver();
+    importResults.resetResults();
   };
-
+  
   return {
-    currentStep,
-    fileType,
-    uploadedFile,
-    parsedData,
-    detectedFields,
-    mappedFields,
-    mappingMethod,
-    manualFields,
-    validationErrors,
-    importResults,
+    // File upload states and methods
+    fileType: fileUpload.fileType,
+    uploadedFile: fileUpload.uploadedFile,
+    parsedData: fileUpload.parsedData,
+    detectedFields: fileUpload.detectedFields,
+    
+    // Field mapping states and methods
+    mappedFields: fieldMapping.mappedFields,
+    mappingMethod: fieldMapping.mappingMethod,
+    manualFields: fieldMapping.manualFields,
+    validationErrors: fieldMapping.validationErrors,
+    handleFieldMappingChange: fieldMapping.handleFieldMappingChange,
+    handleAddManualField: fieldMapping.handleAddManualField,
+    handleRemoveManualField: fieldMapping.handleRemoveManualField,
+    handleMappingMethodChange: fieldMapping.handleMappingMethodChange,
+    
+    // Import results
+    importResults: importResults.importResults,
+    
+    // Workflow control
+    currentStep: workflow.currentStep,
+    setCurrentStep: workflow.setCurrentStep,
     handleFileUpload,
-    handleFieldMappingChange,
-    handleAddManualField,
-    handleRemoveManualField,
-    handleMappingMethodChange,
-    handleMappingComplete,
-    handleConfirmImport,
-    handleStartOver,
-    setCurrentStep
+    handleMappingComplete: workflow.handleMappingComplete,
+    handleConfirmImport: workflow.handleConfirmImport,
+    handleStartOver
   };
 };
