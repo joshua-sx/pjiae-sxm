@@ -67,10 +67,9 @@ export const SidebarMenuButton = React.forwardRef<
           
           // When collapsed, center the button perfectly using grid layout
           "group-data-[state=collapsed]:grid group-data-[state=collapsed]:place-items-center",
-          "group-data-[state=collapsed]:px-0",
           
-          // Add left padding in collapsed state to visually center the icon
-          "group-data-[state=collapsed]:pl-[0.375rem]",
+          // Remove any horizontal padding in collapsed state for consistent centering
+          "group-data-[state=collapsed]:px-0",
           
           // Precise icon handling in collapsed state
           "group-data-[state=collapsed]:[&>svg]:size-4",
@@ -86,7 +85,9 @@ export const SidebarMenuButton = React.forwardRef<
           
           // Ensure no padding or margins affect the centering
           "group-data-[state=collapsed]:[&>svg]:!mr-0",
-          "has-[[data-chevron]]:group-data-[state=collapsed]:p-0",
+          
+          // Remove the specific padding for items with chevrons
+          // This ensures all items are treated the same way in collapsed state
           
           className
         )}
