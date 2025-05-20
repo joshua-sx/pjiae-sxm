@@ -69,6 +69,9 @@ export const SidebarMenuButton = React.forwardRef<
           "group-data-[state=collapsed]:grid group-data-[state=collapsed]:place-items-center",
           "group-data-[state=collapsed]:px-0",
           
+          // Add left padding in collapsed state to visually center the icon
+          "group-data-[state=collapsed]:pl-[0.375rem]",
+          
           // Precise icon handling in collapsed state
           "group-data-[state=collapsed]:[&>svg]:size-4",
           "group-data-[state=collapsed]:[&>svg]:m-0",
