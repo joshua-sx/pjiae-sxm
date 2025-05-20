@@ -62,7 +62,7 @@ export const UploadStep = ({
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <FileUploader onFileSelect={onFileUpload} />
+          <FileUploader onFileUpload={onFileUpload} />
         </CardContent>
       </Card>
     );
