@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MainLayout from '@/components/layouts/MainLayout';
@@ -157,7 +156,7 @@ const EmployeeImport = () => {
     toast({
       title: "Import Completed",
       description: `Successfully imported ${results.successful} of ${results.total} employees.`,
-      variant: results.failed > 0 ? "warning" : "success",
+      variant: results.failed > 0 ? "destructive" : "success",
     });
   };
   

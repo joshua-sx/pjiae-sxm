@@ -2,170 +2,126 @@
 import Papa from 'papaparse';
 import { xml2js } from 'xml-js';
 
-/**
- * Parse a JSON file
- */
+export const parseCsv = (file: File): Promise<any[]> => {
+  return new Promise((resolve, reject) => {
+    Papa.parse(file, {
+      header: true,
+      skipEmptyLines: true,
+      complete: (results) => {
+        if (results.errors.length > 0) {
+          reject(new Error(`Error parsing CSV: ${results.errors[0].message}`));
+        } else {
+          resolve(results.data);
+        }
+      },
+      error: (error) => reject(error)
+    });
+  });
+};
+
 export const parseJson = async (file: File): Promise<any[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
     reader.onload = (event) => {
       try {
-        if (!event.target?.result) {
-          reject(new Error('Failed to read file content'));
-          return;
-        }
-        
-        const content = event.target.result as string;
-        const data = JSON.parse(content);
-        
-        // Handle different JSON structures
-        if (Array.isArray(data)) {
-          resolve(data);
-        } else if (data && typeof data === 'object') {
-          // Try to find an array in the root object
-          const possibleArrays = Object.values(data).filter(val => Array.isArray(val));
-          if (possibleArrays.length > 0) {
-            // Use the first array found
-            resolve(possibleArrays[0] as any[]);
-          } else {
-            // If no arrays found, wrap the object in an array
-            resolve([data]);
-          }
+        if (event.target?.result) {
+          const data = JSON.parse(event.target.result as string);
+          // Handle both array and object formats
+          const dataArray = Array.isArray(data) ? data : [data];
+          resolve(dataArray);
         } else {
-          reject(new Error('Invalid JSON format. Expected an array or object.'));
+          reject(new Error('No data found in file'));
         }
       } catch (error) {
-        reject(error instanceof Error ? error : new Error('Failed to parse JSON'));
+        reject(new Error(`Error parsing JSON: ${error instanceof Error ? error.message : 'Unknown error'}`));
       }
     };
     
-    reader.onerror = () => {
-      reject(new Error('Error reading file'));
-    };
+    reader.onerror = () => reject(new Error('Error reading file'));
     
     reader.readAsText(file);
   });
 };
 
-/**
- * Parse an XML file
- */
 export const parseXml = async (file: File): Promise<any[]> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     
     reader.onload = (event) => {
       try {
-        if (!event.target?.result) {
-          reject(new Error('Failed to read file content'));
-          return;
-        }
-        
-        const content = event.target.result as string;
-        
-        // Convert XML to JS object
-        const result = xml2js(content, { compact: true, spaces: 2 });
-        
-        // Try to find a root element that contains employee data
-        const rootElements = Object.keys(result);
-        if (rootElements.length === 0) {
-          reject(new Error('Invalid XML format. No root elements found.'));
-          return;
-        }
-        
-        let employeeData: any[] = [];
-        
-        // Common root elements for employee data
-        const possibleRootNames = ['employees', 'employee', 'records', 'record', 'users', 'user', 'data', 'root'];
-        
-        // Try to find a suitable container for employee records
-        for (const rootName of rootElements) {
-          const root = result[rootName];
+        if (event.target?.result) {
+          // Use xml2js with correct options
+          const result = xml2js(event.target.result as string, {
+            compact: true,
+            ignoreComment: true,
+            alwaysChildren: true
+          });
           
-          // Check if it's an array of elements
-          for (const childName of Object.keys(root)) {
-            if (childName.toLowerCase().includes('employee') || possibleRootNames.includes(childName.toLowerCase())) {
-              const children = root[childName];
-              if (Array.isArray(children)) {
-                employeeData = children.map(normalizeXmlElement);
-                break;
-              } else if (typeof children === 'object') {
-                employeeData = [normalizeXmlElement(children)];
-                break;
+          // Handle different XML structures
+          let data: any[] = [];
+          
+          if (result && typeof result === 'object') {
+            const rootKey = Object.keys(result)[0];
+            if (rootKey) {
+              const rootElement = result[rootKey];
+              
+              // Try to extract records assuming common XML structures
+              if (rootElement.record && Array.isArray(rootElement.record)) {
+                data = rootElement.record.map(transformXmlRecord);
+              } else if (rootElement.employee && Array.isArray(rootElement.employee)) {
+                data = rootElement.employee.map(transformXmlRecord);
+              } else if (rootElement.item && Array.isArray(rootElement.item)) {
+                data = rootElement.item.map(transformXmlRecord);
+              } else if (Array.isArray(rootElement)) {
+                data = rootElement.map(transformXmlRecord);
+              } else {
+                // If no recognized array structure, treat as single record
+                data = [transformXmlRecord(rootElement)];
               }
             }
           }
           
-          // If we found employee data, stop searching
-          if (employeeData.length > 0) {
-            break;
-          }
-        }
-        
-        if (employeeData.length === 0) {
-          reject(new Error('Could not find employee data in the XML file'));
+          resolve(data);
         } else {
-          resolve(employeeData);
+          reject(new Error('No data found in file'));
         }
       } catch (error) {
-        reject(error instanceof Error ? error : new Error('Failed to parse XML'));
+        reject(new Error(`Error parsing XML: ${error instanceof Error ? error.message : 'Unknown error'}`));
       }
     };
     
-    reader.onerror = () => {
-      reject(new Error('Error reading file'));
-    };
+    reader.onerror = () => reject(new Error('Error reading file'));
     
     reader.readAsText(file);
   });
 };
 
-/**
- * Parse a CSV file
- */
-export const parseCsv = async (file: File): Promise<any[]> => {
-  return new Promise((resolve, reject) => {
-    Papa.parse(file, {
-      header: true, // Treat first row as headers
-      skipEmptyLines: true,
-      complete: (results) => {
-        if (results.errors.length > 0) {
-          reject(new Error(`CSV parsing error: ${results.errors[0].message}`));
-        } else {
-          resolve(results.data as any[]);
-        }
-      },
-      error: (error) => {
-        reject(new Error(`CSV parsing error: ${error}`));
-      }
-    });
-  });
-};
-
-/**
- * Helper function to normalize XML elements by removing _text wrapper
- */
-function normalizeXmlElement(element: any): any {
-  const result: any = {};
+// Helper function to transform XML records (which typically have _text property from xml-js)
+const transformXmlRecord = (record: any): Record<string, any> => {
+  const result: Record<string, any> = {};
   
-  for (const key in element) {
-    if (key === '_attributes') {
-      // Add attributes as regular properties
-      for (const attrKey in element._attributes) {
-        result[attrKey] = element._attributes[attrKey];
+  if (!record || typeof record !== 'object') return result;
+  
+  Object.keys(record).forEach(key => {
+    // Skip attributes and other special keys
+    if (key === '_attributes' || key.startsWith('_')) return;
+    
+    // Handle simple text nodes
+    if (record[key] && record[key]._text !== undefined) {
+      result[key] = record[key]._text;
+    } 
+    // Handle more complex nodes
+    else if (record[key] && typeof record[key] === 'object') {
+      if (Array.isArray(record[key])) {
+        result[key] = record[key].map(transformXmlRecord);
+      } else {
+        result[key] = transformXmlRecord(record[key]);
       }
-    } else if (typeof element[key] === 'object' && element[key]._text !== undefined) {
-      // If it has a _text property, use that value
-      result[key] = element[key]._text;
-    } else if (typeof element[key] === 'object' && !Array.isArray(element[key])) {
-      // Recursively normalize nested objects
-      result[key] = normalizeXmlElement(element[key]);
     } else {
-      // Use the value as is
-      result[key] = element[key];
+      result[key] = record[key];
     }
-  }
+  });
   
   return result;
-}
+};
