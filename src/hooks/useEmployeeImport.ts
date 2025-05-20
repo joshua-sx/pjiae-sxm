@@ -1,7 +1,6 @@
-
 import { useFileUpload } from './imports/useFileUpload';
 import { useFieldMapping } from './imports/useFieldMapping';
-import { useImportResults } from './imports/useImportResults';
+import { useImportResults, ImportResults } from './imports/useImportResults';
 import { useImportWorkflow, ImportStep } from './imports/useImportWorkflow';
 import { useEffect } from 'react';
 
