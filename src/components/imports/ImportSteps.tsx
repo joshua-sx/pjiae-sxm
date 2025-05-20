@@ -52,13 +52,14 @@ interface StepIndicatorProps {
 
 const StepIndicator = ({ step, label, isActive, isCompleted }: StepIndicatorProps) => {
   return (
-    <div className={`flex flex-col items-center ${isActive ? 'text-pjiae-blue' : 'text-gray-500'}`}>
+    <div className={cn(
+      "flex flex-col items-center",
+      (isActive || isCompleted) ? "text-primary" : "text-gray-500"
+    )}>
       <div 
         className={cn(
           "w-8 h-8 rounded-full flex items-center justify-center",
-          isActive ? 'bg-pjiae-blue text-white' : (
-            isCompleted ? 'bg-pjiae-blue text-white' : 'bg-gray-200 text-gray-500'
-          )
+          isActive || isCompleted ? 'bg-primary text-white' : 'bg-gray-200 text-gray-500'
         )}
       >
         {step}
@@ -74,6 +75,6 @@ interface StepConnectorProps {
 
 const StepConnector = ({ isActive }: StepConnectorProps) => {
   return (
-    <div className={`w-12 h-1 ${isActive ? 'bg-pjiae-blue' : 'bg-gray-200'}`}></div>
+    <div className={cn("w-12 h-1", isActive ? "bg-primary" : "bg-gray-200")}></div>
   );
 };
