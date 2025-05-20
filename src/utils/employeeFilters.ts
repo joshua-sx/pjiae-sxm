@@ -66,24 +66,38 @@ export function applyFilters(employees: Employee[], filters: EmployeeFilters): E
   return filtered;
 }
 
-export function applySort(employees: Employee[], sortColumn: SortColumn, sortDirection: SortDirection): Employee[] {
+// Sort a list of employees by the given column and direction.
+// Undefined values are pushed to the bottom (or top when sorting descending).
+// The comparator explicitly returns 0 when both values are equal so that the
+// relative order of equal records is preserved.
+export function applySort(
+  employees: Employee[],
+  sortColumn: SortColumn,
+  sortDirection: SortDirection
+): Employee[] {
   return [...employees].sort((a: any, b: any) => {
     const valueA = a[sortColumn];
     const valueB = b[sortColumn];
-    
+
     if (!valueA && !valueB) return 0;
     if (!valueA) return sortDirection === 'asc' ? 1 : -1;
     if (!valueB) return sortDirection === 'asc' ? -1 : 1;
-    
+
     if (typeof valueA === 'string' && typeof valueB === 'string') {
-      return sortDirection === 'asc' 
-        ? valueA.localeCompare(valueB) 
+      return sortDirection === 'asc'
+        ? valueA.localeCompare(valueB)
         : valueB.localeCompare(valueA);
     }
-    
-    return sortDirection === 'asc' 
-      ? (valueA > valueB ? 1 : -1)
-      : (valueA < valueB ? 1 : -1);
+
+    if (valueA === valueB) return 0;
+
+    return sortDirection === 'asc'
+      ? valueA > valueB
+        ? 1
+        : -1
+      : valueA > valueB
+        ? -1
+        : 1;
   });
 }
 
