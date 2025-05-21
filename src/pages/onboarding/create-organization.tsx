@@ -84,6 +84,17 @@ const CreateOrganizationPage = () => {
       return false;
     }
   };
+  
+  // Create a wrapper function that will call form.handleSubmit
+  // and ensure it returns a Promise<boolean>
+  const handleNext = async (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      form.handleSubmit(async (data) => {
+        const result = await onSubmit(data);
+        resolve(result);
+      })();
+    });
+  };
 
   return (
     <OnboardingLayout>
@@ -171,7 +182,7 @@ const CreateOrganizationPage = () => {
           </div>
           
           <OnboardingNavigation
-            onNext={() => form.handleSubmit(onSubmit)()}
+            onNext={handleNext}
             nextDisabled={form.formState.isSubmitting}
           />
         </form>
