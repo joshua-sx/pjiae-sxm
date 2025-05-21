@@ -192,7 +192,7 @@ const CreateAdminUserPage = () => {
           </div>
           
           <OnboardingNavigation
-            onNext={form.handleSubmit(onSubmit)}
+            onNext={() => form.handleSubmit(onSubmit)()}
             nextDisabled={form.formState.isSubmitting}
           />
         </form>

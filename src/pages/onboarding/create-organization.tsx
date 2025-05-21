@@ -73,11 +73,16 @@ const CreateOrganizationPage = () => {
   });
 
   const onSubmit = async (data: FormValues) => {
-    // Update organization in context
-    updateOrganization(data);
-
-    // Return true to allow navigation to next step
-    return true;
+    try {
+      // Update organization in context
+      updateOrganization(data);
+      
+      // Return true to allow navigation to next step
+      return true;
+    } catch (error) {
+      console.error('Error updating organization:', error);
+      return false;
+    }
   };
 
   return (
@@ -166,7 +171,7 @@ const CreateOrganizationPage = () => {
           </div>
           
           <OnboardingNavigation
-            onNext={form.handleSubmit(onSubmit)}
+            onNext={() => form.handleSubmit(onSubmit)()}
             nextDisabled={form.formState.isSubmitting}
           />
         </form>
