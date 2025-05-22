@@ -7,6 +7,7 @@ import OnboardingLayout from '@/components/layouts/OnboardingLayout';
 import OnboardingStepper from '@/components/onboarding/OnboardingStepper';
 import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { animateElement } from '@/utils/animations';
 import {
   Form,
   FormControl,
@@ -100,7 +101,7 @@ const CreateOrganizationPage = () => {
     <OnboardingLayout>
       <OnboardingStepper />
       
-      <div className="text-center mb-6">
+      <div className={animateElement("text-center mb-6", ["fade-in"])}>
         <h1 className="text-2xl font-bold tracking-tight">Create Your Organization</h1>
         <p className="text-gray-600 mt-1">
           Tell us about your organization to get started
@@ -113,10 +114,14 @@ const CreateOrganizationPage = () => {
             control={form.control}
             name="name"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "100ms" }}>
                 <FormLabel>Organization Name*</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Enter your organization name" />
+                  <Input 
+                    {...field} 
+                    placeholder="Enter your organization name" 
+                    className={animateElement("", ["hover-scale"])}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -128,20 +133,24 @@ const CreateOrganizationPage = () => {
               control={form.control}
               name="industry"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "200ms" }}>
                   <FormLabel>Industry</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className={animateElement("", ["hover-scale"])}>
                         <SelectValue placeholder="Select your industry" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {industries.map((industry) => (
-                        <SelectItem key={industry.id} value={industry.id}>
+                        <SelectItem 
+                          key={industry.id} 
+                          value={industry.id}
+                          className={animateElement("", ["hover-lift"])}
+                        >
                           {industry.name}
                         </SelectItem>
                       ))}
@@ -156,20 +165,24 @@ const CreateOrganizationPage = () => {
               control={form.control}
               name="size"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "300ms" }}>
                   <FormLabel>Company Size</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className={animateElement("", ["hover-scale"])}>
                         <SelectValue placeholder="Select company size" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {companySizes.map((size) => (
-                        <SelectItem key={size.id} value={size.id}>
+                        <SelectItem 
+                          key={size.id} 
+                          value={size.id}
+                          className={animateElement("", ["hover-lift"])}
+                        >
                           {size.name}
                         </SelectItem>
                       ))}

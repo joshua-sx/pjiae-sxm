@@ -1,15 +1,16 @@
 
 import React from 'react';
-import { cn } from '@/lib/utils';
-import { Check } from 'lucide-react';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { cn } from '@/lib/utils';
+import { animateElement } from '@/utils/animations';
+import { Check } from 'lucide-react';
 
 const steps = [
-  { id: 1, name: 'Welcome' },
-  { id: 2, name: 'Organization' },
-  { id: 3, name: 'Admin User' },
-  { id: 4, name: 'Invite Team' },
-  { id: 5, name: 'Complete' },
+  { id: 1, title: 'Welcome' },
+  { id: 2, title: 'Organization' },
+  { id: 3, title: 'Admin Account' },
+  { id: 4, title: 'Invite Team' },
+  { id: 5, title: 'Complete' },
 ];
 
 const OnboardingStepper = () => {
@@ -17,59 +18,64 @@ const OnboardingStepper = () => {
 
   return (
     <div className="mb-8">
-      <nav aria-label="Progress">
-        <ol
-          role="list"
-          className="flex items-center justify-center"
-        >
-          {steps.map((step, index) => (
-            <li key={step.id} className={cn(
-              index !== steps.length - 1 ? "flex-1" : "",
-              "relative"
-            )}>
+      <div className="flex items-center justify-center">
+        {steps.map((step, index) => (
+          <React.Fragment key={step.id}>
+            {/* Step circle */}
+            <div
+              className={animateElement(
+                cn(
+                  "relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2 font-semibold transition-colors duration-300",
+                  step.id < currentStep
+                    ? "border-primary bg-primary text-white"
+                    : step.id === currentStep
+                    ? "border-primary bg-white text-primary"
+                    : "border-gray-300 bg-white text-gray-300"
+                ),
+                ["scale-in"]
+              )}
+              style={{ animationDelay: `${index * 150}ms` }}
+            >
               {step.id < currentStep ? (
-                <div className="flex flex-col items-center">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">
-                    <Check className="h-4 w-4" />
-                  </span>
-                  <span className="mt-2 text-xs">{step.name}</span>
-                </div>
-              ) : step.id === currentStep ? (
-                <div className="flex flex-col items-center">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full bg-pjiae-blue text-white">
-                    {step.id}
-                  </span>
-                  <span className="mt-2 text-xs font-medium">{step.name}</span>
-                </div>
+                <Check className="h-5 w-5" />
               ) : (
-                <div className="flex flex-col items-center">
-                  <span className="flex items-center justify-center w-8 h-8 rounded-full border-2 border-gray-300 text-gray-500">
-                    {step.id}
-                  </span>
-                  <span className="mt-2 text-xs text-gray-500">{step.name}</span>
-                </div>
+                step.id
               )}
-              
-              {index !== steps.length - 1 && (
-                <div
-                  className={cn(
-                    "absolute top-4 left-0 w-full",
-                    "flex items-center justify-center"
-                  )}
-                  aria-hidden="true"
-                >
-                  <div
-                    className={cn(
-                      "h-0.5 w-full mx-8",
-                      step.id < currentStep ? "bg-green-500" : "bg-gray-300"
-                    )}
-                  />
-                </div>
-              )}
-            </li>
-          ))}
-        </ol>
-      </nav>
+            </div>
+
+            {/* Connector line between steps */}
+            {index < steps.length - 1 && (
+              <div
+                className={cn(
+                  "hidden h-0.5 w-12 flex-shrink-0 md:block transition-colors duration-500",
+                  step.id < currentStep
+                    ? "bg-primary"
+                    : "bg-gray-300"
+                )}
+              />
+            )}
+          </React.Fragment>
+        ))}
+      </div>
+      
+      {/* Step titles */}
+      <div className="mt-4 hidden grid-cols-5 text-center md:grid">
+        {steps.map((step, index) => (
+          <div 
+            key={step.id}
+            className={animateElement(
+              cn(
+                "text-sm font-medium transition-colors duration-300",
+                step.id <= currentStep ? "text-primary" : "text-gray-400"
+              ),
+              ["fade-in"]
+            )}
+            style={{ animationDelay: `${150 + index * 150}ms` }}
+          >
+            {step.title}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

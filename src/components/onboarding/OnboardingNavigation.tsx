@@ -3,101 +3,118 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { useOnboarding } from '@/contexts/OnboardingContext';
+import { animateElement } from '@/utils/animations';
 
 interface OnboardingNavigationProps {
+  onNext?: () => boolean | Promise<boolean>;
   nextDisabled?: boolean;
-  backDisabled?: boolean;
-  onNext?: () => Promise<boolean> | boolean;
-  onBack?: () => void;
   nextLabel?: string;
-  skipLink?: string;
-  skipLabel?: string;
+  showSkip?: boolean;
+  showBack?: boolean;
 }
 
-const OnboardingNavigation: React.FC<OnboardingNavigationProps> = ({
-  nextDisabled = false,
-  backDisabled = false,
+const OnboardingNavigation = ({
   onNext,
-  onBack,
-  nextLabel = 'Next',
-  skipLink,
-  skipLabel = 'Skip this step',
-}) => {
+  nextDisabled = false,
+  nextLabel = 'Continue',
+  showSkip = false,
+  showBack = true,
+}: OnboardingNavigationProps) => {
   const navigate = useNavigate();
-  const { goToNextStep, goToPreviousStep, currentStep } = useOnboarding();
+  const { currentStep, goToNextStep, goToPreviousStep } = useOnboarding();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const handleNext = async () => {
     if (onNext) {
-      const canProceed = await onNext();
-      if (!canProceed) return;
-    }
-    
-    goToNextStep();
-    
-    const routes = [
-      '/onboarding/welcome',
-      '/onboarding/create-organization',
-      '/onboarding/create-admin-user',
-      '/onboarding/invite-team',
-      '/onboarding/complete',
-    ];
-    
-    if (currentStep < routes.length) {
-      navigate(routes[currentStep]);
+      setIsLoading(true);
+      try {
+        const canProceed = await onNext();
+        if (canProceed) {
+          goToNextStep();
+          navigate(getNextPath(currentStep));
+        }
+      } catch (error) {
+        console.error('Error in next handler:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      goToNextStep();
+      navigate(getNextPath(currentStep));
     }
   };
 
   const handleBack = () => {
-    if (onBack) {
-      onBack();
-    }
-    
     goToPreviousStep();
-    
-    const routes = [
-      '/onboarding/welcome',
-      '/onboarding/create-organization',
-      '/onboarding/create-admin-user',
-      '/onboarding/invite-team',
-      '/onboarding/complete',
-    ];
-    
-    if (currentStep > 1) {
-      navigate(routes[currentStep - 2]);
-    }
-  };
-
-  const handleSkip = () => {
-    if (skipLink) {
-      navigate(skipLink);
-    }
+    navigate(getPreviousPath(currentStep));
   };
 
   return (
-    <div className="flex justify-between mt-8">
-      <div>
-        {!backDisabled && currentStep > 1 && (
-          <Button type="button" variant="outline" onClick={handleBack}>
+    <div className="flex items-center justify-between mt-8">
+      <div className="space-x-2">
+        {showBack && currentStep > 1 && (
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={handleBack}
+            className={animateElement("", ["fade-in", "hover-lift"])}
+          >
             Back
           </Button>
         )}
-      </div>
-      <div className="flex space-x-3">
-        {skipLink && (
-          <Button type="button" variant="ghost" onClick={handleSkip}>
-            {skipLabel}
+        
+        {showSkip && (
+          <Button 
+            type="button" 
+            variant="ghost" 
+            onClick={() => navigate('/onboarding/complete')}
+            className={animateElement("", ["fade-in", "hover-lift"])}
+          >
+            Skip
           </Button>
         )}
-        <Button 
-          type="button" 
-          disabled={nextDisabled} 
-          onClick={handleNext}
-        >
-          {nextLabel}
-        </Button>
       </div>
+      
+      <Button 
+        type="button" 
+        onClick={handleNext} 
+        disabled={nextDisabled || isLoading}
+        className={animateElement("min-w-[100px]", ["fade-in", "hover-scale"])}
+      >
+        {isLoading ? 'Loading...' : nextLabel}
+      </Button>
     </div>
   );
+};
+
+// Helper functions to determine navigation paths
+const getNextPath = (currentStep: number): string => {
+  switch (currentStep) {
+    case 1:
+      return '/onboarding/create-organization';
+    case 2:
+      return '/onboarding/create-admin-user';
+    case 3:
+      return '/onboarding/invite-team';
+    case 4:
+    default:
+      return '/onboarding/complete';
+  }
+};
+
+const getPreviousPath = (currentStep: number): string => {
+  switch (currentStep) {
+    case 2:
+      return '/onboarding/welcome';
+    case 3:
+      return '/onboarding/create-organization';
+    case 4:
+      return '/onboarding/create-admin-user';
+    case 5:
+      return '/onboarding/invite-team';
+    default:
+      return '/onboarding/welcome';
+  }
 };
 
 export default OnboardingNavigation;

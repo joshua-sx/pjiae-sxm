@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
+import { animateElement } from '@/utils/animations';
 
 interface OnboardingLayoutProps {
   children: React.ReactNode;
@@ -20,7 +21,13 @@ const OnboardingLayout = ({
       <header className="w-full py-4 px-6 border-b bg-white">
         <div className="max-w-7xl mx-auto w-full flex justify-between items-center">
           {showLogo && (
-            <Link to="/" className="text-xl font-semibold text-pjiae-blue flex items-center">
+            <Link 
+              to="/" 
+              className={animateElement(
+                "text-xl font-semibold text-pjiae-blue flex items-center",
+                ["hover-scale"]
+              )}
+            >
               SmartGoals<span className="text-gray-600">365</span>
             </Link>
           )}
@@ -28,7 +35,12 @@ const OnboardingLayout = ({
       </header>
 
       <main className="flex-1 flex items-center justify-center p-4 md:p-6">
-        <Card className={cn("w-full max-w-3xl shadow-lg", className)}>
+        <Card 
+          className={animateElement(
+            cn("w-full max-w-3xl shadow-lg", className),
+            ["fade-in", "scale-in"]
+          )}
+        >
           <CardContent className="p-6 md:p-8">
             {children}
           </CardContent>

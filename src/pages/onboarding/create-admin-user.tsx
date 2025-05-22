@@ -9,6 +9,7 @@ import OnboardingNavigation from '@/components/onboarding/OnboardingNavigation';
 import { useOnboarding } from '@/contexts/OnboardingContext';
 import { UserRole } from '@/lib/permissions/roles';
 import { toast } from '@/hooks/use-toast';
+import { animateElement } from '@/utils/animations';
 import {
   Form,
   FormControl,
@@ -119,7 +120,7 @@ const CreateAdminUserPage = () => {
     <OnboardingLayout>
       <OnboardingStepper />
       
-      <div className="text-center mb-6">
+      <div className={animateElement("text-center mb-6", ["fade-in"])}>
         <h1 className="text-2xl font-bold tracking-tight">Create Admin Account</h1>
         <p className="text-gray-600 mt-1">
           Set up your admin account for {organization.name}
@@ -133,10 +134,14 @@ const CreateAdminUserPage = () => {
               control={form.control}
               name="firstName"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "100ms" }}>
                   <FormLabel>First Name*</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="John" />
+                    <Input 
+                      {...field} 
+                      placeholder="John" 
+                      className={animateElement("", ["hover-scale"])}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -147,10 +152,14 @@ const CreateAdminUserPage = () => {
               control={form.control}
               name="lastName"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "200ms" }}>
                   <FormLabel>Last Name*</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Doe" />
+                    <Input 
+                      {...field} 
+                      placeholder="Doe" 
+                      className={animateElement("", ["hover-scale"])}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,10 +171,15 @@ const CreateAdminUserPage = () => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "300ms" }}>
                 <FormLabel>Email Address*</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="john@example.com" type="email" />
+                  <Input 
+                    {...field} 
+                    placeholder="john@example.com" 
+                    type="email" 
+                    className={animateElement("", ["hover-scale"])}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -177,10 +191,15 @@ const CreateAdminUserPage = () => {
               control={form.control}
               name="password"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "400ms" }}>
                   <FormLabel>Password*</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="••••••••" />
+                    <Input 
+                      {...field} 
+                      type="password" 
+                      placeholder="••••••••" 
+                      className={animateElement("", ["hover-scale"])}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -191,10 +210,15 @@ const CreateAdminUserPage = () => {
               control={form.control}
               name="confirmPassword"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className={animateElement("", ["fade-in"])} style={{ animationDelay: "500ms" }}>
                   <FormLabel>Confirm Password*</FormLabel>
                   <FormControl>
-                    <Input {...field} type="password" placeholder="••••••••" />
+                    <Input 
+                      {...field} 
+                      type="password" 
+                      placeholder="••••••••" 
+                      className={animateElement("", ["hover-scale"])}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
