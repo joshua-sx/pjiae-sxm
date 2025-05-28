@@ -3,6 +3,8 @@ import * as React from "react"
 import { cn } from "@/lib/utils"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { cn } from "@/lib/utils"
+import { TooltipProvider } from "@/components/ui/tooltip"
 
 // Constants moved from the original file
 export const SIDEBAR_COOKIE_NAME = "sidebar:state"
